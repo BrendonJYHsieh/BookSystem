@@ -1,0 +1,41 @@
+@startuml Reservation System
+scale 1.5
+Class Event {
+    EventName : String
+    EventDescription: String
+    StartTime : Data
+    EndTime : Date
+    Participants : list<Email>
+    --
+    + modifyEventName(String newEventName)
+    + modifyDecription(String newDescription)
+    + modifyStartTime(Date newTime)
+    + modifyEndTime(Date newTime)
+    + addParticipant(Email person)
+    + deleteParticipant(Email person)
+}
+Class Room {
+    RoomName : String
+    Events : List<Event>
+    --
+    + addEvent(String EventNmae)
+    + deleteEvent(String EventNmae)
+    + modifyRoomName(String newName)
+}
+class BookSystem {
+    Rooms : List<Room>
+    --
+    + addRoom(String RoomNmae)
+    + deleteRoom(String RoomNmae)
+}
+note left of Event::"modifyStartTime(Date newTime)"
+ Make sure StartTime won't later than EndTime
+end note
+
+note left of Event::"modifyEndTime(Date newTime)"
+ Make sure EndTime won't earlier than StartTime
+end note
+
+BookSystem --> Room
+Room --> Event
+@enduml
