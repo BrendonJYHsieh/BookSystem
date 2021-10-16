@@ -9,8 +9,8 @@ Class Event {
     --
     + modifyEventName(String newEventName)
     + modifyDecription(String newDescription)
-    + modifyStartTime(Date newTime)
-    + modifyEndTime(Date newTime)
+    + modifyStartTime(Date newTime)SS
+    + modifyEndTime(Date newTime)D
     + addParticipant(Email person)
     + deleteParticipant(Email person)
 }
