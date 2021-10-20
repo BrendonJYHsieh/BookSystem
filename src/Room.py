@@ -5,9 +5,6 @@ class Room:
     events = []
     def __init__(self):
         return
-    def modify(self): #call from UI
-        DataBase.modifyRoom()
-        return
     def addEvent(self):
         return
     def deleteEvent(self):
