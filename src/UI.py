@@ -29,20 +29,16 @@ def redraw():
 def roomBaseInfoModify(room):
     room.name = "xxx"
     room.description = "xxx"
-    room.modify()
 
 def roomEventsModify(room):
     UI_switch = 2
-    room.modify()
 
 def eventModify(event):
     event.name = "xxx"
     event.description = "xxx"
     event.start_time = None
     event.end_time = None
-    event.modify()
 
 def eventParticipantModify(event,emails):
     event.participants = emails
-    event.modify()
 

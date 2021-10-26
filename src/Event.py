@@ -8,8 +8,6 @@ class Event:
     participants = ["","",""]
     def __init__(self):
         return
-    def modify():
-        DataBase.modifyEvent()
     def addParticipant():
         return
     def deleteParticipant():
