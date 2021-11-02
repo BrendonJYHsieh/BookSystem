@@ -58,13 +58,53 @@ class BookSystemUI():
         #UserGroup pack
         ImageTest3 = tk.Label(self.UserGroup, image=self.Img3).pack(side=tk.LEFT)
         #ManagerGroup pack
-        ImageTest4 = tk.Label(self.ManagerGroup, image=self.Img4).pack(side=tk.LEFT)
+        #ImageTest4 = tk.Label(self.ManagerGroup, image=self.Img4).pack(side=tk.LEFT)
         #SettingGroup pack
         ImageTest5 = tk.Label(self.SettingGroup, image=self.Img5).place(relx=0,rely=0)
         
 
+        ####################### manage group declare
+        add_room = tk.Button(self.ManagerGroup,text='add')
+        edit_room = tk.Button(self.ManagerGroup,text='edit')
+        delete_room = tk.Button(self.ManagerGroup,text='delete')
+        room_title_label = tk.Label(self.ManagerGroup,text='Room Name')
+        room_title_strv = tk.StringVar()
+        room_title_strv.set('mew mew')
+        room_title = tk.Entry(self.ManagerGroup,textvariable=room_title_strv)
+        room_description_label = tk.Label(self.ManagerGroup,text='Room Description')
+        room_description_strv =  tk.StringVar()
+        room_description_strv.set('haha cat')
+        room_description = tk.Entry(self.ManagerGroup,textvariable=room_description_strv)
+
+        
+        room_list = tk.Listbox(self.ManagerGroup)
+        room_scroll = tk.Scrollbar(room_list, orient=tk.VERTICAL,command = room_list.yview)
+        
+
+        room_list.insert(tk.END,'cat livingroom')
+        room_list.insert(tk.END,'cat bathroom')
+        room_list.insert(tk.END,'cat kitchen')
+        for i in range(30):
+            room_list.insert(END,str(i))
+        room_list.config(yscrollcommand = room_scroll)
+        #######################
 
 
+        ####################### manage group place
+        add_room.place(x=0,y=450,width=120)
+        edit_room.place(x=150,y=450,width=120)
+        delete_room.place(x=300,y=450,width=120)
+        room_title_label.place(x=0,y=50)
+        room_title.place(x=0,y=100,width=420)
+        
+        room_description_label.place(x=0,y=200)
+        room_description.place(x=0,y=250,width=420)
+        
+        
+        room_list.place(x=430,y=0,height=500)      
+        room_scroll.place(x=100,y=0,height=500)
+        #######################
+        
         #Put the object to window
         self.listCanvas1.place(x=0,y=0)
         self.listCanvas2.place(x=0,y=0)
