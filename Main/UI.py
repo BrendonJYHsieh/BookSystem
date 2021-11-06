@@ -1,7 +1,7 @@
 from os import stat
 import tkinter.font as fnt
 import tkinter as tk
-from tkinter.constants import CENTER, END, FLAT, LEFT, SUNKEN, TOP
+from tkinter.constants import BOTH, CENTER, COMMAND, END, FLAT, LEFT, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
 #import BookSystem
 #import Room
 #import Event
@@ -15,7 +15,7 @@ class BookSystemUI():
         self.app.resizable(0,0)
         self.app.config(background="#dcdcdc")
         self.app.config(borderwidth=0)
-        self.app.attributes("-alpha",0.9)
+        self.app.attributes("-alpha",0.95)
 
         #Testing image
         #pixelVirtual = tk.PhotoImage(width=1,height=1)
@@ -38,32 +38,34 @@ class BookSystemUI():
         self.listBtn3 = tk.Button(self.app, text="  Manage room  ", font=('Helvetica', '13'), image=self.btnIcon3, bg="#20b2aa",activebackground="#22736e", disabledforeground="black",height=80,width=181, relief=SUNKEN, borderwidth=0,compound=LEFT, command=lambda : self.ListBtnClick(2))
         self.btnIcon4 = tk.PhotoImage(file= r"Asset\Image\Setting_Icon.png")
         self.btnIcon4 = self.btnIcon4.subsample(17,17)
-        self.listBtn4 = tk.Button(self.app, text="  Setting              ", font=('Helvetica', '12'), image=self.btnIcon4, bg="#20b2aa",activebackground="#22736e", disabledforeground="black",height=80,width=181, relief=SUNKEN, borderwidth=0,compound=LEFT, command=lambda : self.ListBtnClick(3))
+        self.listBtn4 = tk.Button(self.app, text="  Setting              ", font=('Helvetica', '13'), image=self.btnIcon4, bg="#20b2aa",activebackground="#22736e", disabledforeground="black",height=80,width=181, relief=SUNKEN, borderwidth=0,compound=LEFT, command=lambda : self.ListBtnClick(3))
 
         #Setting LabelFrame
+        #Booking System
         self.bookingGroup = tk.LabelFrame(self.app, text="Booking", font=('Helvetica', '20'),height=550,width=550,bd=0,background="#dcdcdc")
+        self.RoomLabel = tk.Label(self.bookingGroup,text="\n      Choose Room", font=('Helvetica', '15'),background="#dcdcdc")
+        self.RoomList_Frame = tk.Frame(self.bookingGroup,height=400,width=400,bd=0,background="#575757")
+        self.RoomList_Canvas = tk.Canvas(self.RoomList_Frame,height=400,width=350,borderwidth=0, highlightthickness=0, background="#575757")
+        self.RoomlIst_Scrollbar = tk.Scrollbar(self.RoomList_Frame, orient=VERTICAL,command=self.RoomList_Canvas.yview)
+        self.RoomList_Canvas.configure(yscrollcommand=self.RoomlIst_Scrollbar.set)
+        self.RoomList_Canvas.bind('<Configure>',lambda e:self.RoomList_Canvas.configure(scrollregion=self.RoomList_Canvas.bbox("all")))
+        self.second_Fram = tk.Frame(self.RoomList_Canvas,height=400,width=350,bd=0,background="#575757")
+        self.RoomList_Canvas.create_window((0,0),window=self.second_Fram,anchor="nw")
+        for thing in range(15):
+            tk.Button(self.second_Fram,text=f'Button{thing}',height=2,width=46).grid(row=thing,column=0,padx=10)
+        #User's book
         self.UserGroup = tk.LabelFrame(self.app, text="My Meeting", font=('Helvetica', '20'),height=550,width=550,bd=0,background="#dcdcdc")
+        #Manager setting
         self.ManagerGroup = tk.LabelFrame(self.app, text="Manager Setting", font=('Helvetica', '20'),height=550,width=550,bd=0,background="#dcdcdc")
+        #App setting
         self.SettingGroup = tk.LabelFrame(self.app, text="Setting", font=('Helvetica', '20'),height=550,width=550,bd=0,background="#dcdcdc")
+        
         #load other img
-        self.Img1 = tk.PhotoImage(file= r"Asset\Image\Dogg01.png").subsample(3,3)
-        self.Img2 = tk.PhotoImage(file= r"Asset\Image\Dogg02.png").subsample(3,3)
         self.Img3 = tk.PhotoImage(file= r"Asset\Image\Dogg03.png").subsample(3,3)
         self.Img4 = tk.PhotoImage(file= r"Asset\Image\Dogg04.png").subsample(3,3)
         self.Img5 = tk.PhotoImage(file= r"Asset\Image\Dogg05.png").subsample(3,3)
+    
 
-        #bookingGroup pack
-        ImageTest1 = tk.Label(self.bookingGroup, image=self.Img1).pack(side=tk.LEFT)
-        ImageTest2 = tk.Label(self.bookingGroup, image=self.Img2).pack(side=tk.LEFT)
-        #UserGroup pack
-        ImageTest3 = tk.Label(self.UserGroup, image=self.Img3).pack(side=tk.LEFT)
-        #ManagerGroup pack
-        #ImageTest4 = tk.Label(self.ManagerGroup, image=self.Img4).pack(side=tk.LEFT)
-        #SettingGroup pack
-        ImageTest5 = tk.Label(self.SettingGroup, image=self.Img5).place(relx=0,rely=0)
-        
-
-        ####################### manage group declare
         add_room = tk.Button(self.ManagerGroup,text='add')
         edit_room = tk.Button(self.ManagerGroup,text='edit')
         delete_room = tk.Button(self.ManagerGroup,text='delete')
@@ -76,10 +78,8 @@ class BookSystemUI():
         room_description_strv.set('haha cat')
         room_description = tk.Entry(self.ManagerGroup,textvariable=room_description_strv)
 
-        
         room_list = tk.Listbox(self.ManagerGroup)
         room_scroll = tk.Scrollbar(room_list, orient=tk.VERTICAL,command = room_list.yview)
-        
 
         room_list.insert(tk.END,'cat livingroom')
         room_list.insert(tk.END,'cat bathroom')
@@ -113,6 +113,17 @@ class BookSystemUI():
         self.listBtn3.place(x=0,y=170)
         self.listBtn4.place(x=0,y=520)
         self.bookingGroup.place(x=230,y=20)
+        #bookingGroup pack
+        self.RoomLabel.place(x=0,y=0)
+        self.RoomList_Frame.place(x=80,y=100)
+        self.RoomList_Canvas.pack(side=LEFT,fill=BOTH)
+        self.RoomlIst_Scrollbar.pack(side=RIGHT,fill=Y)
+        #UserGroup pack
+        ImageTest3 = tk.Label(self.UserGroup, image=self.Img3).pack(side=tk.LEFT)
+        #ManagerGroup pack
+        #ImageTest4 = tk.Label(self.ManagerGroup, image=self.Img4).pack(side=tk.LEFT)
+        #SettingGroup pack
+        ImageTest5 = tk.Label(self.SettingGroup, image=self.Img5).place(relx=0,rely=0)
 
         self.app.mainloop()
             
