@@ -61,8 +61,21 @@ class DataBaseManager:
     val = (EventID,Email)
     self.cursor.execute(sql, val)
     self.mydb.commit()
+    
+  def update_room(self,OldRoomName, NewRoomName):
+    sql = "UPDATE rooms SET RoomName = %s WHERE RoomName = %s"
+    val = (NewRoomName,OldRoomName)
+    self.cursor.execute(sql, val)
+    self.mydb.commit()
+  
+  def update_event(self, EventID, EventName,EventDescription, StartTime, EndTime):
+    sql = "UPDATE events SET EventName = %s, EventDescription = %s, StartTime = %s, EndTime = %s WHERE EventID = %s"
+    val = (EventName ,EventDescription, StartTime , EndTime , EventID)
+    self.cursor.execute(sql, val)
+    self.mydb.commit()
 
 DBM = DataBaseManager()
+#DBM.update_event(0,"@@@","dsfsdfsdf",'2021-11-19 13:20:00', '2021-11-19 15:20:00')
 ### Create ###
 # DBM.create_room("test")
 # DBM.show_rooms()
