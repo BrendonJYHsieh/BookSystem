@@ -4,12 +4,15 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import datetime
 from tkinter.constants import BOTH, CENTER, COMMAND, END, FALSE, FLAT, LEFT, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
+from core import Room
 #import BookSystem
 #import Room
 #import Event
 
 class BookSystemUI():
     def __init__(self):
+        return
+    def initialUI(self):
         self.app = tk.Tk()
         #Window setting
         self.app.title("Booking System.ver0.1")
@@ -70,40 +73,43 @@ class BookSystemUI():
         self.Img5 = tk.PhotoImage(file= r"Asset\Image\Dogg05.png").subsample(3,3)
     
 
-        add_room = tk.Button(self.ManagerGroup,text='add')
-        edit_room = tk.Button(self.ManagerGroup,text='edit')
-        delete_room = tk.Button(self.ManagerGroup,text='delete')
-        room_title_label = tk.Label(self.ManagerGroup,text='Room Name')
-        room_title_strv = tk.StringVar()
-        room_title_strv.set('mew mew')
-        room_title = tk.Entry(self.ManagerGroup,textvariable=room_title_strv)
-        room_description_label = tk.Label(self.ManagerGroup,text='Room Description')
-        room_description_strv =  tk.StringVar()
-        room_description_strv.set('haha cat')
-        room_description = tk.Entry(self.ManagerGroup,textvariable=room_description_strv)
+        self.room_name_strv = tk.StringVar()
+        self.room_description_strv =  tk.StringVar()
 
-        room_list = tk.Listbox(self.ManagerGroup)
-        room_scroll = tk.Scrollbar(room_list, orient=tk.VERTICAL,command = room_list.yview)
+        self.add_room = tk.Button(self.ManagerGroup,text='add',command=lambda : self.BookSystem.addRoom(Room.Room(self.room_name_strv.get(),self.room_description_strv.get())))
+        self.edit_room = tk.Button(self.ManagerGroup,text='edit')
+        self.delete_room = tk.Button(self.ManagerGroup,text='delete')
+        self.room_name_label = tk.Label(self.ManagerGroup,text='Room Name')
+        
+        self.room_name_strv.set('mew mew')
+        self.room_name = tk.Entry(self.ManagerGroup,textvariable=self.room_name_strv)
+        self.room_description_label = tk.Label(self.ManagerGroup,text='Room Description')
+        
+        self.room_description_strv.set('haha cat')
+        self.room_description = tk.Entry(self.ManagerGroup,textvariable=self.room_description_strv)
 
-        room_list.insert(tk.END,'cat livingroom')
-        room_list.insert(tk.END,'cat bathroom')
-        room_list.insert(tk.END,'cat kitchen')
+        self.room_list = tk.Listbox(self.ManagerGroup)
+        self.room_scroll = tk.Scrollbar(self.room_list, orient=tk.VERTICAL,command = self.room_list.yview)
+
+        self.room_list.insert(tk.END,'cat livingroom')
+        self.room_list.insert(tk.END,'cat bathroom')
+        self.room_list.insert(tk.END,'cat kitchen')
         for i in range(30):
-            room_list.insert(END,str(i))
-        room_list.config(yscrollcommand = room_scroll)
+            self.room_list.insert(END,str(i))
+        self.room_list.config(yscrollcommand = self.room_scroll)
         ####################### manage group place
-        add_room.place(x=0,y=450,width=120)
-        edit_room.place(x=150,y=450,width=120)
-        delete_room.place(x=300,y=450,width=120)
-        room_title_label.place(x=0,y=50)
-        room_title.place(x=0,y=100,width=420)
+        self.add_room.place(x=0,y=450,width=120)
+        self.edit_room.place(x=150,y=450,width=120)
+        self.delete_room.place(x=300,y=450,width=120)
+        self.room_name_label.place(x=0,y=50)
+        self.room_name.place(x=0,y=100,width=420)
         
-        room_description_label.place(x=0,y=200)
-        room_description.place(x=0,y=250,width=420)
+        self.room_description_label.place(x=0,y=200)
+        self.room_description.place(x=0,y=250,width=420)
         
         
-        room_list.place(x=430,y=0,height=500)      
-        room_scroll.place(x=100,y=0,height=500)
+        self.room_list.place(x=430,y=0,height=500)      
+        self.room_scroll.place(x=100,y=0,height=500)
         #######################
         
         #Put the object to window
@@ -127,6 +133,7 @@ class BookSystemUI():
         #SettingGroup pack
         ImageTest5 = tk.Label(self.SettingGroup, image=self.Img5).place(relx=0,rely=0)
 
+    def runUI(self):
         self.app.mainloop()
             
     #Open target's LabelFram and list button and close the other

@@ -4,7 +4,7 @@ from google_calendar.Google import Create_Service, convert_to_RFC_datetime
 class calendar_API:
     
     def __init__(self):
-        self.CLIENT_SECRET_FILE = 'client_secret.json'
+        self.CLIENT_SECRET_FILE = 'google_calendar\client_secret.json'
         self.API_NAME = 'calendar'
         self.API_VERSION = 'v3'
         self.SCOPES = ['https://www.googleapis.com/auth/calendar']
@@ -16,9 +16,10 @@ class calendar_API:
             if self.cal[i].name == name:
                 return i
 
-    def Create_Calendar(self, name):
+    def Create_Calendar(self, name,description):
         request_body = {
-            'summary': name
+            'summary': name,
+            'description' : description
         }
         response = self.service.calendars().insert(body=request_body).execute()
         print("Calendar Created")
