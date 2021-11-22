@@ -1,5 +1,5 @@
 from pprint import pprint
-from Google import Create_Service, convert_to_RFC_datetime
+from google_calendar.Google import Create_Service, convert_to_RFC_datetime
 
 class calendar_API:
     

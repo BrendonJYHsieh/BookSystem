@@ -5,7 +5,8 @@ class DataBaseManager:
     host="140.118.127.106",
     user="Manager",
     password="10815044",
-    database="Booksystem"
+    database="Booksystem",
+    auth_plugin='mysql_native_password'
   )
   cursor = mydb.cursor()
   def show_rooms(self):
@@ -74,7 +75,7 @@ class DataBaseManager:
     self.cursor.execute(sql, val)
     self.mydb.commit()
 
-DBM = DataBaseManager()
+#DBM = DataBaseManager()
 #DBM.update_event(0,"@@@","dsfsdfsdf",'2021-11-19 13:20:00', '2021-11-19 15:20:00')
 ### Create ###
 # DBM.create_room("test")

@@ -257,7 +257,7 @@ class BookSystemUI():
             return ((year + int(year/4) + int(year/400) - int(year/100) - (yearBase+1) + monthBaseLeap[month-1] + 1))%7
     def ChooseDate(self,year,month,day):
         self.RoomLabeDate.config(text='     Choose Date       '+str(year)+'/'+str(month)+'/'+str(day))
-application = BookSystemUI()
+#application = BookSystemUI()
 
 
 """UI_switch = 0 #room list -> 0 room info -> 1 event modify -> 2
