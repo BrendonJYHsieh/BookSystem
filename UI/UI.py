@@ -76,9 +76,9 @@ class BookSystemUI():
         self.room_name_strv = tk.StringVar()
         self.room_description_strv =  tk.StringVar()
 
-        self.add_room = tk.Button(self.ManagerGroup,text='add',command=lambda : self.BookSystem.addRoom(Room.Room(self.room_name_strv.get(),self.room_description_strv.get())))
+        self.add_room = tk.Button(self.ManagerGroup,text='add',command=lambda : self.BookSystem.addRoom(Room.Room(self.room_name_strv.get())))
         self.edit_room = tk.Button(self.ManagerGroup,text='edit')
-        self.delete_room = tk.Button(self.ManagerGroup,text='delete')
+        self.delete_room = tk.Button(self.ManagerGroup,text='delete',command=lambda : self.BookSystem.deleteRoom(Room.Room(self.room_name_strv.get())))
         self.room_name_label = tk.Label(self.ManagerGroup,text='Room Name')
         
         self.room_name_strv.set('mew mew')
@@ -91,12 +91,8 @@ class BookSystemUI():
         self.room_list = tk.Listbox(self.ManagerGroup)
         self.room_scroll = tk.Scrollbar(self.room_list, orient=tk.VERTICAL,command = self.room_list.yview)
 
-        self.room_list.insert(tk.END,'cat livingroom')
-        self.room_list.insert(tk.END,'cat bathroom')
-        self.room_list.insert(tk.END,'cat kitchen')
-        for i in range(30):
-            self.room_list.insert(END,str(i))
         self.room_list.config(yscrollcommand = self.room_scroll)
+        self.room_list.bind('<<ListboxSelect>>',self.roomListSelect)
         ####################### manage group place
         self.add_room.place(x=0,y=450,width=120)
         self.edit_room.place(x=150,y=450,width=120)
@@ -135,6 +131,19 @@ class BookSystemUI():
 
     def runUI(self):
         self.app.mainloop()
+    
+    def roomListInsert(self,name):
+        self.room_list.insert(tk.END,name)
+    def roomListDelete(self,name):
+        idx = self.room_list.get(0, tk.END).index(name)
+        self.room_list.delete(idx)
+        self.room_name_strv.set("")
+    def roomListSelect(self,event):
+        selection = self.room_list.curselection()
+        if selection != ():
+            self.room_name_strv.set(self.room_list.get(selection[0]))
+        else: #沒選到任何item時設為空字串
+            self.room_name_strv.set("")
             
     #Open target's LabelFram and list button and close the other
     def ClickListBtn(self, _btnNum) :

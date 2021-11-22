@@ -16,10 +16,9 @@ class calendar_API:
             if self.cal[i].name == name:
                 return i
 
-    def Create_Calendar(self, name,description):
+    def Create_Calendar(self, name):
         request_body = {
-            'summary': name,
-            'description' : description
+            'summary': name
         }
         response = self.service.calendars().insert(body=request_body).execute()
         print("Calendar Created")
