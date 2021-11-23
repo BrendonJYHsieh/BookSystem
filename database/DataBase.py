@@ -14,13 +14,19 @@ class DataBaseManager:
     for x in self.cursor:
       print(x)
 
-  def show_events(self):
-    self.cursor.execute("Select * from events")
+  def show_events(self, RoomName):
+    sql = "Select * FROM events WHERE RoomName = %s"
+    val = (RoomName)
+    params = (val,) # Due to single value
+    self.cursor.execute(sql, params)
     for x in self.cursor:
       print(x)
 
-  def show_participants(self):
-    self.cursor.execute("Select * from participants")
+  def show_participants(self, Email):
+    sql = "Select EventID FROM participants WHERE Email = %s"
+    val = (Email)
+    params = (val,) # Due to single value
+    self.cursor.execute(sql, params)
     for x in self.cursor:
       print(x)
 
@@ -75,14 +81,14 @@ class DataBaseManager:
     self.cursor.execute(sql, val)
     self.mydb.commit()
 
-#DBM = DataBaseManager()
+DBM = DataBaseManager()
 #DBM.update_event(0,"@@@","dsfsdfsdf",'2021-11-19 13:20:00', '2021-11-19 15:20:00')
 ### Create ###
 # DBM.create_room("test")
 # DBM.show_rooms()
 
 # DBM.create_event(11,"軟體工程", "Teacher:柯拉飛", '2021-10-15 13:20:00', '2021-10-15 15:10:00', "TR")
-# DBM.show_events()
+#DBM.show_events('TR')
 
 # DBM.create_participant(0,"testtest@gmail.com")
 # DBM.show_participants()
@@ -95,7 +101,7 @@ class DataBaseManager:
 # DBM.show_events()
 
 # DBM.delete_participant(0,"testtest@gmail.com")
-# DBM.show_participants()
+DBM.show_participants("b10815044@gapps.ntust.edu.tw")
 
 
 
