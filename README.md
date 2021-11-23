@@ -1,7 +1,7 @@
 # Booking-System
 安裝
 ```console
-pip3 install mysql-connector
+pip install -r requirements.txt
 ```
 執行
 ```console
