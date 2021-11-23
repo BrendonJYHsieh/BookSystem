@@ -22,7 +22,15 @@ class DataBaseManager:
     for x in self.cursor:
       print(x)
 
-  def show_participants(self, Email):
+  def show_participants(self, EventID):
+    sql = "Select Email FROM participants WHERE EventID = %s"
+    val = (EventID)
+    params = (val,) # Due to single value
+    self.cursor.execute(sql, params)
+    for x in self.cursor:
+      print(x)
+      
+  def show_MyEvnt(self, Email):
     sql = "Select EventID FROM participants WHERE Email = %s"
     val = (Email)
     params = (val,) # Due to single value
@@ -101,7 +109,7 @@ DBM = DataBaseManager()
 # DBM.show_events()
 
 # DBM.delete_participant(0,"testtest@gmail.com")
-DBM.show_participants("b10815044@gapps.ntust.edu.tw")
+DBM.show_participants(1)
 
 
 
