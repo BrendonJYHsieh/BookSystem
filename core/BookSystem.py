@@ -1,18 +1,21 @@
 from UI import UI
 from database import DataBase
 from google_calendar import CalenderAPI
+from core import Room,DBloader
 class BookSystem:
     rooms = []
     def __init__(self):
         self.ui = UI.BookSystemUI()
         self.gc = CalenderAPI.calendar_API()
-        self.db = DataBase.DataBaseManager()   
+        self.db = DataBase.DataBaseManager()
+        self.dbl = DBloader.DBloader()
         return
-    def start(self):        
+    def start(self):
+        self.dbl.load(self.db)
         self.ui.BookSystem = self
-        self.ui.initialUI()     
+        self.ui.initialUI()
         self.ui.runUI()
-    def addRoom(self,room):        
+    def addRoom(self,room):
         if room.name == "":
             return
         print('add room!')
@@ -23,7 +26,7 @@ class BookSystem:
         self.db.create_room(room.name)
         self.db.show_rooms()        
         self.ui.roomListInsert(room.name)
-        #self.gc.Create_Calendar(room.name)
+        self.gc.Create_Calendar(room.name)
         return
     def deleteRoom(self,room):
         print('del room!')
@@ -38,8 +41,5 @@ class BookSystem:
         self.db.delete_room(room.name)
         self.db.show_rooms()       
         self.ui.roomListDelete(room.name)
-        #self.gc.Delete_Calendar(room.name)
-        return
-    def update(self): #update UI
-        UI.redraw()
+        self.gc.Delete_Calendar(room.name)
         return

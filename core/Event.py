@@ -1,5 +1,5 @@
 import time
-import DataBase
+from database import DataBase
 class Event:
     name = ""
     description = ""
