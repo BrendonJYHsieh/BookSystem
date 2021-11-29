@@ -17,3 +17,9 @@ pip install -r requirements.txt
 ```console
 python main.py
 ``` 
+公用帳號:
+```
+帳:BrooksClineY@gmail.com
+密碼:123booksystem123
+備援信箱:frakwu@gmail.com (認證身分用)
+```
