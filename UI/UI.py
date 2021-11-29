@@ -3,7 +3,8 @@ import tkinter.font as fnt
 import tkinter as tk
 import tkinter.ttk as ttk
 import datetime
-from tkinter.constants import BOTH, CENTER, COMMAND, END, FALSE, FLAT, LEFT, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
+from tkinter.constants import ANCHOR, BOTH, CENTER, COMMAND, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
+from typing import Text
 from core import Room
 #import BookSystem
 #import Room
@@ -49,6 +50,8 @@ class BookSystemUI():
         #Booking System - Room
         self.bookingGroup = tk.LabelFrame(self.app, text="Booking", font=('Helvetica', '20'),height=550,width=550,bd=0,background="#dcdcdc")
         self.RoomLabel = tk.Label(self.bookingGroup,text="\n      Choose Room", font=('Helvetica', '15'),background="#dcdcdc")
+        self.DateLabel = tk.Label(self.bookingGroup,text="      Choose Date", font=('Helvetica', '15'),background="#dcdcdc")
+        self.TimeLabel = tk.Label(self.bookingGroup,text="      Choose Time", font=('Helvetica', '15'),background="#dcdcdc")
         self.RoomList_Frame = tk.Frame(self.bookingGroup,height=400,width=400,bd=0,background="#575757")
         self.RoomList_Canvas = tk.Canvas(self.RoomList_Frame,height=400,width=350,borderwidth=0, highlightthickness=0, background="#575757")
         self.RoomlIst_Scrollbar = tk.Scrollbar(self.RoomList_Frame, orient=VERTICAL,command=self.RoomList_Canvas.yview)
@@ -57,9 +60,12 @@ class BookSystemUI():
         self.second_Fram = tk.Frame(self.RoomList_Canvas,height=400,width=350,bd=0,background="#575757")
         self.RoomList_Canvas.create_window((0,0),window=self.second_Fram,anchor="nw")
         for thing in range(1):
+            #Add button to list
             tk.Button(self.second_Fram,text=f'Room  {thing}',height=2,width=46,command=lambda : self.ClickRoomBtn(f'Room  {thing}')).grid(row=thing,column=0,padx=10)
         #Booking System - Date
-        self.RoomLabeDate = tk.LabelFrame(self.bookingGroup, text="      Choose Date", font=('Helvetica', '15'),height=550,width=550,bd=0,background="white")
+        self.DateGroup = tk.LabelFrame(self.bookingGroup,height=550,width=550,bd=0,background="#dcdcdc")
+        #Booking System - TimeLine
+        self.TimeLineGroup = tk.LabelFrame(self.bookingGroup,height=550,width=550,bd=0,background="#dcdcdc")
         #User's book
         self.UserGroup = tk.LabelFrame(self.app, text="My Meeting", font=('Helvetica', '20'),height=550,width=550,bd=0,background="#dcdcdc")
         #Manager setting
@@ -201,13 +207,15 @@ class BookSystemUI():
             self.SettingGroup.place(x=230,y=20)
 
     def ClickRoomBtn(self, RoomName):
+        self.RoomList_Frame.place_forget()
         self.screenState = self.screenState+1
-        self.RoomLabel.config(text='\n      Choose Room     '+RoomName)        
-        self.RoomLabeDate.place(x=0,y=50)
+        self.RoomLabel.config(text='\n      Choose Room     ' + RoomName)
+        self.DateLabel.place(x=0,y=50)
+        self.DateGroup.place(x=0,y=100)
         self.date = datetime.datetime.now()
 
         self.yearOption = [self.date.year,self.date.year+1,self.date.year+2,self.date.year+3,self.date.year+4]
-        self.yearComboBox = ttk.Combobox(self.RoomLabeDate,values=self.yearOption,state="readonly")
+        self.yearComboBox = ttk.Combobox(self.DateGroup,values=self.yearOption,state="readonly")
         self.yearComboBox.current(0)
         self.yearComboBox.place(x=0,y=0)
         self.yearComboBox.bind("<<ComboboxSelected>>", lambda event:self.DropDownChange(0))
@@ -216,7 +224,7 @@ class BookSystemUI():
         for i in range(1,13):
             if i >= self.date.month:
                 self.monthOption.append(i)
-        self.monthComboBox = ttk.Combobox(self.RoomLabeDate,values=self.monthOption,state="readonly")
+        self.monthComboBox = ttk.Combobox(self.DateGroup,values=self.monthOption,state="readonly")
         self.monthComboBox.current(0)
         self.monthComboBox.place(x=200,y=0)
         self.monthComboBox.bind("<<ComboboxSelected>>", lambda event:self.DropDownChange(1))
@@ -233,14 +241,15 @@ class BookSystemUI():
             else:
                 for i in range(1,13):
                     self.monthOption.append(i)
-            self.monthComboBox = ttk.Combobox(self.RoomLabeDate,values=self.monthOption,state="readonly")
+            self.monthComboBox = ttk.Combobox(self.DateGroup,values=self.monthOption,state="readonly")
             self.monthComboBox.current(0)
             self.monthComboBox.place(x=200,y=0)
             self.monthComboBox.bind("<<ComboboxSelected>>", lambda event:self.DropDownChange(1))
+        self.CalendarBackGround.destroy()
         self.GenerateCalendar(self.yearOption[self.yearComboBox.current()],self.monthOption[self.monthComboBox.current()],1)
 
     def GenerateCalendar(self,year,month,day):
-        self.CalendarBackGround = tk.LabelFrame(self.RoomLabeDate,height=550,width=550,bd=0,background="white")
+        self.CalendarBackGround = tk.LabelFrame(self.DateGroup,height=550,width=550,bd=0,background="#dcdcdc")
         self.CalendarBackGround.place(x=0,y=50)
         self.dayOption =[]
         week = self.CalculateWeek(year,month)
@@ -271,8 +280,51 @@ class BookSystemUI():
             return ((year + int(year/4) + int(year/400) - int(year/100) - (yearBase+1) + monthBaseNormal[month-1] + 1))%7
         else:
             return ((year + int(year/4) + int(year/400) - int(year/100) - (yearBase+1) + monthBaseLeap[month-1] + 1))%7
+    
     def ChooseDate(self,year,month,day):
-        self.RoomLabeDate.config(text='     Choose Date       '+str(year)+'/'+str(month)+'/'+str(day))
+        self.TimeLineGroup.destroy()
+        self.TimeLineGroup = tk.LabelFrame(self.bookingGroup,height=550,width=550,bd=0,background="#dcdcdc")
+        self.DateLabel.config(text='      Choose Date       '+str(year)+'/'+str(month)+'/'+str(day))
+        self.DateGroup.place_forget()
+        self.TimeLabel.place(x = 0, y=75)
+        self.TimeLineGroup.place(x=0,y=100)
+        
+        self.TimeLine_Frame = tk.Frame(self.TimeLineGroup,height=350,width=400,bd=0,background="#575757")
+        self.TimeLine_Canvas = tk.Canvas(self.TimeLine_Frame,height=400,width=400,borderwidth=0, highlightthickness=0, background="#575757")
+        self.TimeLine_Scrollbar = tk.Scrollbar(self.TimeLine_Frame, orient=VERTICAL,command=self.TimeLine_Canvas.yview)
+        self.TimeLine_Canvas.configure(yscrollcommand=self.TimeLine_Scrollbar.set)
+        self.TimeLine_Canvas.bind('<Configure>',lambda e:self.TimeLine_Canvas.configure(scrollregion=self.TimeLine_Canvas.bbox("all")))
+        self.TimeLine_SecFram = tk.Frame(self.TimeLine_Canvas,height=400,width=350,bd=0,background="#575757")
+        self.TimeLine_Canvas.create_window((0,0),window=self.TimeLine_SecFram,anchor="nw")
+        self.timeLineImgSmall = tk.PhotoImage(file= r"Asset\Image\TimeLineBtnSmall.png")
+        self.timeLineImgBig = tk.PhotoImage(file= r"Asset\Image\TimeLineBtnBig.png")
+        self.timeLineList = []
+        time = 0
+        #Add button to TimeLine
+        for thing in range(48):
+            if time < 10:
+                timeStr = '0' + str(time)
+            else : 
+                timeStr = str(time)
+            if thing%2 == 0:
+                self.timeLineList.append(tk.Button(self.TimeLine_SecFram,text=f'\n{timeStr}:00', font=('Helvetica', '13'),fg='#dcdcdc',image=self.timeLineImgSmall,background="#575757",activebackground="#575757", disabledforeground="black", relief=SUNKEN, borderwidth=0,compound=LEFT))
+            else:
+                self.timeLineList.append(tk.Button(self.TimeLine_SecFram,text=f'\n{timeStr}:30', font=('Helvetica', '13'),fg='#dcdcdc',image=self.timeLineImgBig,background="#575757",activebackground="#575757", disabledforeground="black", relief=SUNKEN, borderwidth=0,compound=LEFT))
+                time += 1
+        
+        self.TimeLine_Frame.place(x=250,y=20,anchor="n")
+        self.TimeLine_Canvas.pack(side=LEFT,fill=BOTH)
+        self.TimeLine_Scrollbar.pack(side=RIGHT,fill=Y)
+
+        self.EventCanvas = tk.Canvas(self.TimeLine_SecFram,background='red', relief=SUNKEN, highlightthickness=0,width=300,height=60)
+        self.Eventlabel = tk.Label(self.EventCanvas,text="Event Name")
+        for thing in range(48):
+            self.timeLineList[thing].grid(row=thing,column=0,padx=10)
+        self.EventCanvas.place(anchor='nw',x=20,y=20)
+        self.Eventlabel.place(anchor='nw',x=0,y=0)
+        
+    
+
 #application = BookSystemUI()
 
 
