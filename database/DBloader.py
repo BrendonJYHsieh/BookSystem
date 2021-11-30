@@ -7,7 +7,6 @@ class DBloader:
     def load(self,db):
         room_tuples = db.get_rooms()
         for x in room_tuples:
-            print("xxx" + x[0])
             self.rooms.append(Room.Room(x[0]))
         
         for room_index in range(len(self.rooms)):
@@ -20,5 +19,4 @@ class DBloader:
                 participant_tuples = db.get_participants(self.rooms[room_index].events[event_index].id)
                 for x in participant_tuples:
                     self.rooms[room_index].events[event_index].participants.append(x[0])
-        print("finish load DB")
         return self.rooms

@@ -15,7 +15,6 @@ class DataBaseManager:
     for x in self.cursor:
       tuples.append(x)
       print(x)
-      print('a room')
     return tuples
 
   def get_events(self, RoomName):

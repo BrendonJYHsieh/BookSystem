@@ -15,13 +15,7 @@ class BookSystem:
         
         self.ui.BookSystem = self
         self.ui.initialUI()
-        '''
-        self.db.get_rooms()
-        self.db.get_events('IB')
-        self.db.get_participants('0')
-        '''
         self.rooms = self.dbl.load(self.db)
-        print(len(self.rooms))
         for room_index in range(len(self.rooms)):
             print(self.rooms[room_index].name)
 
