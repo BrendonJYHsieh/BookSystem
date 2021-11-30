@@ -1,7 +1,7 @@
-from UI import UI
-from database import DataBase
+from UI import UI,UIloader
+from database import DataBase,DBloader
 from google_calendar import CalenderAPI
-from core import Room,DBloader
+from core import Room
 class BookSystem:
     rooms = []
     def __init__(self):
@@ -9,12 +9,25 @@ class BookSystem:
         self.gc = CalenderAPI.calendar_API()
         self.db = DataBase.DataBaseManager()
         self.dbl = DBloader.DBloader()
+        self.uil = UIloader.UIloader()
         return
     def start(self):
-        self.dbl.load(self.db)
+        
         self.ui.BookSystem = self
         self.ui.initialUI()
+        '''
+        self.db.get_rooms()
+        self.db.get_events('IB')
+        self.db.get_participants('0')
+        '''
+        self.rooms = self.dbl.load(self.db)
+        print(len(self.rooms))
+        for room_index in range(len(self.rooms)):
+            print(self.rooms[room_index].name)
+
+        self.uil.load(self.ui,self.rooms)
         self.ui.runUI()
+
     def addRoom(self,room):
         if room.name == "":
             return
@@ -24,7 +37,7 @@ class BookSystem:
                 return
         self.rooms.append(room)
         self.db.create_room(room.name)
-        self.db.show_rooms()        
+        self.db.get_rooms()        
         self.ui.roomListInsert(room.name)
         self.gc.Create_Calendar(room.name)
         return
@@ -39,7 +52,7 @@ class BookSystem:
         if not found:
             return
         self.db.delete_room(room.name)
-        self.db.show_rooms()       
+        self.db.get_rooms()       
         self.ui.roomListDelete(room.name)
         self.gc.Delete_Calendar(room.name)
         return

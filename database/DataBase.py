@@ -9,28 +9,38 @@ class DataBaseManager:
     auth_plugin='mysql_native_password'
   )
   cursor = mydb.cursor()
-  def show_rooms(self):
+  def get_rooms(self):
     self.cursor.execute("Select * from rooms")
+    tuples = []
     for x in self.cursor:
+      tuples.append(x)
       print(x)
+      print('a room')
+    return tuples
 
-  def show_events(self, RoomName):
+  def get_events(self, RoomName):
     sql = "Select * FROM events WHERE RoomName = %s"
     val = (RoomName)
     params = (val,) # Due to single value
     self.cursor.execute(sql, params)
+    tuples = []
     for x in self.cursor:
+      tuples.append(x)
       print(x)
+    return tuples
 
-  def show_participants(self, EventID):
+  def get_participants(self, EventID):
     sql = "Select Email FROM participants WHERE EventID = %s"
     val = (EventID)
     params = (val,) # Due to single value
     self.cursor.execute(sql, params)
+    tuples = []
     for x in self.cursor:
+      tuples.append(x)
       print(x)
+    return tuples
       
-  def show_MyEvnt(self, Email):
+  def get_MyEvnt(self, Email):
     sql = "Select EventID FROM participants WHERE Email = %s"
     val = (Email)
     params = (val,) # Due to single value
@@ -109,7 +119,7 @@ DBM = DataBaseManager()
 # DBM.show_events()
 
 # DBM.delete_participant(0,"testtest@gmail.com")
-DBM.show_participants(1)
+#DBM.show_participants(1)
 
 
 
