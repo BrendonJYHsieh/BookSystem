@@ -25,6 +25,15 @@ class calendar_API:
         tmp = Calendar(name,response['id'],self.service)
         self.cal.append(tmp)
 
+    def Update_Calendar(self, name, New_name):
+        a = self.find_calendar(name)
+        self.cal[a].name = New_name
+        request_body = {
+            'summary': New_name
+        }
+        self.service.calendars().update(calendarId=self.cal[a].id,body=request_body).execute()
+        print("Calendar Updated")
+
     def Delete_Calendar(self, name):
         a = self.find_calendar(name)
         self.service.calendars().delete(calendarId=self.cal[a].id).execute()
@@ -34,29 +43,29 @@ class calendar_API:
         a = self.find_calendar(roomname)
         self.cal[a].Create_Event(name, description, start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute)
     
-    def Delete_Event(self, roomname, name):
+    def Delete_Event(self, roomname, eventid):
         a = self.find_calendar(roomname)
-        self.cal[a].Delete_Event(name)
+        self.cal[a].Delete_Event(eventid)
 
-    def Update_Summary(self, roomname, name, summary):
+    def Update_Summary(self, roomname, eventid, summary):
         a = self.find_calendar(roomname)
-        self.cal[a].Update_Summary(name, summary)
+        self.cal[a].Update_Summary(eventid, summary)
 
-    def Update_Description(self, roomname, name, description):
+    def Update_Description(self, roomname, eventid, description):
         a = self.find_calendar(roomname)
-        self.cal[a].Update_Description(name, description)
+        self.cal[a].Update_Description(eventid, description)
 
-    def Update_Attendee(self, roomname, name, attendee):
+    def Update_Attendee(self, roomname, eventid, attendee):
         a = self.find_calendar(roomname)
-        self.cal[a].Update_Attendee(name, attendee)
+        self.cal[a].Update_Attendee(eventid, attendee)
 
-    def Update_Time(self, roomname, name, start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute):
+    def Update_Time(self, roomname, eventid, start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute):
         a = self.find_calendar(roomname)
-        self.cal[a].Update_Time(name, start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute)
+        self.cal[a].Update_Time(eventid, start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute)
 
-    def Delete_Attendee(self, roomname, name, attendee):
+    def Delete_Attendee(self, roomname, eventid, attendee):
         a = self.find_calendar(roomname)
-        self.cal[a].Delete_Attendee(name, attendee)
+        self.cal[a].Delete_Attendee(eventid, attendee)
 
 class Calendar(calendar_API):
 
@@ -64,7 +73,6 @@ class Calendar(calendar_API):
         self.name = name
         self.id = id
         self.event_id = []
-        self.event_name = []
         self.event_body = []
         self.invited = []
         self.service = service
@@ -96,26 +104,26 @@ class Calendar(calendar_API):
         ).execute()
         print("Event Created")
         self.event_id.append(response['id'])
-        self.event_name.append(name)
         self.event_body.append(request_body)
+        print(response['id'])
+        return response['id']
 
-    def find_event(self, name):
-        for i in range(len(self.event_name)):
-            if self.event_name[i] == name:
+    def find_event(self, eventid):
+        for i in range(len(self.event_id)):
+            if self.event_id[i] == eventid:
                 return i
 
-    def Update_Summary(self, name, summary):
-        a = self.find_event(name)
+    def Update_Summary(self, eventid, summary):
+        a = self.find_event(eventid)
         self.event_body[a]['summary'] = summary
         self.service.events().update(
         calendarId = self.id,
         eventId = self.event_id[a],
         body = self.event_body[a]).execute()
-        self.event_name[a] = summary
         print("Event summary updated")
 
-    def Update_Description(self, name, description):
-        a = self.find_event(name)
+    def Update_Description(self, eventid, description):
+        a = self.find_event(eventid)
         self.event_body[a]['description'] = description
         self.service.events().update(
         calendarId = self.id,
@@ -128,8 +136,8 @@ class Calendar(calendar_API):
             if self.invited[i] == name:
                 return i
 
-    def Update_Attendee(self, name, attendee):
-        a = self.find_event(name)
+    def Update_Attendee(self, eventid, attendee):
+        a = self.find_event(eventid)
         add_attendees = {
             "email": attendee
         }
@@ -145,8 +153,8 @@ class Calendar(calendar_API):
         body=body).execute()
         print("Event attendee updated")
 
-    def Update_Time(self, name, start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute):
-        a = self.find_event(name)
+    def Update_Time(self, eventid, start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute):
+        a = self.find_event(eventid)
         hour_adjustment = -8
         start_datetime = convert_to_RFC_datetime(start_year, start_month, start_day, start_hour + hour_adjustment, start_minute)
         end_datetime = convert_to_RFC_datetime(end_year, end_month, end_day, end_hour + hour_adjustment, end_minute)
@@ -158,8 +166,8 @@ class Calendar(calendar_API):
         body=self.event_body[a]).execute()
         print("Event time updated")
 
-    def Delete_Attendee(self, name, attendee):
-        a = self.find_event(name)
+    def Delete_Attendee(self, eventid, attendee):
+        a = self.find_event(eventid)
         b = self.find_attendee(attendee)
         self.attendees.pop(b)
         body = {
@@ -172,8 +180,8 @@ class Calendar(calendar_API):
         self.invited.pop(b)
         print("Attendee Deleted")
 
-    def Delete_Event(self, name):
-        a = self.find_event(name)
+    def Delete_Event(self, eventid):
+        a = self.find_event(eventid)
         self.service.events().delete(
         calendarId = self.id,
         eventId = self.event_id[a]
@@ -187,11 +195,12 @@ class Calendar(calendar_API):
 
 #Cal = calendar_API()
 #Cal.Create_Calendar('test789')
-#Cal.Create_Event('test789','meeting','project discussion',2021,10,31,15,00,2021,10,31,19,00)
-#Cal.Update_Summary('test789','meeting','coding')
-#Cal.Update_Description('test789','coding','coding this project')
-#Cal.Update_Time('test789','coding',2021,11,1,20,00,2021,11,1,23,30)
-#Cal.Update_Attendee('test789','coding','danielwind9016@gmail.com')
-#Cal.Delete_Attendee('test789','coding','danielwind9016@gmail.com')
-#Cal.Delete_Event('test789','coding')
+#Cal.Create_Event('test789','meeting','project discussion',2021,11,30,15,00,2021,11,30,19,00)
+#Cal.Update_Summary('test789',id,'coding')
+#Cal.Update_Description('test789',id,'coding this project')
+#Cal.Update_Time('test789',id,2021,11,2,20,00,2021,11,2,23,30)
+#Cal.Update_Attendee('test789',id,'danielwind9016@gmail.com')
+#Cal.Delete_Attendee('test789',id,'danielwind9016@gmail.com')
+#Cal.Delete_Event('test789',id)
+#Cal.Update_Calendar('test789','test123')
 #Cal.Delete_Calendar('test789')
