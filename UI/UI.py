@@ -60,10 +60,11 @@ class BookSystemUI():
         self.second_Fram = tk.Frame(self.RoomList_Canvas,height=400,width=350,bd=0,background="#575757")
         self.RoomList_Canvas.create_window((0,0),window=self.second_Fram,anchor="nw")
         self.roomBtnList = []
-        #self.CreateRoom()
-        for thing in range(1):
+        self.CreateRoom()
+        '''for thing in range(1):
             #Add button to list
             tk.Button(self.second_Fram,text=f'Room  {thing}',height=2,width=46,command=lambda : self.ClickRoomBtn(f'Room  {thing}')).grid(row=thing,column=0,padx=10)
+        '''
         #Booking System - Date
         self.DateGroup = tk.LabelFrame(self.bookingGroup,height=550,width=550,bd=0,background="#dcdcdc")
         #Booking System - TimeLine
@@ -213,7 +214,7 @@ class BookSystemUI():
     def CreateRoom(self):
         index = 0
         for room in self.BookSystem.rooms:
-            self.roomBtnList.append(tk.Button(self.second_Fram,text=room.name,height=2,width=46,command=lambda : self.ClickRoomBtn(room)))
+            self.roomBtnList.append(tk.Button(self.second_Fram,text=room.name,height=2,width=46,command=lambda r = room.name : self.ClickRoomBtn(r)))
             index += 1
         index = 0
         for btn in self.roomBtnList:

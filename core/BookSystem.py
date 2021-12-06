@@ -1,12 +1,12 @@
 from UI import UI,UIloader
 from database import DataBase,DBloader
-from google_calendar import CalenderAPI
+from google_calendar import CalendarAPI
 from core import Room
 class BookSystem:
     rooms = []
     def __init__(self):
         self.ui = UI.BookSystemUI()
-        self.gc = CalenderAPI.calendar_API()
+        self.gc = CalendarAPI.calendar_API()
         self.db = DataBase.DataBaseManager()
         self.dbl = DBloader.DBloader()
         self.uil = UIloader.UIloader()
