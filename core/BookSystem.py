@@ -14,12 +14,12 @@ class BookSystem:
     def start(self):
         
         self.ui.BookSystem = self
-        self.ui.initialUI()
         self.rooms = self.dbl.load(self.db)
         for room_index in range(len(self.rooms)):
             print(self.rooms[room_index].name)
 
-        self.uil.load(self.ui,self.rooms)
+        self.ui.initialUI()
+        #self.uil.load(self.ui,self.rooms)
         self.ui.runUI()
 
     def addRoom(self,room):
