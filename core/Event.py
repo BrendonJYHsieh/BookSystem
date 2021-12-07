@@ -7,7 +7,7 @@ class Event:
     start_time = None
     end_time = None
     participants = ["","",""]
-    def __init__(self,_id,_name,_description): #TODO: time and participants
+    def __init__(self,_id,_name,_description): #TODO: time
         self.id = _id
         self.name = _name
         self.description = _description

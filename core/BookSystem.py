@@ -12,14 +12,13 @@ class BookSystem:
         self.uil = UIloader.UIloader()
         return
     def start(self):
-        
         self.ui.BookSystem = self
         self.rooms = self.dbl.load(self.db)
         for room_index in range(len(self.rooms)):
             print(self.rooms[room_index].name)
 
         self.ui.initialUI()
-        #self.uil.load(self.ui,self.rooms)
+        self.uil.load(self.ui,self.rooms)
         self.ui.runUI()
 
     def addRoom(self,room):
@@ -28,10 +27,10 @@ class BookSystem:
         print('add room!')
         for i in range(len(self.rooms)):
             if self.rooms[i].name == room.name:
+                #TODO 彈出警告視窗
                 return
         self.rooms.append(room)
         self.db.create_room(room.name)
-        self.db.get_rooms()        
         self.ui.roomListInsert(room.name)
         self.gc.Create_Calendar(room.name)
         return
@@ -45,8 +44,22 @@ class BookSystem:
                 break
         if not found:
             return
-        self.db.delete_room(room.name)
-        self.db.get_rooms()       
+        self.db.delete_room(room.name)     
         self.ui.roomListDelete(room.name)
         self.gc.Delete_Calendar(room.name)
         return
+    def updateRoom(self,old_name,new_name):
+        found=False
+        for i in range(len(self.rooms)):
+            if self.rooms[i].name == old_name:
+                found = True
+                self.rooms[i].name = new_name
+                break
+        if not found:
+            #TODO 彈出警告視窗
+            return
+        print("old:" + old_name)
+        print("new:" + new_name)
+        self.db.get_rooms()    
+        self.db.update_room(old_name,new_name)
+        #self.gc.Update_Calendar(old_name,new_name)

@@ -65,7 +65,7 @@ class BookSystemUI():
         self.room_description_strv =  tk.StringVar()
 
         self.add_room = tk.Button(self.ManagerGroup,text='add',command=lambda : self.BookSystem.addRoom(Room.Room(self.room_name_strv.get())))
-        self.edit_room = tk.Button(self.ManagerGroup,text='edit')
+        self.edit_room = tk.Button(self.ManagerGroup,text='edit',command=self.roomListUpdate)
         self.delete_room = tk.Button(self.ManagerGroup,text='delete',command=lambda : self.BookSystem.deleteRoom(Room.Room(self.room_name_strv.get())))
         self.room_name_label = tk.Label(self.ManagerGroup,text='Room Name')
         
@@ -123,6 +123,19 @@ class BookSystemUI():
         idx = self.room_list.get(0, tk.END).index(name)
         self.room_list.delete(idx)
         self.room_name_strv.set("")
+    def roomListUpdate(self):
+        print("room update")
+        selection = self.room_list.curselection()
+        old_name = ""
+        if selection != ():
+            old_name = self.room_list.get(selection)
+            self.room_list.delete(selection)
+            self.room_list.insert(selection,self.room_name_strv.get())
+        else:
+            #TODO 警告
+            return
+        
+        self.BookSystem.updateRoom(old_name,self.room_name_strv.get())
     def roomListSelect(self,event):
         selection = self.room_list.curselection()
         if selection != ():
