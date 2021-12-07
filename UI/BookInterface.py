@@ -1,4 +1,4 @@
-from os import stat
+from os import stat, stat_result
 import tkinter.font as fnt
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -13,7 +13,6 @@ Interface -> RoomList = 0 -> Calendar = 1 -> TimeLine = 2 -> CheckBoard = 3
 '''
 class BookInterface(BaseInterface.BaseInterface):
     state = 0
-
     def __init__(self,_parent,_booksystem):
         super().__init__(_parent)
         self.BookSystem = _booksystem
@@ -25,22 +24,28 @@ class BookInterface(BaseInterface.BaseInterface):
         self.CreateCalendarGroup()
         self.CreateTimeLineGroup()
         self.CreateCheckBoardGroup()
+        self.backButton = tk.Button(self.mainCanvas,text="Back",command=self.Back)
     def Enable(self):
         self.mainCanvas.place(x=230,y=20)
         self.interfaceTitle.place(x=10,y=10)
         if self.state == 0:
             self.chooseRoomLabel.place(x=40,y=60)
+            self.calendarLabel.place_forget()
+            self.timeLineLabel.place_forget()
             self.SetRoomListActive(True)
             self.SetCalendarActive(False)
             self.SetTimeLineActive(False)
             self.SetCheckBoardActive(False)
+            self.backButton.place_forget()
         if self.state == 1:
             self.chooseRoomLabel.place(x=40,y=60)
             self.calendarLabel.place(x=40,y=85)
+            self.timeLineLabel.place_forget()
             self.SetRoomListActive(False)
             self.SetCalendarActive(True)
             self.SetTimeLineActive(False)
             self.SetCheckBoardActive(False)
+            self.backButton.place(x=0,y=540)
         if self.state == 2:
             self.chooseRoomLabel.place(x=40,y=60)
             self.calendarLabel.place(x=40,y=85)
@@ -49,6 +54,7 @@ class BookInterface(BaseInterface.BaseInterface):
             self.SetCalendarActive(False)
             self.SetTimeLineActive(True)
             self.SetCheckBoardActive(False)
+            self.backButton.place(x=0,y=540)
         if self.state == 3:
             self.chooseRoomLabel.place(x=40,y=60)
             self.calendarLabel.place(x=40,y=85)
@@ -57,11 +63,16 @@ class BookInterface(BaseInterface.BaseInterface):
             self.SetCalendarActive(False)
             self.SetTimeLineActive(False)
             self.SetCheckBoardActive(True)
+            self.backButton.place(x=0,y=540)
     def Disable(self):
         self.mainCanvas.place_forget()
+    def Back(self):
+        self.state -= 1
+        self.Enable()
+        pass
     '''============================RoomList============================'''
     def CreateRoomListGroup(self):
-        self.roomListGroup = tk.Frame(self.mainCanvas,height=400,width=400,bd=0,background="#575757")
+        self.roomListGroup = tk.Frame(self.mainCanvas,height=400,width=400,bd=0,background="black")
 
         self.roomListCanvas = tk.Canvas(self.roomListGroup,height=400,width=350,borderwidth=0, highlightthickness=0, background="#575757")
         self.roomLIstScrollbar = tk.Scrollbar(self.roomListGroup, orient=VERTICAL,command=self.roomListCanvas.yview)
@@ -101,7 +112,7 @@ class BookInterface(BaseInterface.BaseInterface):
         self.Enable()
     '''============================Calendar============================'''
     def CreateCalendarGroup(self):
-        self.calendarGroup = tk.Canvas(self.mainCanvas,height=430,width=550,bd =0, highlightthickness = 0,background="#dcdcdc")
+        self.calendarGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd =0, highlightthickness = 0,background="black")
         self.date = datetime.datetime.now()
         self.targetYear = self.date.year
         self.targetMonth = self.date.month
@@ -158,7 +169,7 @@ class BookInterface(BaseInterface.BaseInterface):
     def GenerateCalendar(self):
         year = self.targetYear
         month = self.targetMonth
-        self.calendarBackGround = tk.Canvas(self.calendarGroup,height=550,width=550, highlightthickness = 0,bd=0,background="#dcdcdc")
+        self.calendarBackGround = tk.Canvas(self.calendarGroup,height=550,width=550, highlightthickness = 0,bd=0,background="black")
         self.calendarBackGround.place(x=0,y=50)
         self.dayBtnList =[]
         week = self.CalculateWeek(year,month)
@@ -216,14 +227,14 @@ class BookInterface(BaseInterface.BaseInterface):
         self.Enable()
     '''============================TimeLine============================'''
     def CreateTimeLineGroup(self):
-        self.timeLineGroup = tk.Canvas(self.mainCanvas,height=450,width=550, highlightthickness = 0,bd=0,background="black")
+        self.timeLineGroup = tk.Canvas(self.mainCanvas,height=370,width=550, highlightthickness = 0,bd=0,background="black")
 
         self.timeLineFrame = tk.Frame(self.timeLineGroup,height=350,width=400,bd=0,background="#575757")
-        self.timeLineCanvas = tk.Canvas(self.timeLineFrame,height=400,width=400,borderwidth=0, highlightthickness=0, background="#575757")
+        self.timeLineCanvas = tk.Canvas(self.timeLineFrame,height=350,width=400,borderwidth=0, highlightthickness=0, background="#575757")
         self.timeLineScrollbar = tk.Scrollbar(self.timeLineFrame, orient=VERTICAL,command=self.timeLineCanvas.yview)
         self.timeLineCanvas.configure(yscrollcommand=self.timeLineScrollbar.set)
         self.timeLineCanvas.bind('<Configure>',lambda e:self.timeLineCanvas.configure(scrollregion=self.timeLineCanvas.bbox("all")))
-        self.timeLineSecFram = tk.Frame(self.timeLineCanvas,height=400,width=350,bd=0,background="#575757")
+        self.timeLineSecFram = tk.Frame(self.timeLineCanvas,height=300,width=350,bd=0,background="#575757")
         self.timeLineCanvas.create_window((0,0),window=self.timeLineSecFram,anchor="nw")
         self.timeLineImgSmall = tk.PhotoImage(file= r"Asset\Image\TimeLineBtnSmall.png")
         self.timeLineImgBig = tk.PhotoImage(file= r"Asset\Image\TimeLineBtnBig.png")
@@ -279,9 +290,57 @@ class BookInterface(BaseInterface.BaseInterface):
         self.Enable()
     '''============================CheckBoard============================'''
     def CreateCheckBoardGroup(self):
-        self.EventGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd=0, highlightthickness = 0, background="#dcdcdc")
+        self.EventGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd=0, highlightthickness = 0, background="black")
         #End Time Drop Down
         self.leftTime = []
+        self.endTimeDropBox = ttk.Combobox(self.mainCanvas,values=self.leftTime,state="readonly")
+
+        self.EventGroup.place(x=0,y=150)
+        self.endTimeDropBox.place(x = 350, y=110)
+        #self.endTimeDropBox.bind("<<ComboboxSelected>>", lambda event:self.DropDownChange(0))
+        #Title
+        self.NameLabel = tk.Label(self.EventGroup,text="Event Title：", font=('Helvetica', '15'),background="#dcdcdc")
+        self.NameLabel.place(x=0,y=20)
+        self.titleNameStr = tk.StringVar()
+        self.titleName = tk.Entry(self.EventGroup,textvariable=self.titleNameStr)
+        self.titleName.place(x=120,y=28,width=200)
+        self.NameErrorLabel = tk.Label(self.EventGroup,text="Error...", font=('Helvetica', '10'),fg='red',background="#dcdcdc")
+
+        self.OrganizerLabel = tk.Label(self.EventGroup,text="Organizer (E-mail)：", font=('Helvetica', '15'),background="#dcdcdc")
+        self.OrganizerLabel.place(x=0,y=70)
+        self.OrganizerStr = tk.StringVar()
+        self.Organizer = tk.Entry(self.EventGroup,textvariable=self.OrganizerStr)
+        self.Organizer.place(x=180,y=78,width=200)
+        self.OrganizerErrorLabel = tk.Label(self.EventGroup,text="Error...", font=('Helvetica', '10'),fg='red',background="#dcdcdc")
+
+        self.ParticipantLabel = tk.Label(self.EventGroup,text="Participant (E-mail)：", font=('Helvetica', '15'),background="#dcdcdc")
+        self.ParticipantLabel.place(x=0,y=100)
+        self.Participants = []
+        self.Participants.append("")
+        self.Participant = ttk.Combobox(self.EventGroup,values=self.Participants)
+        self.Participant.bind("<<ComboboxSelected>>", lambda event:self.ChangeParticipantLabelDropDown)
+        self.Participant.place(x = 200, y=108,width=200)
+        self.addParticipant = tk.Button(self.EventGroup,text="Add",command=self.AddParticipantLabelDropDown)
+        self.addParticipant.place(x = 420, y=108)
+        self.deleteParticipant = tk.Button(self.EventGroup,text="Delete",command=self.DeleteParticipantLabelDropDown)
+        self.deleteParticipant.place(x = 470, y=108)
+        self.DescribeLabel = tk.Label(self.EventGroup,text="Event Describe：", font=('Helvetica', '15'),background="#dcdcdc")
+        self.DescribeLabel.place(x = 0, y=130)
+        self.DescribeStr = tk.StringVar()
+        self.Describe = tk.Text(self.EventGroup,width=70,height=13)
+        self.Describe.place(x=0,y=170,anchor="nw")
+        self.CheckingBtn = tk.Button(self.EventGroup,text="OK",command=self.CheckBoardFinish)
+        self.CheckingBtn.place(relx=0.5,y=370)
+    def SetCheckBoardActive(self,_value):
+        if _value == True:
+            self.EventGroup.place(x=0,y=150)
+            self.endTimeDropBox.place(x=380,y=114)
+            self.UpdateLeftTime()
+        else :
+            self.EventGroup.place_forget()
+            self.endTimeDropBox.place_forget()
+    def UpdateLeftTime(self):
+        self.leftTime.clear()
         if self.TargetStartHour < 10:
             hrStr = '0' + str(self.TargetStartHour)
         else:
@@ -295,50 +354,32 @@ class BookInterface(BaseInterface.BaseInterface):
         for i in range(self.TargetStartHour + 1, 24):
             self.leftTime.append(str(i) + ':00')
             self.leftTime.append(str(i) + ':30')
-        self.endTimeDropBox = ttk.Combobox(self.mainCanvas,values=self.leftTime,state="readonly")
+        self.leftTime.append('24:00')
+        self.endTimeDropBox.configure(values=self.leftTime)
         self.endTimeDropBox.current(0)
-
-        self.EventGroup.place(x=0,y=100)
-        self.endTimeDropBox.place(x = 350, y=110)
-        #self.endTimeDropBox.bind("<<ComboboxSelected>>", lambda event:self.DropDownChange(0))
-        #Title
-        self.NameLabel = tk.Label(self.EventGroup,text="Event Title：", font=('Helvetica', '15'),background="#dcdcdc")
-        self.NameLabel.place(x=0,y=50)
-        self.titleNameStr = tk.StringVar()
-        self.titleName = tk.Entry(self.EventGroup,textvariable=self.titleNameStr)
-        self.titleName.place(x=120,y=58,width=200)
-
-        self.OrganizerLabel = tk.Label(self.EventGroup,text="Organizer (E-mail)：", font=('Helvetica', '15'),background="#dcdcdc")
-        self.OrganizerLabel.place(x=0,y=80)
-        self.OrganizerStr = tk.StringVar()
-        self.Organizer = tk.Entry(self.EventGroup,textvariable=self.OrganizerStr)
-        self.Organizer.place(x=180,y=88,width=200)
-
-        self.ParticipantLabel = tk.Label(self.EventGroup,text="Participant (E-mail)：", font=('Helvetica', '15'),background="#dcdcdc")
-        self.ParticipantLabel.place(x=0,y=110)
-        self.Participants = []
-        self.Participant = ttk.Combobox(self.EventGroup,values=self.Participants)
-        self.Participant.place(x = 200, y=118,width=200)
-        self.addParticipant = tk.Button(self.EventGroup,text="Add")
-        self.addParticipant.place(x = 420, y=118)
-        self.deleteParticipant = tk.Button(self.EventGroup,text="Delete")
-        self.deleteParticipant.place(x = 470, y=118)
-        self.DescribeLabel = tk.Label(self.EventGroup,text="Event Describe：", font=('Helvetica', '15'),background="#dcdcdc")
-        self.DescribeLabel.place(x = 0, y=140)
-        self.DescribeStr = tk.StringVar()
-        self.Describe = tk.Text(self.EventGroup,width=70,height=15)
-        self.Describe.place(x=0,y=170,anchor="nw")
-        self.CheckingBtn = tk.Button(self.EventGroup,text="OK")
-        self.CheckingBtn.place(relx=0.5,y=380)
-    def SetCheckBoardActive(self,_value):
-        if _value == True:
-            self.EventGroup.place(x=0,y=170)
-            self.endTimeDropBox.place(x=380,y=114)
-        else :
-            self.EventGroup.place_forget()
-            self.endTimeDropBox.place_forget()
-    def CheckBoardFinish():
+    def ChangeParticipantLabelDropDown(self):
+        print(self.Participant.get())
         pass
-    def CheckBoardCancel():
+    def AddParticipantLabelDropDown(self):
+        self.Participants.append(self.Participant.get())
+        self.Participant.configure(values=self.Participants)
+        self.Participant.current(0)
+        pass
+    def DeleteParticipantLabelDropDown(self):
+        if self.Participant.get() == "":
+            return
+        self.Participants.remove(self.Participant.get())
+        self.Participant.configure(values=self.Participants)
+        self.Participant.current(0)
+        pass
+    def CheckBoardFinish(self):
+        self.NameErrorLabel.place_forget()
+        self.OrganizerErrorLabel.place_forget()
+        if self.titleNameStr.get() == "" :
+            self.NameErrorLabel.configure(text="標題不得為空...")
+            self.NameErrorLabel.place(x=120,y=2)
+        if self.OrganizerStr.get() == "" :
+            self.OrganizerErrorLabel.configure(text="舉辦人信箱不得為空...")
+            self.OrganizerErrorLabel.place(x=180,y=52)
         pass
 
