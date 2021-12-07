@@ -39,7 +39,7 @@ class DataBaseManager:
       print(x)
     return tuples
       
-  def get_MyEvnt(self, Email):
+  def get_MyEvent(self, Email):
     sql = "Select EventID FROM participants WHERE Email = %s"
     val = (Email)
     params = (val,) # Due to single value
