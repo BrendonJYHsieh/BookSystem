@@ -5,21 +5,26 @@ from core import Room
 class BookSystem:
     rooms = []
     def __init__(self):
-        self.ui = UI.BookSystemUI()
+        self.ui = UI.BookSystemUI(self)
         self.gc = CalendarAPI.calendar_API()
         self.db = DataBase.DataBaseManager()
         self.dbl = DBloader.DBloader()
         self.uil = UIloader.UIloader()
         return
     def start(self):
-        self.ui.BookSystem = self
-        self.rooms = self.dbl.load(self.db)
+        self.rooms = self.dbl.load(self,self.db)
         for room_index in range(len(self.rooms)):
             print(self.rooms[room_index].name)
 
         self.ui.initialUI()
         self.uil.load(self.ui,self.rooms)
         self.ui.runUI()
+
+    def getRoom(self,name):
+        for i in range(len(self.rooms)):
+            if self.rooms[i].name == name:
+                return self.rooms[i]
+        return None
 
     def addRoom(self,room):
         if room.name == "":
@@ -29,6 +34,7 @@ class BookSystem:
             if self.rooms[i].name == room.name:
                 #TODO 彈出警告視窗
                 return
+        room.BookSystem = self
         self.rooms.append(room)
         self.db.create_room(room.name)
         self.ui.roomListInsert(room.name)

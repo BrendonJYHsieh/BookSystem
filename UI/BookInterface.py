@@ -6,7 +6,7 @@ import datetime
 from tkinter.constants import ANCHOR, BOTH, CENTER, COMMAND, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
 from typing import Text
 from UI import BaseInterface
-from core import Room
+from core import Room,Event
 
 '''
 Interface -> RoomList = 0 -> Calendar = 1 -> TimeLine = 2 -> CheckBoard = 3
@@ -375,11 +375,22 @@ class BookInterface(BaseInterface.BaseInterface):
     def CheckBoardFinish(self):
         self.NameErrorLabel.place_forget()
         self.OrganizerErrorLabel.place_forget()
+        complete_event = True
         if self.titleNameStr.get() == "" :
             self.NameErrorLabel.configure(text="標題不得為空...")
+            complete_event = False
             self.NameErrorLabel.place(x=120,y=2)
         if self.OrganizerStr.get() == "" :
             self.OrganizerErrorLabel.configure(text="舉辦人信箱不得為空...")
             self.OrganizerErrorLabel.place(x=180,y=52)
+            complete_event = False
+        if complete_event:
+            room = self.BookSystem.getRoom("") #傳入room得名字，回傳room
+            room.addEvent(Event.Event(self.BookSystem,"name","description",self.convert_to_RFC_datetime(1900,8,7,0,0),self.convert_to_RFC_datetime(1900,8,7,0,0)))            
         pass
+    
 
+    def convert_to_RFC_datetime(year=1900, month=1, day=1, hour=0, minute=0):
+        hour-=8 #台灣時區
+        dt = datetime.datetime(year, month, day, hour, minute, 0).isoformat() + 'Z'
+        return dt

@@ -12,7 +12,9 @@ from UI import BaseInterface,BookInterface
 #import Event
 
 class BookSystemUI():
-    def __init__(self):
+    BookSystem = None
+    def __init__(self,_BookSystem):
+        self.BookSystem = _BookSystem
         return
     def initialUI(self):
         self.app = tk.Tk()
@@ -63,7 +65,7 @@ class BookSystemUI():
 
         self.room_name_strv = tk.StringVar()
 
-        self.add_room = tk.Button(self.ManagerGroup,text='add',command=lambda : self.BookSystem.addRoom(Room.Room(self.room_name_strv.get())))
+        self.add_room = tk.Button(self.ManagerGroup,text='add',command=lambda : self.BookSystem.addRoom(Room.Room(self.BookSystem,self.room_name_strv.get())))
         self.edit_room = tk.Button(self.ManagerGroup,text='edit',command=self.roomListUpdate)
         self.delete_room = tk.Button(self.ManagerGroup,text='delete',command=lambda : self.BookSystem.deleteRoom(Room.Room(self.room_name_strv.get())))
         self.room_name_label = tk.Label(self.ManagerGroup,text='Room Name')

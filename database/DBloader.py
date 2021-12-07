@@ -4,15 +4,17 @@ class DBloader:
     rooms = []
     def __init__(self):
         return
-    def load(self,db):
+    def load(self,BookSystem,db):
         room_tuples = db.get_rooms()
         for x in room_tuples:
-            self.rooms.append(Room.Room(x[0]))
+            room = Room.Room(BookSystem,x[0])
+            room.BookSystem = BookSystem
+            self.rooms.append(room)
         
         for room_index in range(len(self.rooms)):
             event_tuples = db.get_events(self.rooms[room_index].name)
             for x in event_tuples:
-                self.rooms[room_index].events.append(Event.Event(x[0],x[1],x[2]))
+                self.rooms[room_index].events.append(Event.Event(BookSystem,x[0],x[1],x[2],x[3],x[4]))
         
         for room_index in range(len(self.rooms)):
             for event_index in range(len(self.rooms[room_index].events)):
