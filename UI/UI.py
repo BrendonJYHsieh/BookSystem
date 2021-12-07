@@ -62,7 +62,6 @@ class BookSystemUI():
     
 
         self.room_name_strv = tk.StringVar()
-        self.room_description_strv =  tk.StringVar()
 
         self.add_room = tk.Button(self.ManagerGroup,text='add',command=lambda : self.BookSystem.addRoom(Room.Room(self.room_name_strv.get())))
         self.edit_room = tk.Button(self.ManagerGroup,text='edit',command=self.roomListUpdate)
@@ -71,10 +70,6 @@ class BookSystemUI():
         
         self.room_name_strv.set('mew mew')
         self.room_name = tk.Entry(self.ManagerGroup,textvariable=self.room_name_strv)
-        self.room_description_label = tk.Label(self.ManagerGroup,text='Room Description')
-        
-        self.room_description_strv.set('haha cat')
-        self.room_description = tk.Entry(self.ManagerGroup,textvariable=self.room_description_strv)
 
         self.room_list = tk.Listbox(self.ManagerGroup)
         self.room_scroll = tk.Scrollbar(self.room_list, orient=tk.VERTICAL,command = self.room_list.yview)
@@ -88,8 +83,6 @@ class BookSystemUI():
         self.room_name_label.place(x=0,y=50)
         self.room_name.place(x=0,y=100,width=420)
         
-        self.room_description_label.place(x=0,y=200)
-        self.room_description.place(x=0,y=250,width=420)
         
         
         self.room_list.place(x=430,y=0,height=500)      
@@ -129,13 +122,14 @@ class BookSystemUI():
         old_name = ""
         if selection != ():
             old_name = self.room_list.get(selection)
-            self.room_list.delete(selection)
-            self.room_list.insert(selection,self.room_name_strv.get())
+            self.BookSystem.updateRoom(old_name,self.room_name_strv.get())
+            self.room_list.delete(selection)    
+            self.room_list.insert(selection,self.room_name_strv.get())            
+            self.bookInterface.UpdateRoomList()
         else:
             #TODO 警告
-            return
+            return        
         
-        self.BookSystem.updateRoom(old_name,self.room_name_strv.get())
     def roomListSelect(self,event):
         selection = self.room_list.curselection()
         if selection != ():
