@@ -1,0 +1,11 @@
+@startuml
+
+node BookingSystem
+node DataBase
+node User
+node GoogleCalendar
+BookingSystem <--> DataBase :Internet
+User --> BookingSystem :Internet
+BookingSystem <--> GoogleCalendar :Internet
+
+@enduml
