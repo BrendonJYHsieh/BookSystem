@@ -1,6 +1,7 @@
 Create Database BookSystem;
 use BookSystem;
 Create table Rooms(
+    RoomID varchar(60) Not Null,
 	RoomName varchar(20) Not Null
 );
 
@@ -18,10 +19,10 @@ Create table Participants(
     Email varchar(40) Not Null
 );
 
-Insert into Rooms (RoomName) Values
-("TR"),
-("IB"),
-("T4")
+Insert into Rooms (RoomID,RoomName) Values
+("etrewtwe@dfasfas","TR"),
+("etrewtwe@dfasfas","IB"),
+("etrewtwe@dfasfas","T4")
 
 Insert into Events (EventID, EventName, EventDescription, StartTime, EndTime, RoomName) Values
 ("0","次世代無線網路概論", "Teacher:周詩梵", '2021-10-11 10:20:00', '2021-10-11 11:10:00', "IB"),

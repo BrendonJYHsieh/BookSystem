@@ -47,9 +47,9 @@ class DataBaseManager:
     for x in self.cursor:
       print(x)
 
-  def create_room(self,RoomName):
-    sql = "INSERT IGNORE INTO rooms (RoomName) VALUES (%s) "
-    val = (RoomName)
+  def create_room(self,RoomID, RoomName):
+    sql = "INSERT IGNORE INTO rooms (RoomID, RoomName) VALUES (%s, %s) "
+    val = (RoomID,RoomName)
     params = (val,) # Due to single value
     self.cursor.execute(sql, params)
     self.mydb.commit()
