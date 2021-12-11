@@ -1,0 +1,8 @@
+@startuml
+
+package Rooms
+package Events
+package Participants
+package DataBase
+package GoogleCalendar
+@enduml

@@ -1,41 +1,43 @@
-@startuml Reservation System
+@startuml Booking System
 scale 1.5
-Class Event {
-    EventName : String
-    EventDescription: String
-    StartTime : Data
-    EndTime : Date
-    Participants : list<Email>
-    --
-    + modifyEventName(String newEventName)
-    + modifyDecription(String newDescription)
-    + modifyStartTime(Date newTime)SS
-    + modifyEndTime(Date newTime)D
-    + addParticipant(Email person)
-    + deleteParticipant(Email person)
-}
-Class Room {
-    RoomName : String
-    Events : List<Event>
-    --
-    + addEvent(String EventNmae)
-    + deleteEvent(String EventNmae)
-    + modifyRoomName(String newName)
-}
 class BookSystem {
     Rooms : List<Room>
     --
-    + addRoom(String RoomNmae)
-    + deleteRoom(String RoomNmae)
+    + __init__()
+    + start()
+    + getRoom(String name)
+    + addRoom(Room romm)
+    + deleteRoom(Room romm)
+    + updateRoom(String old_name,String new_name)
 }
-note left of Event::"modifyStartTime(Date newTime)"
- Make sure StartTime won't later than EndTime
-end note
+Class Room {
+    id : String
+    name : String
+    events : List<Event>
+    --
+    + __init__(String _id)
+    + addEvent(Event event)
+    + deleteEvent(Event event)
+    + modifyEvent(Event old_event,Event new_event)
+}
 
-note left of Event::"modifyEndTime(Date newTime)"
- Make sure EndTime won't earlier than StartTime
-end note
+Class Event {
+    id : String
+    name : String
+    description: String
+    start_time : DateTime
+    end_time : DateTime
+    participants : list<String>
+    --
+    + __init__(String _id)
+    + addParticipant(String email)
+    + deleteParticipant(String email)
+    + modifyEventName(String newEventName)
+    + modifyDecription(String newDescription)
+    + modifyStartTime(DateTime newTime)
+    + modifyEndTime(DateTime newTime)
+}
 
-BookSystem --> Room
-Room --> Event
+'BookSystem --> Room
+'Room --> Event
 @enduml

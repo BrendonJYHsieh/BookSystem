@@ -1,0 +1,11 @@
+@startuml
+
+component core
+component interface
+component store
+component third_party_api
+
+interface <--> core
+store <--> core
+third_party_api <--> core
+@enduml

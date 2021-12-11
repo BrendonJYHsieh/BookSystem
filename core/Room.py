@@ -2,6 +2,7 @@ from UI import UI
 from database import DataBase,DBloader
 from google_calendar import CalendarAPI
 class Room:
+    id = ""
     name = ""
     BookSystem = None
     events = []
