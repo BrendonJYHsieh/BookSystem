@@ -17,9 +17,10 @@ class Room:
                     (datetime.strptime(event.start_time,'%Y-%m-%dT%H:%M:%SZ')-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'),
                     (datetime.strptime(event.end_time,'%Y-%m-%dT%H:%M:%SZ')-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'))
         if event.participants: #participants not empty
-            self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)        
+            self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)      
+        print(type(event.start_time))  
         self.events.append(event)
-        self.BookSystem.db.create_event(event.id,event.name,event.description,event.start_time,event.end_time,self.name)
+        self.BookSystem.db.create_event(event.id,event.name,event.description,datetime.strptime(event.start_time,'%Y-%m-%dT%H:%M:%SZ'),datetime.strptime(event.end_time,'%Y-%m-%dT%H:%M:%SZ'),self.name)
         return
     def deleteEvent(self,event):
         print('Delete Event!')
