@@ -31,7 +31,7 @@ class Room:
                 break
         if not found:
             return
-        self.BookSystem.db.delete_event(event.name)
+        self.BookSystem.db.delete_event(event.id)
         self.BookSystem.gc.Delete_Event(self.id,event.id)
         print('Delete Event successful!')
     def modifyEvent(self):
