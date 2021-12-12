@@ -3,7 +3,7 @@ import tkinter.font as fnt
 import tkinter as tk
 import tkinter.ttk as ttk
 import datetime
-from tkinter.constants import ANCHOR, BOTH, CENTER, COMMAND, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
+from tkinter.constants import ANCHOR, BOTH, CENTER, COMMAND, DISABLED, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
 from typing import Text
 from core import Room
 from UI import BaseInterface,BookInterface

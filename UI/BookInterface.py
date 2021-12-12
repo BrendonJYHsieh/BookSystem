@@ -227,6 +227,7 @@ class BookInterface(BaseInterface.BaseInterface):
         self.state = 2
         self.calendarLabel.config(text='      Choose Date       '+str(self.targetYear)+'/'+str(self.targetMonth)+'/'+str(self.TargetDay))
         self.Enable()
+        self.UpdateTimeLineEvent()
     '''============================TimeLine============================'''
     def CreateTimeLineGroup(self):
         self.timeLineGroup = tk.Canvas(self.mainCanvas,height=370,width=550, highlightthickness = 0,bd=0,background="black")
@@ -241,6 +242,7 @@ class BookInterface(BaseInterface.BaseInterface):
         self.timeLineImgSmall = tk.PhotoImage(file= r"Asset\Image\TimeLineBtnSmall.png")
         self.timeLineImgBig = tk.PhotoImage(file= r"Asset\Image\TimeLineBtnBig.png")
         self.timeLineList = []
+        self.eventBoxList = []
         self.TargetStartHour = 0
         self.TargetStartMin = 0
         time = 0
@@ -261,21 +263,21 @@ class BookInterface(BaseInterface.BaseInterface):
         self.timeLineScrollbar.pack(side=RIGHT,fill=Y)
         for thing in range(48):
             self.timeLineList[thing].grid(row=thing,column=0,padx=10)
-        self.UpdateTimeLineEvent()
     def SetTimeLineActive(self,_value):
         if _value == True:
             self.timeLineGroup.place(x=0,y=140)
         else :
             self.timeLineGroup.place_forget()
     def UpdateTimeLineEvent(self):
-        self.eventBoxList = []
+        for i in range(0 , 48):
+            self.timeLineList[i].config(state=tk.NORMAL)
+        for label in self.eventBoxList:
+            label.destroy()
+        self.eventBoxList.clear()
+        for event in self.BookSystem.getRoom(self.targetRoom).events :
+            if event.start_time.year == self.targetYear and event.start_time.month == self.targetMonth and event.start_time.day == self.TargetDay :
+                self.CreatEventLabel(event.name , event.start_time , event.end_time)
         
-        self.eventBoxCanvas = tk.Canvas(self.timeLineSecFram,background='red', relief=SUNKEN, highlightthickness=0,width=300,height=60)
-        self.eventlabel = tk.Label(self.eventBoxCanvas,text="Event Name")
-        self.eventBoxCanvas.place(anchor='nw',x=20,y=20)
-        self.eventlabel.place(anchor='nw',x=0,y=0)
-
-        self.eventBoxList.append(self.eventBoxCanvas)
     def ClickTimeLine(self,_hour,_min):
         self.TargetStartHour = _hour
         self.TargetStartMin = _min
@@ -290,6 +292,26 @@ class BookInterface(BaseInterface.BaseInterface):
             minStr = str(self.TargetStartMin)
         self.timeLineLabel.config(text='      Choose Time       ' + hrStr + '：' + minStr + '      to')
         self.Enable()
+    def CreatEventLabel(self, _eventName, _startTime, _endTime):
+        startPosition = _startTime.hour * 2
+        if _startTime.minute != 0 :
+            startPosition += 1
+        endPosition = _endTime.hour * 2
+        if _endTime.hour == 23 and _endTime.minute == 59 :
+            endPosition += 2
+        elif _endTime.minute != 0 :
+            endPosition += 1
+        for i in range(startPosition ,endPosition):
+            self.timeLineList[i].config(state=tk.DISABLED)
+        eventBoxCanvas = tk.Canvas(self.timeLineSecFram,background='red', relief=SUNKEN, highlightthickness=0,width=280,height=60 * (endPosition - startPosition))
+        eventlabel = tk.Label(eventBoxCanvas, text = _eventName, font=('Helvetica', '13'),background='red')
+        eventBoxCanvas.place(anchor='nw',x=10,y=60.05 * startPosition)
+        eventlabel.place(anchor='nw',x=0,y=0)
+
+        self.eventBoxList.append(eventBoxCanvas)
+        pass
+    def ModifyEvent(self):
+        pass
     '''============================CheckBoard============================'''
     def CreateCheckBoardGroup(self):
         self.EventGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd=0, highlightthickness = 0, background="black")
@@ -408,6 +430,9 @@ class BookInterface(BaseInterface.BaseInterface):
             _endTimeSplit = _endTime.split(":")
             _hour = int(_endTimeSplit[0])
             _minute = int(_endTimeSplit[1])
+            if _hour == 24 and _minute == 0:
+                _hour = 23
+                _minute = 59
             #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,int(self.TargetStartHour),int(self.TargetStartMin)))
             #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
             room = self.BookSystem.getRoom(self.targetRoom) #傳入room得名字，回傳room
