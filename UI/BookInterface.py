@@ -2,7 +2,7 @@ from os import stat, stat_result
 import tkinter.font as fnt
 import tkinter as tk
 import tkinter.ttk as ttk
-import datetime
+from datetime import datetime 
 from tkinter.constants import ANCHOR, BOTH, CENTER, COMMAND, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
 from typing import Text
 import re
@@ -115,7 +115,7 @@ class BookInterface(BaseInterface.BaseInterface):
     '''============================Calendar============================'''
     def CreateCalendarGroup(self):
         self.calendarGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd =0, highlightthickness = 0,background="black")
-        self.date = datetime.datetime.now()
+        self.date = datetime.now()
         self.targetYear = self.date.year
         self.targetMonth = self.date.month
         self.yearOption = [self.date.year,self.date.year+1,self.date.year+2,self.date.year+3,self.date.year+4]
@@ -275,7 +275,8 @@ class BookInterface(BaseInterface.BaseInterface):
             label.destroy()
         self.eventBoxList.clear()
         for event in self.BookSystem.getRoom(self.targetRoom).events :
-            if event.start_time.year == self.targetYear and event.start_time.month == self.targetMonth and event.start_time.day == self.TargetDay :
+            dateTmp = event.start_time
+            if dateTmp.year == self.targetYear and dateTmp.month == self.targetMonth and dateTmp.day == self.TargetDay :
                 self.CreatEventLabel(event)
                 pass
     def ClickTimeLine(self,_hour,_min):
@@ -313,13 +314,17 @@ class BookInterface(BaseInterface.BaseInterface):
         pass
     def DeleteEvent(self, _event, target):
         self.BookSystem.getRoom(self.targetRoom).deleteEvent(_event)
-        self.eventBoxList[target].destroy()
+        for i in self.eventBoxList:
+            if i == target:
+                i.destroy()
         self.eventBoxList.remove(target)
         self.UpdateTimeLineEvent()
         pass
     def ModifyEvent(self):
         '''修改寫這邊'''
-        self.UpdateTimeLineEvent()
+        self.state = 3
+        
+        self.Enable()
         pass
     '''============================CheckBoard============================'''
     def CreateCheckBoardGroup(self):
@@ -446,8 +451,6 @@ class BookInterface(BaseInterface.BaseInterface):
             #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
             room = self.BookSystem.getRoom(self.targetRoom) #傳入room得名字，回傳room
             new_event = Event.Event(self.BookSystem,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
-            print("**************")
-            print(type(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin)))
             new_event.update_participants(final_participants)
             room.addEvent(new_event)
             self.UpdateTimeLineEvent()
@@ -455,7 +458,8 @@ class BookInterface(BaseInterface.BaseInterface):
     '''============================OtherMethod============================'''
     def convert_to_RFC_datetime(self, year=1900, month=1, day=1, hour=0, minute=0):
         #hour-=8 #台灣時區
-        dt = datetime.datetime(year, month, day, hour, minute, 0).isoformat() + 'Z'
+        dt = datetime(year, month, day, hour, minute, 0)
+        print(type(dt))
         return dt
  
     def invalid_email(self,email): #檢查email格式
