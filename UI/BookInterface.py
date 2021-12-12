@@ -276,8 +276,8 @@ class BookInterface(BaseInterface.BaseInterface):
         self.eventBoxList.clear()
         for event in self.BookSystem.getRoom(self.targetRoom).events :
             if event.start_time.year == self.targetYear and event.start_time.month == self.targetMonth and event.start_time.day == self.TargetDay :
-                self.CreatEventLabel(event.name , event.start_time , event.end_time)
-        
+                self.CreatEventLabel(event)
+                pass
     def ClickTimeLine(self,_hour,_min):
         self.TargetStartHour = _hour
         self.TargetStartMin = _min
@@ -292,25 +292,34 @@ class BookInterface(BaseInterface.BaseInterface):
             minStr = str(self.TargetStartMin)
         self.timeLineLabel.config(text='      Choose Time       ' + hrStr + '：' + minStr + '      to')
         self.Enable()
-    def CreatEventLabel(self, _eventName, _startTime, _endTime):
-        startPosition = _startTime.hour * 2
-        if _startTime.minute != 0 :
+    def CreatEventLabel(self, _event):
+        startPosition = _event.start_time.hour * 2
+        if _event.start_time.minute != 0 :
             startPosition += 1
-        endPosition = _endTime.hour * 2
-        if _endTime.hour == 23 and _endTime.minute == 59 :
+        endPosition = _event.end_time.hour * 2
+        if _event.end_time.hour == 23 and _event.end_time.minute == 59 :
             endPosition += 2
-        elif _endTime.minute != 0 :
+        elif _event.end_time.minute != 0 :
             endPosition += 1
         for i in range(startPosition ,endPosition):
             self.timeLineList[i].config(state=tk.DISABLED)
         eventBoxCanvas = tk.Canvas(self.timeLineSecFram,background='red', relief=SUNKEN, highlightthickness=0,width=280,height=60 * (endPosition - startPosition))
-        eventlabel = tk.Label(eventBoxCanvas, text = _eventName, font=('Helvetica', '13'),background='red')
+        eventlabel = tk.Label(eventBoxCanvas, text = _event.name, font=('Helvetica', '13'),background='red')
+        deleteBtn = tk.Button(eventBoxCanvas, text="delete",command=lambda event = _event, target = eventBoxCanvas : self.DeleteEvent(event, target))
         eventBoxCanvas.place(anchor='nw',x=10,y=60.05 * startPosition)
         eventlabel.place(anchor='nw',x=0,y=0)
-
+        deleteBtn.place(anchor='nw',x=0,y=30)
         self.eventBoxList.append(eventBoxCanvas)
         pass
+    def DeleteEvent(self, _event, target):
+        self.BookSystem.getRoom(self.targetRoom).deleteEvent(_event)
+        self.eventBoxList[target].destroy()
+        self.eventBoxList.remove(target)
+        self.UpdateTimeLineEvent()
+        pass
     def ModifyEvent(self):
+        '''修改寫這邊'''
+        self.UpdateTimeLineEvent()
         pass
     '''============================CheckBoard============================'''
     def CreateCheckBoardGroup(self):
