@@ -392,6 +392,7 @@ class BookInterface(BaseInterface.BaseInterface):
             complete_event = False
         
         final_participants = []
+        final_participants.append(self.OrganizerStr.get())
         for i in range(1,len(self.Participants)):
             if self.invalid_email(self.Participants[i]):
                 final_participants.append(self.Participants[i])

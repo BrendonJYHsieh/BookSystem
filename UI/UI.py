@@ -114,10 +114,12 @@ class BookSystemUI():
     
     def roomListInsert(self,name):
         self.room_list.insert(tk.END,name)
+        self.bookInterface.UpdateRoomList()
     def roomListDelete(self,name):
         idx = self.room_list.get(0, tk.END).index(name)
         self.room_list.delete(idx)
         self.room_name_strv.set("")
+        self.bookInterface.UpdateRoomList()
     def roomListUpdate(self):
         print("room update")
         selection = self.room_list.curselection()

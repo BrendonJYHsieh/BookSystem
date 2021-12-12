@@ -38,7 +38,7 @@ class BookSystem:
                 print('Room_name is Duplicated!')
                 return
         room.BookSystem = self
-        room.id = self.gc.Create_Calendar(room.name);
+        room.id = self.gc.Create_Calendar(room.name)
         self.rooms.append(room)
         self.db.create_room(room.id,room.name)
         self.ui.roomListInsert(room.name)
@@ -73,5 +73,6 @@ class BookSystem:
             #TODO 彈出警告視窗
             return
         self.db.update_room(old_name,new_name)
+        self.ui.roomListUpdate()
         self.gc.Update_Calendar(roomID,new_name)
         print('Update Room successful!')
