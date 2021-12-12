@@ -3,6 +3,7 @@ from database import DataBase,DBloader
 from google_calendar import CalendarAPI
 from core import Room
 class BookSystem:
+    users =[]
     rooms = []
     def __init__(self):
         self.ui = UI.BookSystemUI(self)
