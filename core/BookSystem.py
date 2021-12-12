@@ -60,6 +60,7 @@ class BookSystem:
         print('Delete Room successful!')
         return
     def updateRoom(self,old_name,new_name):
+        print('Update Room!')
         found=False
         for i in range(len(self.rooms)):
             if self.rooms[i].name == old_name:
@@ -70,10 +71,6 @@ class BookSystem:
         if not found:
             #TODO 彈出警告視窗
             return
-        print("old:" + old_name)
-        print("new:" + new_name)
-        self.db.get_rooms()    
         self.db.update_room(old_name,new_name)
-        print("ROOMID")
-        print(roomID)
         self.gc.Update_Calendar(roomID,new_name)
+        print('Update Room successful!')

@@ -1,3 +1,4 @@
+from datetime import date, datetime
 import time
 from core import BookSystem
 from database import DataBase
@@ -6,8 +7,8 @@ class Event:
     id = "" # event id from google calendar
     name = ""
     description = ""
-    start_time = None
-    end_time = None
+    start_time : datetime
+    end_time : datetime
     participants = ["","",""]
     def __init__(self,_BookSystem,_name,_description,_start_time,_end_time): #TODO: time
         self.BookSystem = _BookSystem

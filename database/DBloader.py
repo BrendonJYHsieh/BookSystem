@@ -15,7 +15,9 @@ class DBloader:
         for room_index in range(len(self.rooms)):
             event_tuples = db.get_events(self.rooms[room_index].name)
             for x in event_tuples:
-                self.rooms[room_index].events.append(Event.Event(BookSystem,x[0],x[1],x[2],x[3],x[4]))
+                event = Event.Event(BookSystem,x[1],x[2],x[3],x[4])
+                event.id = x[0]
+                self.rooms[room_index].events.append(event) 
         
         for room_index in range(len(self.rooms)):
             for event_index in range(len(self.rooms[room_index].events)):
