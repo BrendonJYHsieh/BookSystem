@@ -27,26 +27,28 @@ class BookSystem:
         return None
 
     def addRoom(self,room):
+        print('Add Room!')
         if room.name == "":
+            print('Room_name is Empty!')
             return
-        print('add room!')
         for i in range(len(self.rooms)):
             if self.rooms[i].name == room.name:
                 #TODO 彈出警告視窗
+                print('Room_name is Duplicated!')
                 return
         room.BookSystem = self
-        room._id = self.gc.Create_Calendar(room.name);
-        print(room._id);
+        room.id = self.gc.Create_Calendar(room.name);
         self.rooms.append(room)
-        self.db.create_room(room._id,room.name)
+        self.db.create_room(room.id,room.name)
         self.ui.roomListInsert(room.name)
-        
+        print('Add Room successful!')
         return
     def deleteRoom(self,room):
-        print('del room!')
+        print('Delete Room!')
         found=False
         for i in range(len(self.rooms)):
             if self.rooms[i].name == room.name:
+                room.id = self.rooms[i].id
                 found = True
                 del self.rooms[i]
                 break
@@ -54,7 +56,8 @@ class BookSystem:
             return
         self.db.delete_room(room.name)     
         self.ui.roomListDelete(room.name)
-        self.gc.Delete_Calendar(room.name)
+        self.gc.Delete_Calendar(room.id)
+        print('Delete Room successful!')
         return
     def updateRoom(self,old_name,new_name):
         found=False

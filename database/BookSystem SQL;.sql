@@ -76,11 +76,12 @@ Insert into Participants (EventID, Email) Values
 Alter table rooms add primary key (RoomName);
 
 Alter table Events 
-add Constraint Fk_RoomName foreign key (RoomName) References rooms(RoomName)
-On Update Cascade;
+add Constraint Fk_RoomName 
+foreign key (RoomName) References rooms(RoomName)
+ON UPDATE CASCADE ON DELETE CASCADE;
 
 Alter table Events add primary key (EventID);
 
 Alter table Participants 
 add Constraint Fk_EventID foreign key (EventID) References Events(EventID)
-On Update Cascade;
+ON UPDATE CASCADE ON DELETE CASCADE;
