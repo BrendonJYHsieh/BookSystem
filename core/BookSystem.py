@@ -35,10 +35,12 @@ class BookSystem:
                 #TODO 彈出警告視窗
                 return
         room.BookSystem = self
+        room._id = self.gc.Create_Calendar(room.name);
+        print(room._id);
         self.rooms.append(room)
-        self.db.create_room(room.name)
+        self.db.create_room(room._id,room.name)
         self.ui.roomListInsert(room.name)
-        self.gc.Create_Calendar(room.name)
+        
         return
     def deleteRoom(self,room):
         print('del room!')

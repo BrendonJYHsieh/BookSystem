@@ -50,8 +50,7 @@ class DataBaseManager:
   def create_room(self,RoomID, RoomName):
     sql = "INSERT IGNORE INTO rooms (RoomID, RoomName) VALUES (%s, %s) "
     val = (RoomID,RoomName)
-    params = (val,) # Due to single value
-    self.cursor.execute(sql, params)
+    self.cursor.execute(sql, val)
     self.mydb.commit()
 
   def create_event(self, EventID, EventName, EventDescription, StartTime, EndTime, RoomName):
