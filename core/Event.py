@@ -9,9 +9,8 @@ class Event:
     start_time = None
     end_time = None
     participants = ["","",""]
-    def __init__(self,_BookSystem,_id,_name,_description,_start_time,_end_time): #TODO: time
+    def __init__(self,_BookSystem,_name,_description,_start_time,_end_time): #TODO: time
         self.BookSystem = _BookSystem
-        self.id = _id
         self.name = _name
         self.description = _description
         self.start_time = _start_time

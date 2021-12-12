@@ -108,6 +108,7 @@ class BookInterface(BaseInterface.BaseInterface):
             index += 1
     def ClickRoomButton(self, _roomName):
         self.state = 1
+        self.targetRoom = _roomName
         self.chooseRoomLabel.config(text='      Choose Room     ' + _roomName)
         self.Enable()
     '''============================Calendar============================'''
@@ -385,12 +386,18 @@ class BookInterface(BaseInterface.BaseInterface):
             self.OrganizerErrorLabel.place(x=180,y=52)
             complete_event = False
         if complete_event:
-            room = self.BookSystem.getRoom("") #傳入room得名字，回傳room
-            room.addEvent(Event.Event(self.BookSystem,"name","description",self.convert_to_RFC_datetime(1900,8,7,0,0),self.convert_to_RFC_datetime(1900,8,7,0,0)))            
+            _endTime = self.endTimeDropBox.get()
+            _endTimeSplit = _endTime.split(":")
+            _hour = int(_endTimeSplit[0])
+            _minute = int(_endTimeSplit[1])
+            #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,int(self.TargetStartHour),int(self.TargetStartMin)))
+            #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
+            room = self.BookSystem.getRoom(self.targetRoom) #傳入room得名字，回傳room
+            room.addEvent(Event.Event(self.BookSystem,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute)))            
         pass
-    
-
-    def convert_to_RFC_datetime(year=1900, month=1, day=1, hour=0, minute=0):
-        hour-=8 #台灣時區
+    '''============================OtherMethod============================'''
+    def convert_to_RFC_datetime(self, year=1900, month=1, day=1, hour=0, minute=0):
+        #hour-=8 #台灣時區
         dt = datetime.datetime(year, month, day, hour, minute, 0).isoformat() + 'Z'
         return dt
+
