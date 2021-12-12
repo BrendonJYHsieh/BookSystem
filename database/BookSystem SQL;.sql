@@ -19,6 +19,11 @@ Create table Participants(
     Email varchar(40) Not Null
 );
 
+Create table Users(
+    UserName varchar(40) Not Null,
+	Password varchar(100) Not Null
+);
+
 Insert into Rooms (RoomID,RoomName) Values
 ("etrewtwe@dfasfas","TR"),
 ("etrewtwe@dfasfas","IB"),

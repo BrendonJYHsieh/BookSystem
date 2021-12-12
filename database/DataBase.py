@@ -46,6 +46,23 @@ class DataBaseManager:
     self.cursor.execute(sql, params)
     for x in self.cursor:
       print(x)
+    
+  def get_users(self):
+    sql = "Select Username FROM users"
+    self.cursor.execute(sql)
+    tuples = []
+    for x in self.cursor:
+      tuples.append(x)
+      print(x)
+    return tuples
+  
+  def vaild_user(self, Username):
+    sql = "Select Password FROM users WHERE Username = %s"
+    val = (Username)
+    params = (val,) # Due to single value
+    self.cursor.execute(sql, params)
+    for x in self.cursor:
+      print(x)
 
   def create_room(self,RoomID, RoomName):
     sql = "INSERT IGNORE INTO rooms (RoomID, RoomName) VALUES (%s, %s) "
@@ -65,6 +82,12 @@ class DataBaseManager:
     self.cursor.execute(sql, val)
     self.mydb.commit()
 
+  def create_user(self,Username, Password):
+    sql = "INSERT IGNORE INTO users (Username, Password) VALUES (%s, %s) "
+    val = (Username,Password)
+    self.cursor.execute(sql, val)
+    self.mydb.commit()  
+    
   def delete_room(self,RoomName):
     sql = "DELETE FROM rooms WHERE RoomName = %s"
     val = (RoomName)
