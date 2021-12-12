@@ -18,7 +18,21 @@ class Room:
         self.events.append(event)
         self.BookSystem.db.create_event(event.id,event.name,event.description,event.start_time,event.end_time,self.name)
         return
-    def deleteEvent(self):
+    def deleteEvent(self,event):
+        print('Delete Event!')
+        found=False
+        for i in range(len(self.events)):
+            if self.events[i].name == event.name:
+                event.id = self.events[i].id
+                found = True
+                del self.events[i]
+                break
+        if not found:
+            return
+        self.db.delete_event(event.name)     
+        #self.ui.roomListDelete(event.name)
+        self.gc.Delete_Event(event.id)
+        print('Delete Event successful!')
         return
     def modifyEvent(self):
         return
