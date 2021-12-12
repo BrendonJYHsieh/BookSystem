@@ -409,7 +409,9 @@ class BookInterface(BaseInterface.BaseInterface):
             #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,int(self.TargetStartHour),int(self.TargetStartMin)))
             #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
             room = self.BookSystem.getRoom(self.targetRoom) #傳入room得名字，回傳room
-            room.addEvent(Event.Event(self.BookSystem,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute),final_participants))            
+            new_event = Event.Event(self.BookSystem,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
+            new_event.update_participants(final_participants)
+            room.addEvent(new_event)
         pass
     '''============================OtherMethod============================'''
     def convert_to_RFC_datetime(self, year=1900, month=1, day=1, hour=0, minute=0):

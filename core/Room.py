@@ -15,7 +15,8 @@ class Room:
         event.id = self.BookSystem.gc.Create_Event(self.id,event.name,event.description,
                     (datetime.strptime(event.start_time,'%Y-%m-%dT%H:%M:%SZ')-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'),
                     (datetime.strptime(event.end_time,'%Y-%m-%dT%H:%M:%SZ')-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'))
-        self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)
+        if event.participants: #participants not empty
+            self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)        
         self.events.append(event)
         self.BookSystem.db.create_event(event.id,event.name,event.description,event.start_time,event.end_time,self.name)
         return
@@ -30,8 +31,7 @@ class Room:
                 break
         if not found:
             return
-        self.db.delete_event(event.name)     
-        #self.ui.roomListDelete(event.name)
+        self.db.delete_event(event.name)
         self.gc.Delete_Event(event.id)
         print('Delete Event successful!')
     def modifyEvent(self):

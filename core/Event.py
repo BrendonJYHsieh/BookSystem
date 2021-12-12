@@ -9,6 +9,7 @@ class Event:
     description = ""
     start_time : datetime
     end_time : datetime
+    participants = None
     def __init__(self,_BookSystem,_name,_description,_start_time,_end_time): #TODO: time
         self.BookSystem = _BookSystem
         self.name = _name
@@ -16,3 +17,5 @@ class Event:
         self.start_time = _start_time
         self.end_time = _end_time
         return
+    def update_participants(self,_participants):
+        self.participants = _participants
