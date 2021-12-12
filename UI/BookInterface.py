@@ -395,12 +395,13 @@ class BookInterface(BaseInterface.BaseInterface):
         final_participants.append(self.OrganizerStr.get())
         for i in range(1,len(self.Participants)):
             if self.invalid_email(self.Participants[i]):
-                final_participants.append(self.Participants[i])
-            else:
                 #TODO 信箱格式錯誤警告
                 complete_event = False
-                break
-            
+                break               
+            else:
+                final_participants.append(self.Participants[i])
+
+        print(self.Participants)
 
         if complete_event:
             _endTime = self.endTimeDropBox.get()
