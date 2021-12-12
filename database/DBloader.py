@@ -8,7 +8,7 @@ class DBloader:
         room_tuples = db.get_rooms()
         for x in room_tuples:
             room = Room.Room(BookSystem,x[1])
-            room._id = x[0];
+            room.id = x[0];
             room.BookSystem = BookSystem
             self.rooms.append(room)
         

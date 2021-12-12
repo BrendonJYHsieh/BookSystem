@@ -65,6 +65,7 @@ class BookSystem:
             if self.rooms[i].name == old_name:
                 found = True
                 self.rooms[i].name = new_name
+                roomID = self.rooms[i].id
                 break
         if not found:
             #TODO 彈出警告視窗
@@ -73,4 +74,6 @@ class BookSystem:
         print("new:" + new_name)
         self.db.get_rooms()    
         self.db.update_room(old_name,new_name)
-        #self.gc.Update_Calendar(old_name,new_name)
+        print("ROOMID")
+        print(roomID)
+        self.gc.Update_Calendar(roomID,new_name)
