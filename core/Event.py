@@ -16,6 +16,7 @@ class Event:
         self.description = _description
         self.start_time = _start_time
         self.end_time = _end_time
+        self.participants = []
         return
     def update_participants(self,_participants):
         self.participants = _participants
