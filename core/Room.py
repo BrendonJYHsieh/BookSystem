@@ -36,3 +36,14 @@ class Room:
         print('Delete Event successful!')
     def modifyEvent(self):
         return
+
+    def getEvent(self,name):
+        for i in range(len(self.events)):
+            if self.events[i].name == name:
+                return self.events[i]
+        return None
+    def getEventParticipants(self,event_id):
+        for i in range(len(self.events)):
+            if self.events[i].id == event_id:
+                return self.events[i].participants
+        return None

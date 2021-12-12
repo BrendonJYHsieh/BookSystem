@@ -26,6 +26,11 @@ class BookSystem:
             if self.rooms[i].name == name:
                 return self.rooms[i]
         return None
+    def getRoomEvents(self,room_name):
+        for i in range(len(self.rooms)):
+            if self.rooms[i].name == room_name:
+                return self.rooms[i].events
+        return None
 
     def addRoom(self,room):
         print('Add Room!')
