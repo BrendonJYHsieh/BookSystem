@@ -10,6 +10,7 @@ class Room:
     def __init__(self,_BookSystem,_name):
         self.BookSystem = _BookSystem
         self.name = _name
+        self.events = []
         return
     def addEvent(self,event):        
         event.id = self.BookSystem.gc.Create_Event(self.id,event.name,event.description,
