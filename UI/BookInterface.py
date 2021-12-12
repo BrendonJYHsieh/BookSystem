@@ -5,6 +5,7 @@ import tkinter.ttk as ttk
 import datetime
 from tkinter.constants import ANCHOR, BOTH, CENTER, COMMAND, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
 from typing import Text
+import re
 from UI import BaseInterface
 from core import Room,Event
 
@@ -385,6 +386,21 @@ class BookInterface(BaseInterface.BaseInterface):
             self.OrganizerErrorLabel.configure(text="舉辦人信箱不得為空...")
             self.OrganizerErrorLabel.place(x=180,y=52)
             complete_event = False
+        elif self.invalid_email(self.OrganizerStr.get()):
+            self.OrganizerErrorLabel.configure(text="信箱格式錯誤...")
+            self.OrganizerErrorLabel.place(x=180,y=52)
+            complete_event = False
+        
+        final_participants = []
+        for i in range(1,len(self.Participants)):
+            if self.invalid_email(self.Participants[i]):
+                final_participants.append(self.Participants[i])
+            else:
+                #TODO 信箱格式錯誤警告
+                complete_event = False
+                break
+            
+
         if complete_event:
             _endTime = self.endTimeDropBox.get()
             _endTimeSplit = _endTime.split(":")
@@ -393,11 +409,19 @@ class BookInterface(BaseInterface.BaseInterface):
             #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,int(self.TargetStartHour),int(self.TargetStartMin)))
             #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
             room = self.BookSystem.getRoom(self.targetRoom) #傳入room得名字，回傳room
-            room.addEvent(Event.Event(self.BookSystem,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute)))            
+            room.addEvent(Event.Event(self.BookSystem,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute),final_participants))            
         pass
     '''============================OtherMethod============================'''
     def convert_to_RFC_datetime(self, year=1900, month=1, day=1, hour=0, minute=0):
         #hour-=8 #台灣時區
         dt = datetime.datetime(year, month, day, hour, minute, 0).isoformat() + 'Z'
         return dt
+ 
+    def invalid_email(self,email): #檢查email格式
+        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        if(re.fullmatch(regex, email)):
+            return False 
+        else:
+            return True
+
 
