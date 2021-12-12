@@ -7,7 +7,7 @@ class DBloader:
     def load(self,BookSystem,db):
         room_tuples = db.get_rooms()
         for x in room_tuples:
-            room = Room.Room(BookSystem,x[0])
+            room = Room.Room(BookSystem,x[0],x[1])
             room.BookSystem = BookSystem
             self.rooms.append(room)
         
