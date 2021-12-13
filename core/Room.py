@@ -22,11 +22,14 @@ class Room:
         self.BookSystem.db.create_event(event.id,event.name,event.description,event.start_time,event.end_time,self.name)
         return
     def deleteEvent(self,event):
-        print('Delete Event!')
+        # print('Delete Event!')
+        # print("*****")
+        # print(event.id)
+        # print("999999999")
+        
         found=False
         for i in range(len(self.events)):
-            if self.events[i].name == event.name:
-                event.id = self.events[i].id
+            if self.events[i].id == event.id:
                 found = True
                 del self.events[i]
                 break
