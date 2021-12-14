@@ -21,7 +21,12 @@ class BookSystem:
         self.ui.initialUI()
         self.uil.load(self.ui,self.rooms)
         self.ui.runUI()
-
+    def update(self):
+        self.rooms.clear()
+        self.rooms = self.dbl.load(self,self.db)
+        print("----------------------------")
+        print(len(self.rooms))
+        self.uil.load(self.ui,self.rooms)
     def getRoom(self,name):
         for i in range(len(self.rooms)):
             if self.rooms[i].name == name:
