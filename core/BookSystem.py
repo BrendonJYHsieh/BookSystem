@@ -24,8 +24,7 @@ class BookSystem:
     def update(self):
         self.rooms.clear()
         self.rooms = self.dbl.load(self,self.db)
-        print("----------------------------")
-        print(len(self.rooms))
+        print("-----------<update>------------")
         self.uil.load(self.ui,self.rooms)
     def getRoom(self,name):
         for i in range(len(self.rooms)):

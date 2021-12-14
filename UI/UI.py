@@ -109,7 +109,7 @@ class BookSystemUI():
         #ImageTest4 = tk.Label(self.ManagerGroup, image=self.Img4).pack(side=tk.LEFT)
         #SettingGroup pack
         ImageTest5 = tk.Label(self.SettingGroup, image=self.Img5).place(relx=0,rely=0)
-        self.app.after(5000,self.regular_update)
+        self.app.after(10000,self.regular_update)
 
     def runUI(self):
         self.loginInterface = LogInInterface.LoginInterface(self.app,self.BookSystem)
