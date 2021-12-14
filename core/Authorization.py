@@ -12,6 +12,7 @@ class Authorization:
         s = hashlib.sha1()
         s.update(password.encode("utf-8"))
         h = s.hexdigest()
+        print("username")
         self.db.create_user(username,h)
         
     def login(self,username,password):

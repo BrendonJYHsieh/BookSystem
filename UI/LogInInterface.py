@@ -41,7 +41,9 @@ class LoginInterface(BaseInterface.BaseInterface):
         pass
 
     def LogInAccount(self):
-        self.SetActive(False)
+        self.BookSystem.auth.login(self.accountStr.get(),self.passwordStr.get())
+        self.SetActive(not self.BookSystem.auth.valid)
         pass
     def SignAccount(self):
+        self.BookSystem.auth.register(self.accountStr.get(),self.passwordStr.get())
         pass

@@ -1,7 +1,7 @@
 from UI import UI,UIloader
 from database import DataBase,DBloader
 from google_calendar import CalendarAPI
-from core import Room
+from core import Room,Authorization
 class BookSystem:
     users = []
     rooms = []
@@ -11,6 +11,7 @@ class BookSystem:
         self.db = DataBase.DataBaseManager()
         self.dbl = DBloader.DBloader()
         self.uil = UIloader.UIloader()
+        self.auth = Authorization.Authorization()
         return
     def start(self):
         self.rooms = self.dbl.load(self,self.db)
