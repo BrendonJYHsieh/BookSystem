@@ -12,14 +12,23 @@ class Authorization:
         s = hashlib.sha1()
         s.update(password.encode("utf-8"))
         h = s.hexdigest()
-        print("username")
-        self.db.create_user(username,h)
+        data = self.db.get_user(username)
+        if(data):
+            print("User has already existed")
+        else:
+            self.db.create_user(username)
         
     def login(self,username,password):
         s = hashlib.sha1()
         s.update(password.encode("utf-8"))
         h = s.hexdigest()
-        if(self.db.vaild_user(username)[0]==h):
-            self.valid = True;
-            self.CurrentUser = username
+        data = self.db.vaild_user(username)
+        if(data):
+            if(self.db.vaild_user(username)[0]==h):
+                self.valid = True;
+                self.CurrentUser = username
+            else:
+                print("Password is error.")
+        else:
+            print("User don't exist.")
         

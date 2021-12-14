@@ -47,9 +47,11 @@ class DataBaseManager:
     for x in self.cursor:
       print(x)
     
-  def get_users(self):
-    sql = "Select Username FROM users"
-    self.cursor.execute(sql)
+  def get_user(self, Username):
+    sql = "Select Username FROM users WHERE Username = %s"
+    val = (Username)
+    params = (val,) # Due to single value
+    self.cursor.execute(sql, params)
     tuples = []
     for x in self.cursor:
       tuples.append(x)

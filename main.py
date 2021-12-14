@@ -3,7 +3,6 @@ from core import Authorization
 
 def main():
     
-    
     sys = BookSystem.BookSystem()
     sys.start()
 
