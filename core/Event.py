@@ -20,3 +20,8 @@ class Event:
         return
     def update_participants(self,_participants):
         self.participants = _participants
+    def in_event(self,email):
+        for i in self.participants:
+            if email == i:
+                return True
+        return False

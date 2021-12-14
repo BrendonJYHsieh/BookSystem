@@ -40,16 +40,19 @@ class Room:
         self.BookSystem.db.delete_event(event.id)
         self.BookSystem.gc.Delete_Event(self.id,event.id)
         print('Delete Event successful!')
-    def modifyEvent(self,event,deleted_users):
-        print('Modify Event!')        
-        self.BookSystem.db.update_event(event.id,event.name,event.description,event.start_time,event.end_time,self.name)
-        if event.participants: #participants not empty
-            self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)
-            for participant in event.participants:
-                self.BookSystem.db.create_participant(event.id,participant);      
-        if event.deleted_users:
-            for username in event.deleted_users:
-                self.BookSystem.db.delete_participant(username,participant); 
+    def updateEvent(self,new_event):
+        for i in range(len(self.events)):
+            if self.events[i].id == new_event.id:
+                for participant in self.events[i].participants:
+                    if new_event.in_event(participant):
+                        self.BookSystem.db.create_participant(new_event.id,participant)                       
+                    else:
+                       self.BookSystem.db.delete_participant(new_event.id,participant)
+                self.BookSystem.db.update_event(new_event.id,new_event.name,new_event.description,new_event.start_time,new_event.end_time)
+                self.events[i] = new_event
+                if new_event.participants: #participants not empty
+                    self.BookSystem.gc.Update_Attendee(self.id,new_event.id,new_event.participants)
+                break            
         print('Modify Event successful!')
         return
 
