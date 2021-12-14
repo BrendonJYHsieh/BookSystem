@@ -29,6 +29,10 @@ class BookInterface(BaseInterface.BaseInterface):
     def Enable(self):
         self.mainCanvas.place(x=230,y=20)
         self.interfaceTitle.place(x=10,y=10)
+        self.Switch()
+    def Disable(self):
+        self.mainCanvas.place_forget()
+    def Switch(self):
         if self.state == 0:
             self.chooseRoomLabel.place(x=40,y=60)
             self.calendarLabel.place_forget()
@@ -65,8 +69,6 @@ class BookInterface(BaseInterface.BaseInterface):
             self.SetTimeLineActive(False)
             self.SetCheckBoardActive(True)
             self.backButton.place(x=0,y=540)
-    def Disable(self):
-        self.mainCanvas.place_forget()
     def Back(self):
         self.state -= 1
         if self.state ==0:
@@ -75,7 +77,7 @@ class BookInterface(BaseInterface.BaseInterface):
             self.calendarLabel.configure(text="      Choose Date")
         elif self.state == 2:
             self.timeLineLabel.configure(text="      Choose Time")
-        self.Enable()
+        self.Switch()
         pass
     '''============================RoomList============================'''
     def CreateRoomListGroup(self):
@@ -107,7 +109,11 @@ class BookInterface(BaseInterface.BaseInterface):
     def CreateRoom(self):
         index = 0
         for room in self.BookSystem.rooms:
-            self.roomBtnList.append(tk.Button(self.roomListSecondFram,text=room.name,height=2,width=46,command=lambda r = room.name : self.ClickRoomButton(r)))
+            roomName = room.name
+            for event in room.events:
+                if datetime.now() > event.start_time and datetime.now() < event.end_time:
+                    roomName += ' (使用中)'
+            self.roomBtnList.append(tk.Button(self.roomListSecondFram,text=roomName,height=2,width=46,command=lambda r = room.name : self.ClickRoomButton(r)))
             index += 1
         index = 0
         for btn in self.roomBtnList:
@@ -121,8 +127,7 @@ class BookInterface(BaseInterface.BaseInterface):
     def BackToRoomList(self):
         self.state = 0
         self.chooseRoomLabel.configure(text="      Choose Room")
-        self.Enable()
-        self.SetActive(False)
+        self.Switch()
         pass
     '''============================Calendar============================'''
     def CreateCalendarGroup(self):
