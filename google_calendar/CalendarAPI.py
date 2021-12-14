@@ -45,10 +45,12 @@ class calendar_API:
             'status':'confirmed',
             'transparency':'opaque',
             'visibility':'private',
+            'guestsCanInviteOthers':'false'
         }
         response = self.service.events().insert(
             calendarId=id,
-            body=request_body
+            body=request_body,
+            sendUpdates="all"
         ).execute()
         pprint(response)
         print("Event Created")
@@ -57,7 +59,8 @@ class calendar_API:
     def Delete_Event(self, id, eventid):
         self.service.events().delete(
         calendarId = id,
-        eventId = eventid
+        eventId = eventid,
+        sendUpdates="all"
         ).execute()
         print("Event Deleted")
 
@@ -67,7 +70,8 @@ class calendar_API:
         self.service.events().update(
         calendarId = id,
         eventId = eventid,
-        body = response).execute()
+        body = response,
+        sendUpdates="all").execute()
         print("Event summary updated")
 
     def Update_Description(self, id, eventid, description):
@@ -76,7 +80,8 @@ class calendar_API:
         self.service.events().update(
         calendarId = id,
         eventId = eventid,
-        body = response).execute()
+        body = response,
+        sendUpdates="all").execute()
         print("Event description updated")
 
     def Update_Time(self, id, eventid, start_time, end_time):
@@ -86,7 +91,8 @@ class calendar_API:
         self.service.events().update(
         calendarId = id,
         eventId = eventid,
-        body = response).execute()
+        body = response,
+        sendUpdates="all").execute()
         print("Event Time updated")
 
     def Update_Attendee(self, id, eventid, attendee):
@@ -100,7 +106,8 @@ class calendar_API:
             self.service.events().patch(
             calendarId = id,
             eventId = eventid,
-            body=response).execute()
+            body=response,
+            sendUpdates="all").execute()
         else:
             request_body = {
                 "attendees": [add_attendees]
@@ -110,7 +117,8 @@ class calendar_API:
             self.service.events().patch(
             calendarId = id,
             eventId = eventid,
-            body=response).execute()
+            body=response,
+            sendUpdates="all").execute()
     
         print("Event attendee updated")
         
@@ -124,7 +132,8 @@ class calendar_API:
         self.service.events().patch(
         calendarId = id,
         eventId = eventid,
-        body=response).execute()
+        body=response,
+        sendUpdates="all").execute()
         print("Attendee Deleted")
 
 
