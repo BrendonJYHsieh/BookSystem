@@ -44,9 +44,7 @@ class Room:
         for i in range(len(self.events)):
             if self.events[i].id == new_event.id:
                 for participant in self.events[i].participants:
-                    if new_event.in_event(participant):
-                        self.BookSystem.db.create_participant(new_event.id,participant)                       
-                    else:
+                    if not new_event.in_event(participant):
                         self.BookSystem.db.delete_participant(new_event.id,participant)
                 self.BookSystem.db.update_event(new_event.id,new_event.name,new_event.description,new_event.start_time,new_event.end_time)
                 self.events[i] = new_event
