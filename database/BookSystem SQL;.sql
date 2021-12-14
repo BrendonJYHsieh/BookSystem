@@ -47,7 +47,7 @@ Insert into Events (EventID, EventName, EventDescription, StartTime, EndTime, Ro
 ("10","軟體工程", "Teacher:柯拉飛", '2021-10-15 13:20:00', '2021-10-15 15:10:00', "TR")
 
 Insert into Participants (EventID, Email) Values
-("0","b10815044@gapps.ntust.edu.tw"),
+("47u9716adbs709hv3nbmlr6b24","b10815044@gapps.ntust.edu.tw"),
 
 ("1","b10815044@gapps.ntust.edu.tw"),
 

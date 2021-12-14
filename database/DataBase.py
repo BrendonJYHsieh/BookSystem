@@ -125,7 +125,7 @@ DBM = DataBaseManager()
 ### Create ###
 # DBM.create_room("test")
 # DBM.show_rooms()
-
+DBM.create_participant("ewt","tewt")
 # DBM.create_event(11,"軟體工程", "Teacher:柯拉飛", '2021-10-15 13:20:00', '2021-10-15 15:10:00', "TR")
 #DBM.show_events('TR')
 
