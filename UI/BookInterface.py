@@ -316,6 +316,13 @@ class BookInterface(BaseInterface.BaseInterface):
         pass
     def ModifyEvent(self,_event):
         '''修改寫這邊'''
+        self.titleNameStr.set('')
+        self.OrganizerStr.set('')
+        self.Participants.clear()
+        self.Participants.append('')
+        self.Participant.configure(values=self.Participants)
+        self.Participant.current(0)
+        self.Describe.delete(1.0,"end")
         self.state = 3
         self.timeLineLabel.config(text='      Choose Time       ' + str(_event.start_time.hour).zfill(2) + '：' + str(_event.start_time.minute).zfill(2) + '      to')
         self.titleNameStr.set(_event.name)
@@ -324,12 +331,12 @@ class BookInterface(BaseInterface.BaseInterface):
         currentEndTime = 0
         if _event.start_time.minute == 0:
             count += 1
-            self.leftTime.append(str(_event.start_time.hour).zfill(2) + '：' + str(30).zfill(2))
+            self.leftTime.append(str(_event.start_time.hour).zfill(2) + ':' + str(30).zfill(2))
             if _event.end_time.hour == _event.start_time.hour and _event.end_time.minute == 30:
                 currentEndTime = count
         for i in range(_event.start_time.hour + 1 ,24):
-            self.leftTime.append(str(i).zfill(2) + '：' + str(0).zfill(2))
-            self.leftTime.append(str(i).zfill(2) + '：' + str(30).zfill(2))
+            self.leftTime.append(str(i).zfill(2) + ':' + str(0).zfill(2))
+            self.leftTime.append(str(i).zfill(2) + ':' + str(30).zfill(2))
             if _event.end_time.hour == i and _event.end_time.minute == 0:
                 currentEndTime = count
             count += 1
@@ -341,7 +348,6 @@ class BookInterface(BaseInterface.BaseInterface):
         self.Participants.clear()
         self.deletePaticipants.clear()
         self.Participants.append("")
-        print(_event.participants)
         for i in range(len(_event.participants)):
             if i ==0 :
                 self.OrganizerStr.set(_event.participants[i])
@@ -360,6 +366,7 @@ class BookInterface(BaseInterface.BaseInterface):
         self.EventGroup.place(x=0,y=150)
         self.endTimeDropBox.place(x=380,y=114)
         self.backButton.place(x=0,y=540)
+        self.CheckingBtn.configure(command = lambda event = _event : self.CheckBoardModify(event))
         pass
     '''============================CheckBoard============================'''
     def CreateCheckBoardGroup(self):
@@ -415,6 +422,7 @@ class BookInterface(BaseInterface.BaseInterface):
             self.Participant.configure(values=self.Participants)
             self.Participant.current(0)
             self.Describe.delete(1.0,"end")
+            self.CheckingBtn.configure(command=self.CheckBoardFinish)
             self.UpdateLeftTime()
         else :
             self.EventGroup.place_forget()
@@ -453,7 +461,7 @@ class BookInterface(BaseInterface.BaseInterface):
         self.Participant.configure(values=self.Participants)
         self.Participant.current(0)
         pass
-    def CheckBoardFinish(self):
+    def CheckFormat(self):
         self.NameErrorLabel.place_forget()
         self.OrganizerErrorLabel.place_forget()
         complete_event = True
@@ -470,19 +478,19 @@ class BookInterface(BaseInterface.BaseInterface):
             self.OrganizerErrorLabel.place(x=180,y=52)
             complete_event = False
         
-        final_participants = []
-        final_participants.append(self.OrganizerStr.get())
+        self.final_participants = []
+        self.final_participants.append(self.OrganizerStr.get())
         for i in range(1,len(self.Participants)):
             if self.invalid_email(self.Participants[i]):
                 #TODO 信箱格式錯誤警告
                 complete_event = False
                 break               
             else:
-                final_participants.append(self.Participants[i])
-
+                self.final_participants.append(self.Participants[i])
         print(self.Participants)
-
-        if complete_event:
+        return complete_event
+    def CheckBoardFinish(self):
+        if self.CheckFormat() == True:
             _endTime = self.endTimeDropBox.get()
             _endTimeSplit = _endTime.split(":")
             _hour = int(_endTimeSplit[0])
@@ -494,8 +502,29 @@ class BookInterface(BaseInterface.BaseInterface):
             #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
             room = self.BookSystem.getRoom(self.targetRoom) #傳入room得名字，回傳room
             new_event = Event.Event(self.BookSystem,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
-            new_event.update_participants(final_participants)
+            new_event.update_participants(self.final_participants)
             room.addEvent(new_event)
+            self.UpdateTimeLineEvent()
+        pass
+    def CheckBoardModify(self,_event):
+        if self.CheckFormat() == True:
+            _endTime = self.endTimeDropBox.get()
+            _endTimeSplit = _endTime.split(":")
+            _hour = int(_endTimeSplit[0])
+            _minute = int(_endTimeSplit[1])
+            if _hour == 24 and _minute == 0:
+                _hour = 23
+                _minute = 59
+            print(self.BookSystem,self.titleNameStr.get())
+            print(self.Describe.get(1.0, tk.END+"-1c"))
+            print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin))
+            print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
+            print(self.final_participants)
+            room = self.BookSystem.getRoom(self.targetRoom) #傳入room得名字，回傳room
+            new_event = Event.Event(self.BookSystem,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
+            new_event.id = _event.id
+            new_event.update_participants(self.final_participants)
+            room.updateEvent(new_event)
             self.UpdateTimeLineEvent()
         pass
     '''============================OtherMethod============================'''
