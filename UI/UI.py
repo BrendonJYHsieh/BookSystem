@@ -123,6 +123,7 @@ class BookSystemUI():
         self.room_list.delete(idx)
         self.room_name_strv.set("")
         self.bookInterface.UpdateRoomList()
+        self.bookInterface.BackToRoomList()
     def roomListUpdate(self):
         print("room update")
         selection = self.room_list.curselection()

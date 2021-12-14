@@ -69,6 +69,12 @@ class BookInterface(BaseInterface.BaseInterface):
         self.mainCanvas.place_forget()
     def Back(self):
         self.state -= 1
+        if self.state ==0:
+            self.chooseRoomLabel.configure(text="      Choose Room")
+        elif self.state == 1:
+            self.calendarLabel.configure(text="      Choose Date")
+        elif self.state == 2:
+            self.timeLineLabel.configure(text="      Choose Time")
         self.Enable()
         pass
     '''============================RoomList============================'''
@@ -112,6 +118,12 @@ class BookInterface(BaseInterface.BaseInterface):
         self.targetRoom = _roomName
         self.chooseRoomLabel.config(text='      Choose Room     ' + _roomName)
         self.Enable()
+    def BackToRoomList(self):
+        self.state = 0
+        self.chooseRoomLabel.configure(text="      Choose Room")
+        self.Enable()
+        self.SetActive(False)
+        pass
     '''============================Calendar============================'''
     def CreateCalendarGroup(self):
         self.calendarGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd =0, highlightthickness = 0,background="black")
