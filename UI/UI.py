@@ -6,7 +6,7 @@ import datetime
 from tkinter.constants import ANCHOR, BOTH, CENTER, COMMAND, DISABLED, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
 from typing import Text
 from core import Room
-from UI import BaseInterface,BookInterface
+from UI import BaseInterface,LogInInterface,BookInterface
 #import BookSystem
 #import Room
 #import Event
@@ -101,6 +101,7 @@ class BookSystemUI():
 
         self.bookInterface = BookInterface.BookInterface(self.app,self.BookSystem)
         self.bookInterface.SetActive(True)
+
         #bookingGroup pack
         #UserGroup pack
         ImageTest3 = tk.Label(self.UserGroup, image=self.Img3).pack(side=tk.LEFT)
@@ -110,6 +111,8 @@ class BookSystemUI():
         ImageTest5 = tk.Label(self.SettingGroup, image=self.Img5).place(relx=0,rely=0)
 
     def runUI(self):
+        self.loginInterface = LogInInterface.LoginInterface(self.app,self.BookSystem)
+        self.loginInterface.SetActive(True)
         self.app.mainloop()
     
     def roomListInsert(self,name):

@@ -283,15 +283,7 @@ class BookInterface(BaseInterface.BaseInterface):
         self.TargetStartHour = _hour
         self.TargetStartMin = _min
         self.state = 3
-        if self.TargetStartHour < 10:
-            hrStr = '0' + str(self.TargetStartHour)
-        else:
-            hrStr = str(self.TargetStartHour)
-        if self.TargetStartMin == 0:
-            minStr = '0' + str(self.TargetStartMin)
-        else:
-            minStr = str(self.TargetStartMin)
-        self.timeLineLabel.config(text='      Choose Time       ' + hrStr + '：' + minStr + '      to')
+        self.timeLineLabel.config(text='      Choose Time       ' + str(self.TargetStartHour).zfill(2) + '：' + str(self.TargetStartMin).zfill(2) + '      to')
         self.Enable()
     def CreatEventLabel(self, _event):
         startPosition = _event.start_time.hour * 2
@@ -307,9 +299,11 @@ class BookInterface(BaseInterface.BaseInterface):
         eventBoxCanvas = tk.Canvas(self.timeLineSecFram,background='red', relief=SUNKEN, highlightthickness=0,width=280,height=60 * (endPosition - startPosition))
         eventlabel = tk.Label(eventBoxCanvas, text = _event.name, font=('Helvetica', '13'),background='red')
         deleteBtn = tk.Button(eventBoxCanvas, text="delete",command=lambda event = _event, target = eventBoxCanvas : self.DeleteEvent(event, target))
+        modifyBtn = tk.Button(eventBoxCanvas, text="modify",command=lambda event = _event : self.ModifyEvent(event))
         eventBoxCanvas.place(anchor='nw',x=10,y=60.05 * startPosition)
         eventlabel.place(anchor='nw',x=0,y=0)
         deleteBtn.place(anchor='nw',x=0,y=30)
+        modifyBtn.place(anchor='nw',x=50,y=30)
         self.eventBoxList.append(eventBoxCanvas)
         pass
     def DeleteEvent(self, _event, target):
@@ -320,11 +314,52 @@ class BookInterface(BaseInterface.BaseInterface):
         self.eventBoxList.remove(target)
         self.UpdateTimeLineEvent()
         pass
-    def ModifyEvent(self):
+    def ModifyEvent(self,_event):
         '''修改寫這邊'''
         self.state = 3
-        
-        self.Enable()
+        self.timeLineLabel.config(text='      Choose Time       ' + str(_event.start_time.hour).zfill(2) + '：' + str(_event.start_time.minute).zfill(2) + '      to')
+        self.titleNameStr.set(_event.name)
+        self.leftTime.clear()
+        count = 0
+        currentEndTime = 0
+        if _event.start_time.minute == 0:
+            count += 1
+            self.leftTime.append(str(_event.start_time.hour).zfill(2) + '：' + str(30).zfill(2))
+            if _event.end_time.hour == _event.start_time.hour and _event.end_time.minute == 30:
+                currentEndTime = count
+        for i in range(_event.start_time.hour + 1 ,24):
+            self.leftTime.append(str(i).zfill(2) + '：' + str(0).zfill(2))
+            self.leftTime.append(str(i).zfill(2) + '：' + str(30).zfill(2))
+            if _event.end_time.hour == i and _event.end_time.minute == 0:
+                currentEndTime = count
+            count += 1
+            if _event.end_time.hour == i and _event.end_time.minute == 30:
+                currentEndTime = count
+            count += 1
+        self.endTimeDropBox.configure(values=self.leftTime)
+        self.endTimeDropBox.current(currentEndTime)
+        self.Participants.clear()
+        self.deletePaticipants.clear()
+        self.Participants.append("")
+        print(_event.participants)
+        for i in range(len(_event.participants)):
+            if i ==0 :
+                self.OrganizerStr.set(_event.participants[i])
+            else:
+                self.Participants.append(_event.participants[i])
+        self.Participant.configure(values=self.Participants)
+        self.Participant.current(0)
+        self.Describe.insert(1.0,_event.description)
+
+        self.chooseRoomLabel.place(x=40,y=60)
+        self.calendarLabel.place(x=40,y=85)
+        self.timeLineLabel.place(x=40,y=110)
+        self.SetRoomListActive(False)
+        self.SetCalendarActive(False)
+        self.SetTimeLineActive(False)
+        self.EventGroup.place(x=0,y=150)
+        self.endTimeDropBox.place(x=380,y=114)
+        self.backButton.place(x=0,y=540)
         pass
     '''============================CheckBoard============================'''
     def CreateCheckBoardGroup(self):
@@ -354,6 +389,7 @@ class BookInterface(BaseInterface.BaseInterface):
         self.ParticipantLabel = tk.Label(self.EventGroup,text="Participant (E-mail)：", font=('Helvetica', '15'),background="#dcdcdc")
         self.ParticipantLabel.place(x=0,y=100)
         self.Participants = []
+        self.deletePaticipants = []
         self.Participants.append("")
         self.Participant = ttk.Combobox(self.EventGroup,values=self.Participants)
         self.Participant.bind("<<ComboboxSelected>>", lambda event:self.ChangeParticipantLabelDropDown)
@@ -364,7 +400,6 @@ class BookInterface(BaseInterface.BaseInterface):
         self.deleteParticipant.place(x = 470, y=108)
         self.DescribeLabel = tk.Label(self.EventGroup,text="Event Describe：", font=('Helvetica', '15'),background="#dcdcdc")
         self.DescribeLabel.place(x = 0, y=130)
-        self.DescribeStr = tk.StringVar()
         self.Describe = tk.Text(self.EventGroup,width=70,height=13)
         self.Describe.place(x=0,y=170,anchor="nw")
         self.CheckingBtn = tk.Button(self.EventGroup,text="OK",command=self.CheckBoardFinish)
@@ -373,6 +408,13 @@ class BookInterface(BaseInterface.BaseInterface):
         if _value == True:
             self.EventGroup.place(x=0,y=150)
             self.endTimeDropBox.place(x=380,y=114)
+            self.titleNameStr.set('')
+            self.OrganizerStr.set('')
+            self.Participants.clear()
+            self.Participants.append('')
+            self.Participant.configure(values=self.Participants)
+            self.Participant.current(0)
+            self.Describe.delete(1.0,"end")
             self.UpdateLeftTime()
         else :
             self.EventGroup.place_forget()
@@ -406,6 +448,7 @@ class BookInterface(BaseInterface.BaseInterface):
     def DeleteParticipantLabelDropDown(self):
         if self.Participant.get() == "":
             return
+        self.deletePaticipants.append(self.Participant.get())
         self.Participants.remove(self.Participant.get())
         self.Participant.configure(values=self.Participants)
         self.Participant.current(0)
