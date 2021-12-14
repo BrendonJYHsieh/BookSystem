@@ -2,9 +2,9 @@ import mysql.connector
 import datetime
 class DataBaseManager:
   def __init__(self) -> None:
-      self.update()
+      self.connect()
       pass
-  def update(self):
+  def connect(self):
     self.mydb = mysql.connector.connect(
       host="140.118.127.106",
       user="Manager",
