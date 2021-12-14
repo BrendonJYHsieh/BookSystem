@@ -47,6 +47,9 @@ class Room:
             self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)
             for participant in event.participants:
                 self.BookSystem.db.create_participant(event.id,participant);      
+        if event.deleted_users:
+            for username in event.deleted_users:
+                self.BookSystem.db.delete_participant(username,participant); 
         print('Modify Event successful!')
         return
 
