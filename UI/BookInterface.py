@@ -330,10 +330,10 @@ class BookInterface(BaseInterface.BaseInterface):
         count = 0
         currentEndTime = 0
         if _event.start_time.minute == 0:
-            count += 1
             self.leftTime.append(str(_event.start_time.hour).zfill(2) + ':' + str(30).zfill(2))
             if _event.end_time.hour == _event.start_time.hour and _event.end_time.minute == 30:
                 currentEndTime = count
+            count += 1
         for i in range(_event.start_time.hour + 1 ,24):
             self.leftTime.append(str(i).zfill(2) + ':' + str(0).zfill(2))
             self.leftTime.append(str(i).zfill(2) + ':' + str(30).zfill(2))
