@@ -24,10 +24,17 @@ Create table Users(
 	Password varchar(100) Not Null
 );
 
+Create table Synchronize(
+    LastUpdate datetime Not Null
+);
+
 Insert into Rooms (RoomID,RoomName) Values
 ("etrewtwe@dfasfas","TR"),
 ("etrewtwe@dfasfas","IB"),
 ("etrewtwe@dfasfas","T4")
+
+INSERT INTO Synchronize(LastUpdate)
+VALUES(NOW());
 
 Insert into Events (EventID, EventName, EventDescription, StartTime, EndTime, RoomName) Values
 ("0","次世代無線網路概論", "Teacher:周詩梵", '2021-10-11 10:20:00', '2021-10-11 11:10:00', "IB"),

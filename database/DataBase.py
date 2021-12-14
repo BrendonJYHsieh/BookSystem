@@ -1,5 +1,5 @@
 import mysql.connector
-
+import datetime
 class DataBaseManager:
   mydb = mysql.connector.connect(
     host="140.118.127.106",
@@ -8,7 +8,16 @@ class DataBaseManager:
     database="Booksystem",
     auth_plugin='mysql_native_password'
   )
+  
   cursor = mydb.cursor()
+  def get_lastupdate(self):
+    self.cursor.execute("Select * from Synchronize LIMIT 1")
+    tuples = []
+    for x in self.cursor:
+      tuples.append(x)
+      print(x)
+    return x
+  
   def get_rooms(self):
     self.cursor.execute("Select * from rooms")
     tuples = []
@@ -65,6 +74,7 @@ class DataBaseManager:
     self.cursor.execute(sql, params)
     for x in self.cursor:
       return x
+  
 
   def create_room(self,RoomID, RoomName):
     sql = "INSERT IGNORE INTO rooms (RoomID, RoomName) VALUES (%s, %s) "
@@ -121,13 +131,22 @@ class DataBaseManager:
     val = (EventName ,EventDescription, StartTime , EndTime , EventID)
     self.cursor.execute(sql, val)
     self.mydb.commit()
+    
+  def update_lastupdate(self):
+    sql = "UPDATE Synchronize SET LastUpdate = %s"
+    val = (datetime.datetime.now())
+    params = (val,)
+    self.cursor.execute(sql, params)
+    self.mydb.commit()
+
 
 DBM = DataBaseManager()
 #DBM.update_event(0,"@@@","dsfsdfsdf",'2021-11-19 13:20:00', '2021-11-19 15:20:00')
 ### Create ###
 # DBM.create_room("test")
 # DBM.show_rooms()
-DBM.create_participant("ewt","tewt")
+DBM.update_lastupdate()
+DBM.get_lastupdate()
 # DBM.create_event(11,"軟體工程", "Teacher:柯拉飛", '2021-10-15 13:20:00', '2021-10-15 15:10:00', "TR")
 #DBM.show_events('TR')
 

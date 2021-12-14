@@ -49,6 +49,7 @@ class BookSystem:
         self.db.create_room(room.id,room.name)
         self.ui.roomListInsert(room.name)
         print('Add Room successful!')
+        self.db.update_lastupdate()
         return
     def deleteRoom(self,room):
         print('Delete Room!')
@@ -65,6 +66,7 @@ class BookSystem:
         self.ui.roomListDelete(room.name)
         self.gc.Delete_Calendar(room.id)
         print('Delete Room successful!')
+        self.db.update_lastupdate()
         return
     def updateRoom(self,old_name,new_name):
         print('Update Room!')
@@ -81,4 +83,5 @@ class BookSystem:
         self.db.update_room(old_name,new_name)
         self.ui.roomListUpdate()
         self.gc.Update_Calendar(roomID,new_name)
+        self.db.update_lastupdate()
         print('Update Room successful!')
