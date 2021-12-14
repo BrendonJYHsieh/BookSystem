@@ -17,7 +17,9 @@ class Room:
                     (event.start_time-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'),
                     (event.end_time-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'))
         if event.participants: #participants not empty
-            self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)      
+            self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)
+            for participant in event:
+                self.BookSystem.db.create_participant(event.id,participant.email);      
         self.events.append(event)
         self.BookSystem.db.create_event(event.id,event.name,event.description,event.start_time,event.end_time,self.name)
         return
