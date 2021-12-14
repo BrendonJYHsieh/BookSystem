@@ -32,7 +32,7 @@ class LoginInterface(BaseInterface.BaseInterface):
         self.signBtn.place(x=100,y=120)
 
         self.remindText = tk.Label(self.mainCanvas,text="測試版登入介面，功能未實作，點<<Login>>直接進入。",font=('Helvetica', '15'),fg="red").place(x=0,y=170)
-
+        self.SetActive(0)
     def Enable(self):
         self.mainCanvas.place(x=0,y=0)
         pass

@@ -112,7 +112,7 @@ class BookSystemUI():
 
     def runUI(self):
         self.loginInterface = LogInInterface.LoginInterface(self.app,self.BookSystem)
-        self.loginInterface.SetActive(True)
+        self.loginInterface.SetActive(0)
         self.app.mainloop()
     
     def roomListInsert(self,name):
