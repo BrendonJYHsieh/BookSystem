@@ -10,11 +10,11 @@ class DataBaseManager:
       user="Manager",
       password="10815044",
       database="Booksystem",
-      auth_plugin='mysql_native_password'
+      auth_plugin='mysql_native_password',
+      autocommit=True
     )  
     self.cursor = self.mydb.cursor()
   def get_lastupdate(self):
-    #self.update()
     self.cursor.execute("Select * from Synchronize LIMIT 1")
     tuples = []
     for x in self.cursor:
@@ -22,7 +22,6 @@ class DataBaseManager:
     return x
   
   def get_rooms(self):
-    self.update()
     self.cursor.execute("Select * from rooms")
     tuples = []
     for x in self.cursor:
@@ -30,7 +29,6 @@ class DataBaseManager:
     return tuples
 
   def get_events(self, RoomName):
-    #self.update()
     sql = "Select * FROM events WHERE RoomName = %s"
     val = (RoomName)
     params = (val,) # Due to single value
@@ -41,7 +39,6 @@ class DataBaseManager:
     return tuples
 
   def get_participants(self, EventID):
-    #self.update()
     sql = "Select Email FROM participants WHERE EventID = %s"
     val = (EventID)
     params = (val,) # Due to single value
@@ -52,7 +49,6 @@ class DataBaseManager:
     return tuples
       
   def get_MyEvent(self, Email):
-    #self.update()
     sql = "Select EventID FROM participants WHERE Email = %s"
     val = (Email)
     params = (val,) # Due to single value
@@ -61,7 +57,6 @@ class DataBaseManager:
       print(x)
     
   def get_user(self, Username):
-    #self.update()
     sql = "Select Username FROM users WHERE Username = %s"
     val = (Username)
     params = (val,) # Due to single value
