@@ -12,7 +12,8 @@ class Room:
         self.name = _name
         self.events = []
         return
-    def addEvent(self,event):        
+    def addEvent(self,event):
+        print('Add Event!')        
         event.id = self.BookSystem.gc.Create_Event(self.id,event.name,event.description,
                     (event.start_time-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'),
                     (event.end_time-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'))
@@ -22,16 +23,12 @@ class Room:
         if event.participants: #participants not empty
             self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)
             for participant in event.participants:
-                print("add?")
                 self.BookSystem.db.create_participant(event.id,participant);      
-        
+        print('Add Event successful!')
         return
+    
     def deleteEvent(self,event):
-        # print('Delete Event!')
-        # print("*****")
-        # print(event.id)
-        # print("999999999")
-        
+        print('Delete Event!')
         found=False
         for i in range(len(self.events)):
             if self.events[i].id == event.id:
@@ -43,7 +40,14 @@ class Room:
         self.BookSystem.db.delete_event(event.id)
         self.BookSystem.gc.Delete_Event(self.id,event.id)
         print('Delete Event successful!')
-    def modifyEvent(self):
+    def modifyEvent(self,event,deleted_users):
+        print('Modify Event!')        
+        self.BookSystem.db.update_event(event.id,event.name,event.description,event.start_time,event.end_time,self.name)
+        if event.participants: #participants not empty
+            self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)
+            for participant in event.participants:
+                self.BookSystem.db.create_participant(event.id,participant);      
+        print('Modify Event successful!')
         return
 
     def getEvent(self,name):
