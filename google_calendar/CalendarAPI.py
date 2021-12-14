@@ -95,7 +95,7 @@ class calendar_API:
         sendUpdates="all").execute()
         print("Event Time updated")
 
-    def Update_Attendee(self, id, eventid, attendee):
+    def Add_Attendee(self, id, eventid, attendee):
         response = self.service.events().get(calendarId=id,eventId=eventid).execute()
         add_attendees = {
             "email": attendee

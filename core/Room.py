@@ -20,9 +20,9 @@ class Room:
         
         self.events.append(event)
         self.BookSystem.db.create_event(event.id,event.name,event.description,event.start_time,event.end_time,self.name)
-        if event.participants: #participants not empty
-            self.BookSystem.gc.Update_Attendee(self.id,event.id,event.participants)
+        if event.participants: #participants not empty            
             for participant in event.participants:
+                self.BookSystem.gc.Add_Attendee(self.id,event.id,participant)
                 self.BookSystem.db.create_participant(event.id,participant);      
         print('Add Event successful!')
         return
@@ -46,14 +46,14 @@ class Room:
                 for participant in self.events[i].participants:
                     if not new_event.in_event(participant):
                         self.BookSystem.db.delete_participant(new_event.id,participant)
+                        self.BookSystem.gc.Delete_Attendee(self.id,new_event.id,participant)
                 for participant in new_event.participants:
                     if not self.events[i].in_event(participant):
                         self.BookSystem.db.create_participant(new_event.id,participant)
+                        self.BookSystem.gc.Add_Attendee(self.id,new_event.id,participant)
                 
                 self.BookSystem.db.update_event(new_event.id,new_event.name,new_event.description,new_event.start_time,new_event.end_time)
                 self.events[i] = new_event
-                if new_event.participants: #participants not empty
-                    self.BookSystem.gc.Update_Attendee(self.id,new_event.id,new_event.participants)
                 break            
         print('Modify Event successful!')
         return
