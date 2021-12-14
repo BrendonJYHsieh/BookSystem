@@ -22,6 +22,7 @@ class DBloader:
         for room_index in range(len(self.rooms)):
             for event_index in range(len(self.rooms[room_index].events)):
                 participant_tuples = db.get_participants(self.rooms[room_index].events[event_index].id)
+                print(participant_tuples)
                 for x in participant_tuples:
                     self.rooms[room_index].events[event_index].participants.append(x[0])
         return self.rooms
