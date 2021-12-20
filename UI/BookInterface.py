@@ -14,6 +14,7 @@ Interface -> RoomList = 0 -> Calendar = 1 -> TimeLine = 2 -> CheckBoard = 3
 '''
 class BookInterface(BaseInterface.BaseInterface):
     state = 0
+    TargetDay = -1
     def __init__(self,_parent,_booksystem):
         super().__init__(_parent)
         self.BookSystem = _booksystem
@@ -300,7 +301,11 @@ class BookInterface(BaseInterface.BaseInterface):
         for label in self.eventBoxList:
             label.destroy()
         self.eventBoxList.clear()
-        for event in self.BookSystem.getRoom(self.targetRoom).events :
+        room = self.BookSystem.getRoom(self.targetRoom)
+        if room == None:
+            self.BackToRoomList()
+            return
+        for event in room.events :
             dateTmp = event.start_time
             if dateTmp.year == self.targetYear and dateTmp.month == self.targetMonth and dateTmp.day == self.TargetDay :
                 self.CreatEventLabel(event)

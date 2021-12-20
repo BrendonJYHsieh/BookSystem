@@ -28,6 +28,10 @@ class BookSystem:
     def check_db_update(self):
         if self.last_update_time < self.db.get_lastupdate():
             self.update()
+            #TODO 節省更新UI次數
+            self.ui.bookInterface.UpdateRoomList()
+            if self.ui.bookInterface.TargetDay != -1:
+                self.ui.bookInterface.UpdateTimeLineEvent()
     def getRoom(self,name):
         for i in range(len(self.rooms)):
             if self.rooms[i].name == name:
