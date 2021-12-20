@@ -83,28 +83,28 @@ class DataBaseManager:
     val = (RoomID,RoomName)
     self.cursor.execute(sql, val)
     self.mydb.commit()
-    #self.update_lastupdate()
+    self.update_lastupdate()
 
   def create_event(self, EventID, EventName, EventDescription, StartTime, EndTime, RoomName):
     sql = "INSERT IGNORE INTO events (EventID, EventName, EventDescription, StartTime, EndTime, RoomName) VALUES (%s,%s,%s,%s,%s,%s) "
     val = (EventID, EventName, EventDescription, StartTime, EndTime, RoomName)
     self.cursor.execute(sql, val)
     self.mydb.commit()
-    #self.update_lastupdate()
+    self.update_lastupdate()
 
   def create_participant(self, EventID, Email):
     sql = "INSERT IGNORE INTO participants (EventID, Email) VALUES (%s,%s) "
     val = (EventID, Email)
     self.cursor.execute(sql, val)
     self.mydb.commit()
-    #self.update_lastupdate()
+    self.update_lastupdate()
 
   def create_user(self,Username, Password):
     sql = "INSERT IGNORE INTO users (Username, Password) VALUES (%s, %s) "
     val = (Username,Password)
     self.cursor.execute(sql, val)
     self.mydb.commit()
-    #self.update_lastupdate() 暫時不更新這個
+    #self.update_lastupdate() #暫時不更新這個
     
   def delete_room(self,RoomName):
     sql = "DELETE FROM rooms WHERE RoomName = %s"
@@ -155,7 +155,7 @@ DBM = DataBaseManager()
 ### Create ###
 # DBM.create_room("test")
 # DBM.show_rooms()
-DBM.update_lastupdate()
+#DBM.update_lastupdate()
 DBM.get_lastupdate()
 # DBM.create_event(11,"軟體工程", "Teacher:柯拉飛", '2021-10-15 13:20:00', '2021-10-15 15:10:00', "TR")
 #DBM.show_events('TR')
