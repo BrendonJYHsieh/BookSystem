@@ -129,6 +129,15 @@ class BookInterface(BaseInterface.BaseInterface):
         self.chooseRoomLabel.configure(text="      Choose Room")
         self.Switch()
         pass
+    def BackToTimeLine(self):
+        self.state = 0
+        self.SetRoomListActive(False)
+        self.SetCalendarActive(False)
+        self.SetTimeLineActive(True)
+        self.SetCheckBoardActive(False)
+        self.backButton.place(x=0,y=540)
+        self.timeLineLabel.config(text='      Choose Time')
+        pass
     '''============================Calendar============================'''
     def CreateCalendarGroup(self):
         self.calendarGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd =0, highlightthickness = 0,background="black")

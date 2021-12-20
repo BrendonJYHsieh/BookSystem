@@ -35,6 +35,8 @@ class LoginInterface(BaseInterface.BaseInterface):
         self.SetActive(0)
     def Enable(self):
         self.mainCanvas.place(x=0,y=0)
+        self.accountStr.set('')
+        self.passwordStr.set('')
         pass
     def Disable(self):
         self.mainCanvas.place_forget()

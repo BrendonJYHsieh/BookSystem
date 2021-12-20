@@ -194,19 +194,21 @@ class BookSystemUI():
             self.ManagerGroup.place(x=230,y=20)
             self.SettingGroup.place_forget()
         elif _btnNum == 3:
-            self.listBtn1.config(text="  Booking          ",bg="#20b2aa")
-            self.listBtn1.config(command=lambda : self.ClickListBtn(0))
+            self.listBtn1.config(text="  Booking      ",bg="#22736e")
+            self.listBtn1.config(command=0)
             self.listBtn2.config(text="  My meeting     ",bg="#20b2aa")
             self.listBtn2.config(command=lambda : self.ClickListBtn(1))
             self.listBtn3.config(text="  Manage room  ",bg="#20b2aa")
             self.listBtn3.config(command=lambda : self.ClickListBtn(2))
-            self.listBtn4.config(text="  Setting            ", bg="#22736e")
-            self.listBtn4.config(command=0)
-            self.bookInterface.SetActive(False)
+            self.listBtn4.config(text="  Setting              ", bg="#20b2aa")
+            self.listBtn4.config(command=lambda : self.ClickListBtn(3))
+            self.bookInterface.SetActive(True)
             self.UserGroup.place_forget()
             self.ManagerGroup.place_forget()
-            self.SettingGroup.place(x=230,y=20)
-
+            self.SettingGroup.place_forget()
+            self.bookInterface.BackToRoomList()
+            self.loginInterface.SetActive(1)
+            
 
     
 
