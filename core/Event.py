@@ -20,7 +20,6 @@ class Event:
         return
     def update_participants(self,_participants):
         self.participants = _participants
-        self.BookSystem.db.update_lastupdate()
     def in_event(self,email):
         for i in self.participants:
             if email == i:

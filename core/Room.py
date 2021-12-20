@@ -25,11 +25,10 @@ class Room:
                 self.BookSystem.gc.Add_Attendee(self.id,event.id,participant)
                 self.BookSystem.db.create_participant(event.id,participant);      
         print('Add Event successful!')
-        self.BookSystem.db.update_lastupdate()
         return
     
     def deleteEvent(self,event):
-        print('Delete Event!')
+        self.check_db_update()
         found=False
         for i in range(len(self.events)):
             if self.events[i].id == event.id:
@@ -38,11 +37,12 @@ class Room:
                 break
         if not found:
             return
+        print('Delete Event!')
         self.BookSystem.db.delete_event(event.id)
         self.BookSystem.gc.Delete_Event(self.id,event.id)
         print('Delete Event successful!')
-        self.BookSystem.db.update_lastupdate()
     def updateEvent(self,new_event):
+        self.check_db_update()
         for i in range(len(self.events)):
             if self.events[i].id == new_event.id:
                 for participant in self.events[i].participants:
@@ -58,7 +58,6 @@ class Room:
                 self.events[i] = new_event
                 break            
         print('Modify Event successful!')
-        self.BookSystem.db.update_lastupdate()
         return
 
     def getEvent(self,name):

@@ -1,5 +1,6 @@
 import mysql.connector
 import datetime
+
 class DataBaseManager:
   def __init__(self) -> None:
       self.connect()
@@ -17,9 +18,10 @@ class DataBaseManager:
   def get_lastupdate(self):
     self.cursor.execute("Select * from Synchronize LIMIT 1")
     tuples = []
+    x : datetime
     for x in self.cursor:
       tuples.append(x)
-    return x
+    return x[0]
   
   def get_rooms(self):
     self.cursor.execute("Select * from rooms")
@@ -81,24 +83,28 @@ class DataBaseManager:
     val = (RoomID,RoomName)
     self.cursor.execute(sql, val)
     self.mydb.commit()
+    #self.update_lastupdate()
 
   def create_event(self, EventID, EventName, EventDescription, StartTime, EndTime, RoomName):
     sql = "INSERT IGNORE INTO events (EventID, EventName, EventDescription, StartTime, EndTime, RoomName) VALUES (%s,%s,%s,%s,%s,%s) "
     val = (EventID, EventName, EventDescription, StartTime, EndTime, RoomName)
     self.cursor.execute(sql, val)
     self.mydb.commit()
+    #self.update_lastupdate()
 
   def create_participant(self, EventID, Email):
     sql = "INSERT IGNORE INTO participants (EventID, Email) VALUES (%s,%s) "
     val = (EventID, Email)
     self.cursor.execute(sql, val)
     self.mydb.commit()
+    #self.update_lastupdate()
 
   def create_user(self,Username, Password):
     sql = "INSERT IGNORE INTO users (Username, Password) VALUES (%s, %s) "
     val = (Username,Password)
     self.cursor.execute(sql, val)
-    self.mydb.commit()  
+    self.mydb.commit()
+    #self.update_lastupdate() 暫時不更新這個
     
   def delete_room(self,RoomName):
     sql = "DELETE FROM rooms WHERE RoomName = %s"
@@ -106,6 +112,7 @@ class DataBaseManager:
     params = (val,) # Due to single value
     self.cursor.execute(sql, params)
     self.mydb.commit()
+    self.update_lastupdate()
 
   def delete_event(self, EventID):
     sql = "DELETE FROM events WHERE EventID = %s"
@@ -113,6 +120,7 @@ class DataBaseManager:
     params = (val,) # Due to single value
     self.cursor.execute(sql, params)
     self.mydb.commit()
+    self.update_lastupdate()
   
   def delete_participant(self, EventID, Email):
     sql = "DELETE FROM participants WHERE EventID = %s AND Email = %s"
@@ -125,12 +133,14 @@ class DataBaseManager:
     val = (NewRoomName,OldRoomName)
     self.cursor.execute(sql, val)
     self.mydb.commit()
+    self.update_lastupdate()
   
   def update_event(self, EventID, EventName,EventDescription, StartTime, EndTime):
     sql = "UPDATE events SET EventName = %s, EventDescription = %s, StartTime = %s, EndTime = %s WHERE EventID = %s"
     val = (EventName ,EventDescription, StartTime , EndTime , EventID)
     self.cursor.execute(sql, val)
     self.mydb.commit()
+    self.update_lastupdate()
     
   def update_lastupdate(self):
     sql = "UPDATE Synchronize SET LastUpdate = %s"

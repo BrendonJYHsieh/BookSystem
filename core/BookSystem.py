@@ -2,9 +2,11 @@ from UI import UI,UIloader
 from database import DataBase,DBloader
 from google_calendar import CalendarAPI
 from core import Room,Authorization
+import datetime
 class BookSystem:
     users = []
     rooms = []
+    last_update_time : datetime
     def __init__(self):
         self.ui = UI.BookSystemUI(self)
         self.gc = CalendarAPI.calendar_API()
@@ -14,18 +16,18 @@ class BookSystem:
         self.auth = Authorization.Authorization()
         return
     def start(self):
-        self.rooms = self.dbl.load(self,self.db)
-        for room_index in range(len(self.rooms)):
-            print(self.rooms[room_index].name)
-
         self.ui.initialUI()
-        self.uil.load(self.ui,self.rooms)
+        self.update()
         self.ui.runUI()
     def update(self):
         self.rooms.clear()
         self.rooms = self.dbl.load(self,self.db)
-        print("-----------<update>------------")
         self.uil.load(self.ui,self.rooms)
+        self.last_update_time = datetime.datetime.now()
+        print("-----------<update>------------")
+    def check_db_update(self):
+        if self.last_update_time < self.db.get_lastupdate():
+            self.update()
     def getRoom(self,name):
         for i in range(len(self.rooms)):
             if self.rooms[i].name == name:
@@ -37,26 +39,25 @@ class BookSystem:
                 return self.rooms[i].events
         return None
 
-    def addRoom(self,room):
-        print('Add Room!')
+    def addRoom(self,room):        
         if room.name == "":
             print('Room_name is Empty!')
-            return
+            return        
+        self.check_db_update()
         for i in range(len(self.rooms)):
             if self.rooms[i].name == room.name:
                 #TODO 彈出警告視窗
                 print('Room_name is Duplicated!')
                 return
-        room.BookSystem = self
+        print('Add Room!')
         room.id = self.gc.Create_Calendar(room.name)
         self.rooms.append(room)
         self.db.create_room(room.id,room.name)
         self.ui.roomListInsert(room.name)
         print('Add Room successful!')
-        self.db.update_lastupdate()
         return
     def deleteRoom(self,room):
-        print('Delete Room!')
+        self.check_db_update()
         found=False
         for i in range(len(self.rooms)):
             if self.rooms[i].name == room.name:
@@ -66,6 +67,7 @@ class BookSystem:
                 break
         if not found:
             return
+        print('Delete Room!')
         self.db.delete_room(room.name)     
         self.ui.roomListDelete(room.name)
         self.gc.Delete_Calendar(room.id)
@@ -73,7 +75,7 @@ class BookSystem:
         self.db.update_lastupdate()
         return
     def updateRoom(self,old_name,new_name):
-        print('Update Room!')
+        self.check_db_update()        
         found=False
         for i in range(len(self.rooms)):
             if self.rooms[i].name == old_name:
@@ -84,6 +86,7 @@ class BookSystem:
         if not found:
             #TODO 彈出警告視窗
             return
+        print('Update Room!')
         self.db.update_room(old_name,new_name)
         self.ui.roomListUpdate()
         self.gc.Update_Calendar(roomID,new_name)
