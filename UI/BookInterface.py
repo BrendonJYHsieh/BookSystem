@@ -527,6 +527,10 @@ class BookInterface(BaseInterface.BaseInterface):
             #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,int(self.TargetStartHour),int(self.TargetStartMin)))
             #print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
             room = self.BookSystem.getRoom(self.targetRoom) #傳入room得名字，回傳room
+            if room == None:
+                #TODO 提醒房間已不存在
+                self.BackToRoomList()
+                return
             new_event = Event.Event(self.BookSystem,room,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
             new_event.update_participants(self.final_participants)
             room.addEvent(new_event)
@@ -547,6 +551,10 @@ class BookInterface(BaseInterface.BaseInterface):
             print(self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
             print(self.final_participants)
             room = self.BookSystem.getRoom(self.targetRoom) #傳入room得名字，回傳room
+            if room == None:
+                #TODO 提醒房間已不存在
+                self.BackToRoomList()
+                return
             new_event = Event.Event(self.BookSystem,room,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
             new_event.id = _event.id
             new_event.update_participants(self.final_participants)

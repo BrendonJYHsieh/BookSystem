@@ -14,6 +14,8 @@ class Room:
         return
     def addEvent(self,event):
         self.BookSystem.check_db_update()
+        if not self.exist():
+            self.BookSystem.ui.bookInterface.BackToRoomList()
         print('Add Event!')        
         event.id = self.BookSystem.gc.Create_Event(self.id,event.name,event.description,
                     (event.start_time-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -30,6 +32,13 @@ class Room:
     
     def deleteEvent(self,event):
         self.BookSystem.check_db_update()
+        if not self.exist():
+            self.BookSystem.ui.bookInterface.BackToRoomList()
+            return
+        if not event.exist():
+            print("BackToTimeLine")
+            self.BookSystem.ui.bookInterface.BackToTimeLine()
+            return
         found=False
         for i in range(len(self.events)):
             if self.events[i].id == event.id:
@@ -44,6 +53,13 @@ class Room:
         print('Delete Event successful!')
     def updateEvent(self,new_event):
         self.BookSystem.check_db_update()
+        if not self.exist():
+            self.BookSystem.ui.bookInterface.BackToRoomList()
+            return
+        if not new_event.exist():
+            print("BackToTimeLine")
+            self.BookSystem.ui.bookInterface.BackToTimeLine()
+            return
         for i in range(len(self.events)):
             if self.events[i].id == new_event.id:
                 self.events[i].update(new_event)
