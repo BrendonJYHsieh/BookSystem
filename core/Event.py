@@ -39,3 +39,7 @@ class Event:
             if email == i:
                 return True
         return False
+    def exist(self):
+        if self.room.exist():
+            return self.room.getEventById(self.id) != None
+        return False

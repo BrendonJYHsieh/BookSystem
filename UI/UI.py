@@ -73,7 +73,7 @@ class BookSystemUI():
         self.room_name_strv.set('mew mew')
         self.room_name = tk.Entry(self.ManagerGroup,textvariable=self.room_name_strv)
 
-        self.room_list = tk.Listbox(self.ManagerGroup)
+        self.room_list = tk.Listbox(self.ManagerGroup,selectmode=tk.SINGLE)
         self.room_scroll = tk.Scrollbar(self.room_list, orient=tk.VERTICAL,command = self.room_list.yview)
 
         self.room_list.config(yscrollcommand = self.room_scroll)
@@ -119,6 +119,17 @@ class BookSystemUI():
         self.BookSystem.check_db_update()
         self.app.after(5000,self.regular_update)
     
+    def roomListSelect(self, index):
+        self.room_list.select_clear(0, tk.END)
+        self.room_list.selection_set(index)
+        self.room_list.see(index)
+        self.room_list.activate(index)
+        self.room_list.selection_anchor(index)
+        self.room_list.event_generate("<<ListboxSelect>>")
+
+    def getRoomList(self):
+        return self.room_list.get(0,tk.END)
+
     def roomListClear(self):
         self.room_list.delete(0,'end')
 
