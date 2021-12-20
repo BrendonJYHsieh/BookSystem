@@ -1,7 +1,6 @@
 from database import DataBase
 from core import Room,Event
 class DBloader:
-    rooms = []
     def __init__(self):
         return
     def load(self,BookSystem,db):
@@ -10,18 +9,18 @@ class DBloader:
             room = Room.Room(BookSystem,x[1])
             room.id = x[0]
             room.BookSystem = BookSystem
-            self.rooms.append(room)
+            BookSystem.rooms.append(room)
         
-        for room_index in range(len(self.rooms)):
-            event_tuples = db.get_events(self.rooms[room_index].name)
+        for room_index in range(len(BookSystem.rooms)):
+            event_tuples = db.get_events(BookSystem.rooms[room_index].name)
             for x in event_tuples:
-                event = Event.Event(BookSystem,x[1],x[2],x[3],x[4])
+                event = Event.Event(BookSystem,BookSystem.rooms[room_index],x[1],x[2],x[3],x[4])
                 event.id = x[0]
-                self.rooms[room_index].events.append(event) 
+                BookSystem.rooms[room_index].events.append(event) 
         
-        for room_index in range(len(self.rooms)):
-            for event_index in range(len(self.rooms[room_index].events)):
-                participant_tuples = db.get_participants(self.rooms[room_index].events[event_index].id)
+        for room_index in range(len(BookSystem.rooms)):
+            for event_index in range(len(BookSystem.rooms[room_index].events)):
+                participant_tuples = db.get_participants(BookSystem.rooms[room_index].events[event_index].id)
                 for x in participant_tuples:
-                    self.rooms[room_index].events[event_index].participants.append(x[0])
-        return self.rooms
+                    BookSystem.rooms[room_index].events[event_index].participants.append(x[0])
+        return

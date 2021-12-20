@@ -21,7 +21,7 @@ class BookSystem:
         self.ui.runUI()
     def update(self):
         self.rooms.clear()
-        self.rooms = self.dbl.load(self,self.db)
+        self.dbl.load(self,self.db)
         self.uil.load(self.ui,self.rooms)
         self.last_update_time = datetime.datetime.now()
         print("-----------<update>------------")
@@ -31,6 +31,11 @@ class BookSystem:
     def getRoom(self,name):
         for i in range(len(self.rooms)):
             if self.rooms[i].name == name:
+                return self.rooms[i]
+        return None
+    def getRoomById(self,id):
+        for i in range(len(self.rooms)):
+            if self.rooms[i].id == id:
                 return self.rooms[i]
         return None
     def getRoomEvents(self,room_name):
