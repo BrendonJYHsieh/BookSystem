@@ -2,20 +2,20 @@
 Python 3.9.6\
 安裝\
 pip:\
-下載:https://bootstrap.pypa.io/get-pip.py\
+下載:https://bootstrap.pypa.io/get-pip.py
 ```console
 python get-pip.py
 ```
-all:\
+all:
 ```console
 pip install -r requirements.txt
 ```
-執行\
+執行
 ```console
 python main.py
 ```
 [建置exe方法](BUILD.md)\
-公用帳號:\
+公用帳號:
 ```
 帳:BrooksClineY@gmail.com
 密碼:123booksystem123
