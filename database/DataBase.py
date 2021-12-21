@@ -50,14 +50,27 @@ class DataBaseManager:
       tuples.append(x)
     return tuples
       
-  def get_MyEvent(self, Email):
+  def get_myEventID(self, Email):
     sql = "Select EventID FROM participants WHERE Email = %s"
     val = (Email)
     params = (val,) # Due to single value
     self.cursor.execute(sql, params)
+    tuples = []
     for x in self.cursor:
+      tuples.append(x)
+    return tuples
+  
+  def get_myEvent(self, EventID):
+    sql = "Select * FROM events WHERE EventID = %s"
+    val = (EventID)
+    params = (val,) # Due to single value
+    self.cursor.execute(sql, params)
+    tuples = []
+    for x in self.cursor:
+      tuples.append(x)
       print(x)
-    
+    return tuples
+  
   def get_user(self, Username):
     sql = "Select Username FROM users WHERE Username = %s"
     val = (Username)
@@ -66,7 +79,6 @@ class DataBaseManager:
     tuples = []
     for x in self.cursor:
       tuples.append(x)
-      print(x)
     return tuples
   
   def vaild_user(self, Username):
@@ -156,7 +168,7 @@ DBM = DataBaseManager()
 # DBM.create_room("test")
 # DBM.show_rooms()
 #DBM.update_lastupdate()
-DBM.get_lastupdate()
+DBM.get_myEvent("e6c8op1loi7ik0e34in8k1p6l0");
 # DBM.create_event(11,"軟體工程", "Teacher:柯拉飛", '2021-10-15 13:20:00', '2021-10-15 15:10:00', "TR")
 #DBM.show_events('TR')
 
