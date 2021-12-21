@@ -6,10 +6,6 @@ pip:
 ```console
 python get-pip.py
 ```
-mysql:
-```console
-pip3 install mysql-connector-python-rf
-```
 all:
 ```console
 pip install -r requirements.txt
@@ -17,7 +13,8 @@ pip install -r requirements.txt
 執行
 ```console
 python main.py
-``` 
+```
+[建置exe方法](BUILD.md)
 公用帳號:
 ```
 帳:BrooksClineY@gmail.com
