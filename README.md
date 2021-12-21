@@ -1,4 +1,5 @@
 # Booking-System
+Python 3.9.6
 安裝
 pip:
 下載:https://bootstrap.pypa.io/get-pip.py
