@@ -36,31 +36,24 @@ class UsersBookInterface(BaseInterface.BaseInterface):
         super().Enable()
         pass
     def UpdateEventList(self):
-        self.eventList.clear()
+        for btn in self.eventList:
+            btn.destroy()
+        self.eventList = []
         index = 0
         events = self.bookSystem.getUserEvents(self.bookSystem.auth.CurrentUser)
         print(events)
         for event in events:
             self.CreateEvent(index, event)
+            index += 1
         pass
     def CreateEvent(self,_index, _event):
-        '''startPosition = _event.start_time.hour * 2
-        if _event.start_time.minute != 0 :
-            startPosition += 1
-        endPosition = _event.end_time.hour * 2
-        if _event.end_time.hour == 23 and _event.end_time.minute == 59 :
-            endPosition += 2
-        elif _event.end_time.minute != 0 :
-            endPosition += 1
-        for i in range(startPosition ,endPosition):
-            self.timeLineList[i].config(state=tk.DISABLED)'''
         eventBoxCanvas = tk.Canvas(self.eventListSecondFram,background='red', relief=SUNKEN, highlightthickness=0,width=280,height=80)
         eventlabel = tk.Label(eventBoxCanvas, text = _event.name, font=('Helvetica', '13'),background='red')
-        deleteBtn = tk.Button(eventBoxCanvas, text="delete")
-        modifyBtn = tk.Button(eventBoxCanvas, text="modify")
+        #deleteBtn = tk.Button(eventBoxCanvas, text="delete")
+        #modifyBtn = tk.Button(eventBoxCanvas, text="modify")
         eventBoxCanvas.grid(row=_index,column=0,padx=10,pady = 5)
         eventlabel.place(anchor='nw',x=0,y=0)
-        deleteBtn.place(anchor='nw',x=0,y=30)
-        modifyBtn.place(anchor='nw',x=50,y=30)
+        #deleteBtn.place(anchor='nw',x=0,y=30)
+        #modifyBtn.place(anchor='nw',x=50,y=30)
         self.eventList.append(eventBoxCanvas)
         pass

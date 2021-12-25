@@ -107,7 +107,7 @@ class BookSystem:
         events = list()
         for EventID in self.db.get_myEventID(CurrentUser):
             x = self.db.get_myEvent(EventID[0])
-            event = Event.Event(BookSystem,x[5],x[1],x[2],x[3],x[4])
-            event.id = x[0]
+            event = Event.Event(self,x[0][5],x[0][1],x[0][2],x[0][3],x[0][4])
+            event.id = x[0][0]
             events.append(event)
         return events

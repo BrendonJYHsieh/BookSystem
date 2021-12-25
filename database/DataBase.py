@@ -76,7 +76,7 @@ class DataBaseManager:
     tuples = []
     for x in self.cursor:
       tuples.append(x)
-      print(x)
+      #print(x)
     return tuples
   
   def get_user(self, Username):

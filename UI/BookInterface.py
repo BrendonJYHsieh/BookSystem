@@ -131,7 +131,7 @@ class BookInterface(BaseInterface.BaseInterface):
         self.Switch()
         pass
     def BackToTimeLine(self):
-        self.state = 0
+        self.state = 2
         self.SetRoomListActive(False)
         self.SetCalendarActive(False)
         self.SetTimeLineActive(True)
@@ -158,8 +158,8 @@ class BookInterface(BaseInterface.BaseInterface):
         self.monthComboBox.bind("<<ComboboxSelected>>", lambda event:self.ChangeDateDropDown(1))
 
         self.calendarGroup.place(x=0,y=110)
-        self.yearComboBox.place(x=0,y=0)
-        self.monthComboBox.place(x=200,y=0)
+        self.yearComboBox.place(x=75,y=20)
+        self.monthComboBox.place(x=275,y=20)
         self.GenerateCalendar()
     def SetCalendarActive(self,_value):
         if _value == True:
@@ -199,7 +199,7 @@ class BookInterface(BaseInterface.BaseInterface):
         year = self.targetYear
         month = self.targetMonth
         self.calendarBackGround = tk.Canvas(self.calendarGroup,height=550,width=550, highlightthickness = 0,bd=0,background="black")
-        self.calendarBackGround.place(x=0,y=50)
+        self.calendarBackGround.place(x=80,y=80)
         self.dayBtnList =[]
         week = self.CalculateWeek(year,month)
         for i in range(1,32):

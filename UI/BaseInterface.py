@@ -8,7 +8,7 @@ from typing import Text
 
 class BaseInterface():
     def __init__(self,_parent):
-        self.mainCanvas = tk.Canvas(_parent,height=600,width=550,bd=0, highlightthickness = 0,background="white")
+        self.mainCanvas = tk.Canvas(_parent,height=600,width=550,bd=0, highlightthickness = 0,background="#dcdcdc")
     def SetActive(self,_value):
         if _value == True :
             self.Enable()
