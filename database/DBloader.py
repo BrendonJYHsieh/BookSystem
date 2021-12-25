@@ -17,16 +17,12 @@ class DBloader:
                 event = Event.Event(BookSystem,BookSystem.rooms[room_index],x[1],x[2],x[3],x[4])
                 event.id = x[0]
                 BookSystem.rooms[room_index].events.append(event) 
-        participant_tuples = db.get_participants()
-        for x in participant_tuples:
-            if BookSystem.getParticipant(x[0]) == None:
-                BookSystem.participants.append(Participant.Participant(x[0]))
         for room_index in range(len(BookSystem.rooms)):
             for event_index in range(len(BookSystem.rooms[room_index].events)):
                 participant_tuples = db.get_participants_By_Event(BookSystem.rooms[room_index].events[event_index].id)
                 for x in participant_tuples:                    
                     BookSystem.rooms[room_index].events[event_index].participants.append(x[0])
-                    participant = BookSystem.getParticipant(x[0])
+                    participant = BookSystem.addParticipant(x[0])
                     participant.add_event(BookSystem.rooms[room_index].events[event_index])
 
         return

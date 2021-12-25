@@ -20,9 +20,11 @@ class BookSystem:
     def start(self):
         self.ui.initialUI()
         self.update()
+        self.garbage_event_collection()
         self.ui.runUI()
     def update(self):
         self.rooms.clear()
+        self.participants.clear()
         self.dbl.load(self,self.db)
         print("participant amount:")
         print(len(self.participants))
@@ -126,3 +128,6 @@ class BookSystem:
             event.id = x[0][0]
             events.append(event)
         return events
+    def garbage_event_collection(self):
+        for room_index in range(len(self.rooms)):
+            self.rooms[room_index].garbage_event_collection()

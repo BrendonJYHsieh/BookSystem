@@ -518,6 +518,7 @@ class BookInterface(BaseInterface.BaseInterface):
                 break               
             else:
                 self.final_participants.append(self.Participants[i])
+
         print(self.Participants)
         return complete_event
     def CheckBoardFinish(self):
@@ -536,7 +537,14 @@ class BookInterface(BaseInterface.BaseInterface):
                 #TODO 提醒房間已不存在
                 self.BackToRoomList()
                 return
+
             new_event = Event.Event(self.BookSystem,room,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
+            for i in range(len(self.final_participants)):
+                bs_participant = self.BookSystem.getParticipant(self.final_participants[i])
+                if bs_participant != None:
+                    if not bs_participant.available_event(new_event):
+                        print("participant has two event at same time")
+                        return            
             new_event.update_participants(self.final_participants)
             room.addEvent(new_event)
             self.UpdateTimeLineEvent()
@@ -563,6 +571,12 @@ class BookInterface(BaseInterface.BaseInterface):
                 return
             new_event = Event.Event(self.BookSystem,room,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
             new_event.id = _event.id
+            for i in range(len(self.final_participants)):
+                bs_participant = self.BookSystem.getParticipant(self.final_participants[i])
+                if bs_participant != None:
+                    if not bs_participant.available_event(new_event):
+                        print("participant has two event at same time")
+                        return    
             new_event.update_participants(self.final_participants)
             room.updateEvent(new_event)
             self.UpdateTimeLineEvent()
