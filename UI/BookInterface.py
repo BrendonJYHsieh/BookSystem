@@ -280,9 +280,9 @@ class BookInterface(BaseInterface.BaseInterface):
             else : 
                 timeStr = str(time)
             if thing%2 == 0:
-                self.timeLineList.append(tk.Button(self.timeLineSecFram,text=f'\n{timeStr}:00', font=('Helvetica', '13'),fg='#dcdcdc',image=self.timeLineImgSmall,background="#575757",activebackground="#575757", disabledforeground="black", relief=SUNKEN, borderwidth=0,compound=LEFT,command=lambda hr = time,min = 0 : self.ClickTimeLine(hr,min)))
+                self.timeLineList.append(tk.Button(self.timeLineSecFram,text=f'{timeStr}:00', font=('Helvetica', '13'),fg='#dcdcdc',image=self.timeLineImgSmall,background="#575757",activebackground="#575757", disabledforeground="black", relief=SUNKEN, borderwidth=0,compound=LEFT,command=lambda hr = time,min = 0 : self.ClickTimeLine(hr,min)))
             else:
-                self.timeLineList.append(tk.Button(self.timeLineSecFram,text=f'\n{timeStr}:30', font=('Helvetica', '13'),fg='#dcdcdc',image=self.timeLineImgBig,background="#575757",activebackground="#575757", disabledforeground="black", relief=SUNKEN, borderwidth=0,compound=LEFT,command=lambda hr = time,min = 30 : self.ClickTimeLine(hr,min)))
+                self.timeLineList.append(tk.Button(self.timeLineSecFram,text=f'{timeStr}:30', font=('Helvetica', '13'),fg='#dcdcdc',image=self.timeLineImgBig,background="#575757",activebackground="#575757", disabledforeground="black", relief=SUNKEN, borderwidth=0,compound=LEFT,command=lambda hr = time,min = 30 : self.ClickTimeLine(hr,min)))
                 time += 1
 
         self.timeLineFrame.place(x=250,y=10,anchor="n")
@@ -540,6 +540,7 @@ class BookInterface(BaseInterface.BaseInterface):
             new_event.update_participants(self.final_participants)
             room.addEvent(new_event)
             self.UpdateTimeLineEvent()
+            self.BackToTimeLine()
         pass
     def CheckBoardModify(self,_event):
         if self.CheckFormat() == True:

@@ -6,7 +6,7 @@ import datetime
 from tkinter.constants import ANCHOR, BOTH, CENTER, COMMAND, DISABLED, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
 from typing import Text
 from core import Room
-from UI import BaseInterface,LogInInterface,BookInterface
+from UI import BaseInterface,LogInInterface,BookInterface,UsersBookInterface
 #import BookSystem
 #import Room
 #import Event
@@ -47,7 +47,7 @@ class BookSystemUI():
         self.listBtn3 = tk.Button(self.app, text="  Manage room  ", font=('Helvetica', '13'), image=self.btnIcon3, bg="#20b2aa",activebackground="#22736e", disabledforeground="black",height=80,width=181, relief=SUNKEN, borderwidth=0,compound=LEFT, command=lambda : self.ClickListBtn(2))
         self.btnIcon4 = tk.PhotoImage(file= r"Asset\Image\Setting_Icon.png")
         self.btnIcon4 = self.btnIcon4.subsample(17,17)
-        self.listBtn4 = tk.Button(self.app, text="  Setting              ", font=('Helvetica', '13'), image=self.btnIcon4, bg="#20b2aa",activebackground="#22736e", disabledforeground="black",height=80,width=181, relief=SUNKEN, borderwidth=0,compound=LEFT, command=lambda : self.ClickListBtn(3))
+        self.listBtn4 = tk.Button(self.app, text="  Logout              ", font=('Helvetica', '13'), image=self.btnIcon4, bg="#20b2aa",activebackground="#22736e", disabledforeground="black",height=80,width=181, relief=SUNKEN, borderwidth=0,compound=LEFT, command=lambda : self.ClickListBtn(3))
 
         #Setting LabelFrame
         #User's book
@@ -101,6 +101,7 @@ class BookSystemUI():
 
         self.bookInterface = BookInterface.BookInterface(self.app,self.BookSystem)
         self.bookInterface.SetActive(True)
+        self.usersBookInterface = UsersBookInterface.UsersBookInterface(self.app,self.BookSystem)
 
         #bookingGroup pack
         #UserGroup pack
@@ -172,10 +173,11 @@ class BookSystemUI():
             self.listBtn2.config(command=lambda : self.ClickListBtn(1))
             self.listBtn3.config(text="  Manage room  ",bg="#20b2aa")
             self.listBtn3.config(command=lambda : self.ClickListBtn(2))
-            self.listBtn4.config(text="  Setting              ", bg="#20b2aa")
+            self.listBtn4.config(text="  Logout              ", bg="#20b2aa")
             self.listBtn4.config(command=lambda : self.ClickListBtn(3))
             self.bookInterface.SetActive(True)
-            self.UserGroup.place_forget()
+            self.usersBookInterface.SetActive(False)
+            #self.UserGroup.place_forget()
             self.ManagerGroup.place_forget()
             self.SettingGroup.place_forget()
         elif _btnNum == 1:
@@ -185,10 +187,12 @@ class BookSystemUI():
             self.listBtn2.config(command=0)
             self.listBtn3.config(text="  Manage room  ",bg="#20b2aa")
             self.listBtn3.config(command=lambda : self.ClickListBtn(2))
-            self.listBtn4.config(text="  Setting              ", bg="#20b2aa")
+            self.listBtn4.config(text="  Logout              ", bg="#20b2aa")
             self.listBtn4.config(command=lambda : self.ClickListBtn(3))
             self.bookInterface.SetActive(False)
-            self.UserGroup.place(x=230,y=20)
+            self.usersBookInterface.SetActive(True)
+            self.usersBookInterface.UpdateEventList()
+            #self.UserGroup.place(x=230,y=20)
             self.ManagerGroup.place_forget()
             self.SettingGroup.place_forget()
         elif _btnNum == 2:
@@ -198,10 +202,10 @@ class BookSystemUI():
             self.listBtn2.config(command=lambda : self.ClickListBtn(1))
             self.listBtn3.config(text="  Manage room",bg="#22736e")
             self.listBtn3.config(command=0)
-            self.listBtn4.config(text="  Setting              ", bg="#20b2aa")
+            self.listBtn4.config(text="  Logout              ", bg="#20b2aa")
             self.listBtn4.config(command=lambda : self.ClickListBtn(3))
             self.bookInterface.SetActive(False)
-            self.UserGroup.place_forget()
+            self.usersBookInterface.SetActive(False)
             self.ManagerGroup.place(x=230,y=20)
             self.SettingGroup.place_forget()
         elif _btnNum == 3:
@@ -211,10 +215,10 @@ class BookSystemUI():
             self.listBtn2.config(command=lambda : self.ClickListBtn(1))
             self.listBtn3.config(text="  Manage room  ",bg="#20b2aa")
             self.listBtn3.config(command=lambda : self.ClickListBtn(2))
-            self.listBtn4.config(text="  Setting              ", bg="#20b2aa")
+            self.listBtn4.config(text="  Logout              ", bg="#20b2aa")
             self.listBtn4.config(command=lambda : self.ClickListBtn(3))
             self.bookInterface.SetActive(True)
-            self.UserGroup.place_forget()
+            self.usersBookInterface.SetActive(False)
             self.ManagerGroup.place_forget()
             self.SettingGroup.place_forget()
             self.bookInterface.BackToRoomList()

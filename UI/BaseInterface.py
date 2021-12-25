@@ -14,7 +14,9 @@ class BaseInterface():
             self.Enable()
         else :
             self.Disable()
-    def Enable():
+    def Enable(self):
+        self.mainCanvas.place(x=230,y=20)
         pass
-    def Disable():
+    def Disable(self):
+        self.mainCanvas.place_forget()
         pass
