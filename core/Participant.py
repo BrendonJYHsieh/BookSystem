@@ -32,7 +32,9 @@ class Participant:
                             print("available event")
                             return True
                         else:
+                            print("not available event")
                             return False
+                    print("available event")
                     return True
                 else:
                     print("not available event")
@@ -46,14 +48,15 @@ class Participant:
                         if not self.event_overlap(new_event,self.events[i-1]):
                             print("available event")
                             self.events.insert(i,new_event)
+                            self.print()
                             return True
                         else:
                             return False
                     return True
                 else:
-                    return False
-        self.print()
+                    return False        
         self.events.append(new_event)
+        self.print()
         return True
     def delete_event(self,event_id):
         for i in range(len(self.events)):
@@ -65,4 +68,4 @@ class Participant:
     def print(self):
         print(self.email + "'s event : ")
         for i in range(len(self.events)):
-            print(self.events[i].room.name + "  " + self.events[i].name + "  "+ str(self.events[i].start_time))
+            print(self.events[i].room.name + "  " + self.events[i].name + "  "+ str(self.events[i].start_time) +"  "+ str(self.events[i].end_time))
