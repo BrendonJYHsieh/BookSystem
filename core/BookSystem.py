@@ -1,7 +1,7 @@
 from UI import UI,UIloader
 from database import DataBase,DBloader
 from google_calendar import CalendarAPI
-from core import Room,Authorization
+from core import Room,Authorization,Event
 import datetime
 class BookSystem:
     users = []
@@ -101,3 +101,11 @@ class BookSystem:
         self.gc.Update_Calendar(roomID,new_name)
         self.db.update_lastupdate()
         print('Update Room successful!')
+    def getUserEvents(self,CurrentUser):
+        events = list()
+        for EventID in self.db.get_myEventID(CurrentUser):
+            x = self.db.get_myEvent(EventID[0])
+            event = Event.Event(BookSystem,x[5],x[1],x[2],x[3],x[4])
+            event.id = x[0]
+            events.append(event)
+        return events
