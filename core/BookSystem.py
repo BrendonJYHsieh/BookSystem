@@ -1,11 +1,13 @@
 from UI import UI,UIloader
+from core.Participant import Participant
 from database import DataBase,DBloader
 from google_calendar import CalendarAPI
-from core import Room,Authorization,Event
+from core import Room,Authorization,Event,Participant
 import datetime
 class BookSystem:
     users = []
     rooms = []
+    participants = []
     last_update_time : datetime
     def __init__(self):
         self.ui = UI.BookSystemUI(self)
