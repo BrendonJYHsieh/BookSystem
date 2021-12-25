@@ -7,7 +7,8 @@ class DataBaseManager:
       pass
   def connect(self):
     self.mydb = mysql.connector.connect(
-      host="192.168.1.105",
+      host="jp-tyo-ilj-1.natfrp.cloud",
+      port= "60867",
       user="Manager",
       password="10815044",
       database="Booksystem",
