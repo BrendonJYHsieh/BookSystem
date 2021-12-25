@@ -16,7 +16,7 @@ class Authorization:
         if(data):
             print("User has already existed")
         else:
-            self.db.create_user(username)
+            self.db.create_user(username,h)
         
     def login(self,username,password):
         s = hashlib.sha1()
