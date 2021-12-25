@@ -141,7 +141,7 @@ class BookInterface(BaseInterface.BaseInterface):
         pass
     '''============================Calendar============================'''
     def CreateCalendarGroup(self):
-        self.calendarGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd =0, highlightthickness = 0,background="black")
+        self.calendarGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd =0, highlightthickness = 0,background="#dcdcdc")
         self.date = datetime.now()
         self.targetYear = self.date.year
         self.targetMonth = self.date.month
@@ -180,7 +180,7 @@ class BookInterface(BaseInterface.BaseInterface):
             self.monthComboBox.destroy()
             self.monthComboBox = ttk.Combobox(self.calendarGroup,values=self.monthOption,state="readonly")
             self.monthComboBox.current(0)
-            self.monthComboBox.place(x=200,y=0)
+            self.monthComboBox.place(x=275,y=20)
             self.monthComboBox.bind("<<ComboboxSelected>>", lambda event:self.ChangeDateDropDown(1))
         self.targetMonth = int(self.monthComboBox.get())
         self.UpdateCalendar()
@@ -198,7 +198,7 @@ class BookInterface(BaseInterface.BaseInterface):
     def GenerateCalendar(self):
         year = self.targetYear
         month = self.targetMonth
-        self.calendarBackGround = tk.Canvas(self.calendarGroup,height=550,width=550, highlightthickness = 0,bd=0,background="black")
+        self.calendarBackGround = tk.Canvas(self.calendarGroup,height=550,width=550, highlightthickness = 0,bd=0,background="#dcdcdc")
         self.calendarBackGround.place(x=80,y=80)
         self.dayBtnList =[]
         week = self.CalculateWeek(year,month)
@@ -257,7 +257,7 @@ class BookInterface(BaseInterface.BaseInterface):
         self.UpdateTimeLineEvent()
     '''============================TimeLine============================'''
     def CreateTimeLineGroup(self):
-        self.timeLineGroup = tk.Canvas(self.mainCanvas,height=370,width=550, highlightthickness = 0,bd=0,background="black")
+        self.timeLineGroup = tk.Canvas(self.mainCanvas,height=370,width=550, highlightthickness = 0,bd=0,background="#dcdcdc")
 
         self.timeLineFrame = tk.Frame(self.timeLineGroup,height=350,width=400,bd=0,background="#575757")
         self.timeLineCanvas = tk.Canvas(self.timeLineFrame,height=350,width=400,borderwidth=0, highlightthickness=0, background="#575757")
@@ -280,9 +280,9 @@ class BookInterface(BaseInterface.BaseInterface):
             else : 
                 timeStr = str(time)
             if thing%2 == 0:
-                self.timeLineList.append(tk.Button(self.timeLineSecFram,text=f'{timeStr}:00', font=('Helvetica', '13'),fg='#dcdcdc',image=self.timeLineImgSmall,background="#575757",activebackground="#575757", disabledforeground="black", relief=SUNKEN, borderwidth=0,compound=LEFT,command=lambda hr = time,min = 0 : self.ClickTimeLine(hr,min)))
+                self.timeLineList.append(tk.Button(self.timeLineSecFram,text=f'{timeStr}:00', font=('Helvetica', '13'),fg='#dcdcdc',image=self.timeLineImgBig,background="#575757",activebackground="#575757", disabledforeground="black", relief=SUNKEN, borderwidth=0,compound=LEFT,command=lambda hr = time,min = 0 : self.ClickTimeLine(hr,min)))
             else:
-                self.timeLineList.append(tk.Button(self.timeLineSecFram,text=f'{timeStr}:30', font=('Helvetica', '13'),fg='#dcdcdc',image=self.timeLineImgBig,background="#575757",activebackground="#575757", disabledforeground="black", relief=SUNKEN, borderwidth=0,compound=LEFT,command=lambda hr = time,min = 30 : self.ClickTimeLine(hr,min)))
+                self.timeLineList.append(tk.Button(self.timeLineSecFram,text=f'{timeStr}:30', font=('Helvetica', '13'),fg='#dcdcdc',image=self.timeLineImgSmall,background="#575757",activebackground="#575757", disabledforeground="black", relief=SUNKEN, borderwidth=0,compound=LEFT,command=lambda hr = time,min = 30 : self.ClickTimeLine(hr,min)))
                 time += 1
 
         self.timeLineFrame.place(x=250,y=10,anchor="n")
@@ -292,7 +292,7 @@ class BookInterface(BaseInterface.BaseInterface):
             self.timeLineList[thing].grid(row=thing,column=0,padx=10)
     def SetTimeLineActive(self,_value):
         if _value == True:
-            self.timeLineGroup.place(x=0,y=140)
+            self.timeLineGroup.place(x=35,y=140)
         else :
             self.timeLineGroup.place_forget()
     def UpdateTimeLineEvent(self):
@@ -401,7 +401,7 @@ class BookInterface(BaseInterface.BaseInterface):
         pass
     '''============================CheckBoard============================'''
     def CreateCheckBoardGroup(self):
-        self.EventGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd=0, highlightthickness = 0, background="black")
+        self.EventGroup = tk.Canvas(self.mainCanvas,height=400,width=550,bd=0, highlightthickness = 0, background="#dcdcdc")
         #End Time Drop Down
         self.leftTime = []
         self.endTimeDropBox = ttk.Combobox(self.mainCanvas,values=self.leftTime,state="readonly")
@@ -411,10 +411,10 @@ class BookInterface(BaseInterface.BaseInterface):
         #self.endTimeDropBox.bind("<<ComboboxSelected>>", lambda event:self.DropDownChange(0))
         #Title
         self.NameLabel = tk.Label(self.EventGroup,text="Event Title：", font=('Helvetica', '15'),background="#dcdcdc")
-        self.NameLabel.place(x=0,y=20)
+        self.NameLabel.place(x=0,y=40)
         self.titleNameStr = tk.StringVar()
         self.titleName = tk.Entry(self.EventGroup,textvariable=self.titleNameStr)
-        self.titleName.place(x=120,y=28,width=200)
+        self.titleName.place(x=120,y=48,width=200)
         self.NameErrorLabel = tk.Label(self.EventGroup,text="Error...", font=('Helvetica', '10'),fg='red',background="#dcdcdc")
 
         self.OrganizerLabel = tk.Label(self.EventGroup,text="Organizer (E-mail)：", font=('Helvetica', '15'),background="#dcdcdc")

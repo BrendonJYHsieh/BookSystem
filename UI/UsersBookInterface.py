@@ -13,6 +13,8 @@ class UsersBookInterface(BaseInterface.BaseInterface):
     def __init__(self,_parent,_booksystem):
         super().__init__(_parent)
         self.bookSystem = _booksystem
+        self.interfaceTitle = tk.Label(self.mainCanvas,text="My Meeting", font=('Helvetica', '20'),background="#dcdcdc")
+        self.interfaceTitle.place(x=10,y=10)
         self.eventList = []
 
         self.eventListGroup = tk.Frame(self.mainCanvas,height=400,width=400,bd=0,background="black")
