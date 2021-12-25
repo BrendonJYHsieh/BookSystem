@@ -8,7 +8,7 @@ Create table Rooms(
 Create table Events(
     EventID varchar(30) Not Null,
 	EventName varchar(20) Not Null,
-    EventDescription varchar(400) Not Null,
+    EventDescription varchar(400),
     StartTime datetime Not Null,
     EndTime datetime Not Null,
     RoomName varchar(20) Not Null

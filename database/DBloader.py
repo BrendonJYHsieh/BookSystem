@@ -20,7 +20,7 @@ class DBloader:
         
         for room_index in range(len(BookSystem.rooms)):
             for event_index in range(len(BookSystem.rooms[room_index].events)):
-                participant_tuples = db.get_participants(BookSystem.rooms[room_index].events[event_index].id)
+                participant_tuples = db.get_participants_By_Event(BookSystem.rooms[room_index].events[event_index].id)
                 for x in participant_tuples:
                     BookSystem.rooms[room_index].events[event_index].participants.append(x[0])
         return
