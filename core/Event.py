@@ -27,10 +27,12 @@ class Event:
             if not new_event.in_event(participant):
                 self.BookSystem.db.delete_participant(self.id,participant)
                 self.BookSystem.gc.Delete_Attendee(self.room.id,self.id,participant)
+                self.BookSystem.getParticipant(participant).delete_event(self.id)
         for participant in new_event.participants:
             if not self.in_event(participant):
                 self.BookSystem.db.create_participant(self.id,participant)
                 self.BookSystem.gc.Add_Attendee(self.room.id,self.id,participant)
+                self.BookSystem.addParticipant(participant).add_event(self)
         self.BookSystem.db.update_event(new_event.id,new_event.name,new_event.description,new_event.start_time,new_event.end_time)
         self = new_event
 

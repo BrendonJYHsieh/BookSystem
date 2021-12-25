@@ -24,6 +24,10 @@ class BookSystem:
     def update(self):
         self.rooms.clear()
         self.dbl.load(self,self.db)
+        print("participant amount:")
+        print(len(self.participants))
+        for i in range(len(self.participants)):
+            print(self.participants[i].email)
         self.uil.load(self.ui,self.rooms)
         self.last_update_time = datetime.datetime.now()
         print("-----------<update>------------")
@@ -103,6 +107,17 @@ class BookSystem:
         self.gc.Update_Calendar(roomID,new_name)
         self.db.update_lastupdate()
         print('Update Room successful!')
+    def addParticipant(self,email):
+        get = self.getParticipant(email)
+        if get == None:
+            self.participants.append(Participant.Participant(email))
+            return self.participants[-1]
+        return get
+    def getParticipant(self,email):
+        for i in range(len(self.participants)):
+            if self.participants[i].email == email:
+                return self.participants[i]
+        return None
     def getUserEvents(self,CurrentUser):
         events = list()
         for EventID in self.db.get_myEventID(CurrentUser):
