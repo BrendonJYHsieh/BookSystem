@@ -545,7 +545,6 @@ class BookInterface(BaseInterface.BaseInterface):
                 if bs_participant != None:
                     if not bs_participant.available_event(new_event):
                         print("participant has two event at same time")
-                        pass
                         return
                     print("participant available event")        
             new_event.update_participants(self.final_participants)
