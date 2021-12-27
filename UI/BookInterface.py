@@ -192,9 +192,12 @@ class BookInterface(BaseInterface.BaseInterface):
         if(year%400==0 or (year%4==0 and year%100!=0)):
             yearBase = 1
         if(yearBase == 0):
-            return ((year + int(year/4) + int(year/400) - int(year/100) - (yearBase+1) + monthBaseNormal[month-1] + 1))%7
+            week = ((year + int(year/4) + int(year/400) - int(year/100) - (yearBase+1) + monthBaseNormal[month-1] + 1))%7
         else:
-            return ((year + int(year/4) + int(year/400) - int(year/100) - (yearBase+1) + monthBaseLeap[month-1] + 1))%7
+            week = ((year + int(year/4) + int(year/400) - int(year/100) - (yearBase+1) + monthBaseLeap[month-1] + 1))%7
+        if week == 0:
+            week = 7
+        return week
     def GenerateCalendar(self):
         year = self.targetYear
         month = self.targetMonth
@@ -230,6 +233,7 @@ class BookInterface(BaseInterface.BaseInterface):
         year = self.targetYear
         month = self.targetMonth
         week = self.CalculateWeek(year,month)
+        print(week)
         monthNum = 31
         if((year%400==0 or (year%4==0 and year%100!=0)) and month ==2):
             monthNum = 29
