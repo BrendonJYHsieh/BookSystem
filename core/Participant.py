@@ -41,20 +41,17 @@ class Participant:
             print("not available event")
             return False
     def add_event(self,new_event):
+        if len(self.events) == 0:
+            self.events.append(new_event)
+            return True
         for i in range(len(self.events)):
             if self.events[i].start_time >= new_event.start_time:
-                if not self.event_overlap(new_event,self.events[i]):
-                    if i != 0:
-                        if not self.event_overlap(new_event,self.events[i-1]):
-                            print("available event")
-                            self.events.insert(i,new_event)
-                            self.print()
-                            return True
-                        else:
-                            return False
+                if not self.event_overlap(new_event,self.events[i]) and not self.event_overlap(new_event,self.events[i-1]):
+                    self.events.insert(i,new_event)
                     return True
                 else:
-                    return False        
+                    print("not available event")
+                    return False      
         self.events.append(new_event)
         self.print()
         return True

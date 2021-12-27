@@ -91,3 +91,4 @@ class Room:
         for event_index in range(len(self.events)):
             if self.events[event_index].end_time < datetime.today():
                 self.deleteEvent(self.events[event_index])
+                event_index-=1
