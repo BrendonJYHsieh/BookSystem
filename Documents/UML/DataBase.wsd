@@ -1,0 +1,25 @@
+@startuml Booking System
+scale 1.5
+class BookSystem {
+    + connect()
+    + get_lastupdate()
+    + update_lastupdate()
+    + create_room(RoomName)
+    + delete_room(RoomName)
+    + update_room(OldRoomName, NewRoomName)
+    + get_rooms()
+    + create_event(EventID, EventName, EventDescription, StartTime, EndTime, RoomName)
+    + delete_event(EventID)
+    + update_event(EventID, EventName,EventDescription, StartTime, EndTime)
+    + get_events(RoomName)
+    + get_myEventID(Email)
+    + create_participant(EventID, Email)
+    + delete_participant(EventID, Email)
+    + get_participants()
+    + get_participants_By_Event(EventID)
+    + create_user(Username, Password)
+    + get_user(Username)
+    + vaild_user(Username)
+    
+}
+@enduml
