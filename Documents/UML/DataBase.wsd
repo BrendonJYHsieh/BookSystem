@@ -1,6 +1,6 @@
-@startuml Booking System
+@startuml DataBaseManager
 scale 1.5
-class BookSystem {
+class DataBaseManager {
     + connect()
     + get_lastupdate()
     + update_lastupdate()
