@@ -233,7 +233,6 @@ class BookInterface(BaseInterface.BaseInterface):
         year = self.targetYear
         month = self.targetMonth
         week = self.CalculateWeek(year,month)
-        print(week)
         monthNum = 31
         if((year%400==0 or (year%4==0 and year%100!=0)) and month ==2):
             monthNum = 29
