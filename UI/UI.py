@@ -2,6 +2,7 @@ from os import stat
 import tkinter.font as fnt
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter import messagebox
 import datetime
 from tkinter.constants import ANCHOR, BOTH, CENTER, COMMAND, DISABLED, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
 from typing import Text
@@ -225,48 +226,9 @@ class BookSystemUI():
             self.loginInterface.SetActive(1)
     def AdminLogin(self):
         self.listBtn3.place(x=0,y=170)
-
-    
-
-#application = BookSystemUI()
-
-"""UI_switch = 0 #room list -> 0 room info -> 1 event modify -> 2
-
-def drawRoomList(): #list all room
-    return
-def drawRoomInfo(): #can modify room info
-    return
-def drawEventInfo(): #can modify event info
-    return
-
-
-
-def draw():
-    if UI_switch == 0:
-        drawRoomList()
-    elif UI_switch == 1:
-        drawRoomInfo()
-    elif UI_switch == 2:
-        drawEventInfo()
-    return
-
-def redraw():
-    return
-
-
-def roomBaseInfoModify(room):
-    room.name = "xxx"
-    room.description = "xxx"
-
-def roomEventsModify(room):
-    UI_switch = 2
-
-def eventModify(event):
-    event.name = "xxx"
-    event.description = "xxx"
-    event.start_time = None
-    event.end_time = None
-
-def eventParticipantModify(event,emails):
-    event.participants = emails
-"""
+    def MessageBoxInfo(self,_title,_msg):
+        messagebox.showinfo(_title,_msg)
+    def MessageBoxWarn(self,_title,_msg):
+        messagebox.showwarning(_title,_msg)
+    def MessageBoxError(self,_title,_msg):
+        messagebox.showerror(_title,_msg)

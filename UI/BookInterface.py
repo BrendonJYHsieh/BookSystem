@@ -484,6 +484,8 @@ class BookInterface(BaseInterface.BaseInterface):
         print(self.Participant.get())
         pass
     def AddParticipantLabelDropDown(self):
+        if self.Participant.get() == "":
+            return
         self.Participants.append(self.Participant.get())
         self.Participant.configure(values=self.Participants)
         self.Participant.current(0)
@@ -588,6 +590,7 @@ class BookInterface(BaseInterface.BaseInterface):
             new_event.update_participants(self.final_participants)
             room.updateEvent(new_event)
             self.UpdateTimeLineEvent()
+            self.BackToTimeLine()
         pass
     '''============================OtherMethod============================'''
     def convert_to_RFC_datetime(self, year=1900, month=1, day=1, hour=0, minute=0):
