@@ -42,10 +42,9 @@ class UsersBookInterface(BaseInterface.BaseInterface):
             btn.destroy()
         self.eventList = []
         index = 0
-        events = self.bookSystem.getUserEvents(self.bookSystem.auth.CurrentUser)
         #print('-----------------------')
-        #print(self.bookSystem.auth.CurrentUser)
-        events = self.bookSystem.getParticipant("frakwuo1@gmail.com").events
+        print(self.bookSystem.auth.CurrentUser)
+        events = self.bookSystem.addParticipant(self.bookSystem.auth.CurrentUser).events
         print(events)
         for event in events:
             self.CreateEvent(index, event)

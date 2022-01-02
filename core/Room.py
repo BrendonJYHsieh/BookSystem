@@ -88,7 +88,6 @@ class Room:
     def exist(self):
         return self.BookSystem.getRoomById(self.id) != None
     def garbage_event_collection(self):
-        for event_index in range(len(self.events)):
-            if self.events[event_index].end_time < datetime.today():
-                self.deleteEvent(self.events[event_index])
-                event_index-=1
+        for event in self.events:
+            if event.end_time < datetime.today():
+                self.deleteEvent(event)
