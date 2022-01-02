@@ -358,6 +358,8 @@ class BookInterface(BaseInterface.BaseInterface):
         self.Participant.configure(values=self.Participants)
         self.Participant.current(0)
         self.Describe.delete(1.0,"end")
+        self.TargetStartHour = _event.start_time.hour
+        self.TargetStartMin = _event.start_time.minute
         self.state = 3
         self.timeLineLabel.config(text='      Choose Time       ' + str(_event.start_time.hour).zfill(2) + '：' + str(_event.start_time.minute).zfill(2) + '      to')
         self.titleNameStr.set(_event.name)
