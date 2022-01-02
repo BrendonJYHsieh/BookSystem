@@ -17,12 +17,19 @@ class Room:
         if not self.exist():
             self.BookSystem.ui.bookInterface.BackToRoomList()
             self.BookSystem.ui.MessageBoxError('Room Error','The room has been deleted')
-        print('Add Event!')        
+            return
+        print('Add Event!')
+        #self.events.append(event)
+        if not self.insert_event(event):
+            #TODO not leave page
+            self.BookSystem.ui.MessageBoxError('Input Error','The room not allow two event at same time')
+            return
         event.id = self.BookSystem.gc.Create_Event(self.id,event.name,event.description,
                     (event.start_time-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'),
                     (event.end_time-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'))
         
-        self.events.append(event)
+
+
         self.BookSystem.db.create_event(event.id,event.name,event.description,event.start_time,event.end_time,self.name)
         if event.participants: #participants not empty            
             for participant in event.participants:
@@ -70,6 +77,10 @@ class Room:
             self.BookSystem.ui.bookInterface.BackToTimeLine()
             self.BookSystem.ui.MessageBoxError('Event Error','The event has been deleted')
             return
+        if not self.available_event_modify(new_event):
+            #TODO not leave page
+            self.BookSystem.ui.MessageBoxError('Input Error','The room not allow two event at same time')
+            return
         for i in range(len(self.events)):
             if self.events[i].id == new_event.id:
                 self.events[i].update(new_event)
@@ -98,3 +109,56 @@ class Room:
         for event in self.events:
             if event.end_time < datetime.today():
                 self.deleteEvent(event)
+    def event_overlap(self,eventA,eventB):
+        if eventA.id == eventB.id: #update event
+            return False
+        if eventB.start_time > eventA.start_time:
+            if eventB.start_time >= eventA.end_time:
+                return False
+            else:
+                return True
+        elif eventB.start_time < eventA.start_time:
+            if eventB.end_time <= eventA.start_time:
+                return False
+            else:
+                return True
+        else: #eventB.start_time == eventA.start_time
+            return True
+    def insert_event(self,new_event):
+        for i in range(len(self.events)):
+            if self.events[i].start_time >= new_event.start_time:
+                if not self.event_overlap(new_event,self.events[i]) and not self.event_overlap(new_event,self.events[i-1]):
+                    self.events.insert(i,new_event)
+                    return True
+                else:
+                    print("not available event")
+                    return False      
+        self.events.append(new_event)
+        return True
+
+    def available_event_modify(self,event):
+        if len(self.events) == 0 or len(self.events) == 1:
+            return True
+        for i in range(len(self.events)-1):
+            if self.events[i].id == event.id:
+                print(str(event.start_time) + ' ' +str(event.end_time) )
+                print(str(self.events[i-1].start_time) + ' ' +str(self.events[i-1].end_time) )
+                print(str(self.events[i+1].start_time) + ' ' +str(self.events[i+1].end_time) )
+                print( self.event_overlap(event,self.events[i-1]))
+                print( self.event_overlap(event,self.events[i+1]))
+                
+                if not self.event_overlap(event,self.events[i-1]) and not self.event_overlap(event,self.events[i+1]):
+                    print("available event")
+                    return True
+                else:
+                    print("not available event")
+                    return False
+        print(str(event.start_time) + ' ' +str(event.end_time) )
+        print(str(self.events[-2].start_time) + ' ' +str(self.events[-2].end_time) )
+        print( self.event_overlap(event,self.events[-2]))
+        if not self.event_overlap(event,self.events[-2]):
+            print("available event")
+            return True
+        else:
+            print("not available event")
+            return False

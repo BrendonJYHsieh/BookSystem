@@ -45,3 +45,18 @@ class Event:
         if self.room.exist():
             return self.room.getEventById(self.id) != None
         return False
+    def overlap(self,other):
+        if self.id == other.id: #update event
+            return False
+        if other.start_time > self.start_time:
+            if other.start_time >= self.end_time:
+                return False
+            else:
+                return True
+        elif other.start_time < self.start_time:
+            if other.end_time <= self.start_time:
+                return False
+            else:
+                return True
+        else: #eventB.start_time == eventA.start_time
+            return True
