@@ -64,6 +64,7 @@ class BookSystem:
         for i in range(len(self.rooms)):
             if self.rooms[i].name == room.name:
                 #TODO 彈出警告視窗
+                self.ui.MessageBoxWarn('BookSystem Warning','Room name is Duplicated!')
                 print('Room_name is Duplicated!')
                 return
         print('Add Room!')
@@ -102,6 +103,7 @@ class BookSystem:
                 break
         if not found:
             #TODO 彈出警告視窗
+            self.ui.MessageBoxError('BookSystem Error','Room is not found!')
             return
         print('Update Room!')
         self.db.update_room(old_name,new_name)

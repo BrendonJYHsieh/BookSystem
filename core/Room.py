@@ -16,6 +16,7 @@ class Room:
         self.BookSystem.check_db_update()
         if not self.exist():
             self.BookSystem.ui.bookInterface.BackToRoomList()
+            self.BookSystem.ui.MessageBoxError('Room Error','The room has been deleted')
         print('Add Event!')        
         event.id = self.BookSystem.gc.Create_Event(self.id,event.name,event.description,
                     (event.start_time-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -35,10 +36,12 @@ class Room:
         self.BookSystem.check_db_update()
         if not self.exist():
             self.BookSystem.ui.bookInterface.BackToRoomList()
+            self.BookSystem.ui.MessageBoxError('Room Error','The room has been deleted')
             return
         if not event.exist():
             print("BackToTimeLine")
             self.BookSystem.ui.bookInterface.BackToTimeLine()
+            self.BookSystem.ui.MessageBoxError('Event Error','The event has been deleted')
             return
         found=False
         for i in range(len(self.events)):
@@ -47,6 +50,8 @@ class Room:
                 del self.events[i]
                 break
         if not found:
+            self.BookSystem.ui.bookInterface.BackToTimeLine()
+            self.BookSystem.ui.MessageBoxError('Event Error','The event has been deleted')
             return
         print('Delete Event!')
         self.BookSystem.db.delete_event(event.id)
@@ -58,10 +63,12 @@ class Room:
         self.BookSystem.check_db_update()
         if not self.exist():
             self.BookSystem.ui.bookInterface.BackToRoomList()
+            self.BookSystem.ui.MessageBoxError('Room Error','The room has been deleted')
             return
         if not new_event.exist():
             print("BackToTimeLine")
             self.BookSystem.ui.bookInterface.BackToTimeLine()
+            self.BookSystem.ui.MessageBoxError('Event Error','The event has been deleted')
             return
         for i in range(len(self.events)):
             if self.events[i].id == new_event.id:
