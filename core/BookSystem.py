@@ -131,3 +131,9 @@ class BookSystem:
     def garbage_event_collection(self):
         for room_index in range(len(self.rooms)):
             self.rooms[room_index].garbage_event_collection()
+    def login(self,account,password):
+        self.auth.login(account,password)
+        if account == "Admin" and self.auth.valid:
+            self.ui.AdminLogin()
+        return self.auth.valid
+    

@@ -96,7 +96,7 @@ class BookSystemUI():
         self.listCanvas2.place(x=0,y=0)
         self.listBtn1.place(x=0,y=0)
         self.listBtn2.place(x=0,y=85)
-        self.listBtn3.place(x=0,y=170)
+        #self.listBtn3.place(x=0,y=170)
         self.listBtn4.place(x=0,y=520)
 
         self.bookInterface = BookInterface.BookInterface(self.app,self.BookSystem)
@@ -223,7 +223,8 @@ class BookSystemUI():
             self.SettingGroup.place_forget()
             self.bookInterface.BackToRoomList()
             self.loginInterface.SetActive(1)
-            
+    def AdminLogin(self):
+        self.listBtn3.place(x=0,y=170)
 
     
 

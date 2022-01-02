@@ -45,11 +45,9 @@ class LoginInterface(BaseInterface.BaseInterface):
         pass
 
     def LogInAccount(self):
-        self.BookSystem.auth.login(self.accountStr.get(),self.passwordStr.get())
-        if self.BookSystem.auth.valid == False:
+        if self.BookSystem.login(self.accountStr.get(),self.passwordStr.get()) == False:
             self.showerror("登入失敗","錯誤的帳號或密碼")
         self.SetActive(not self.BookSystem.auth.valid)
-        pass
     def SignAccount(self):
         self.BookSystem.auth.register(self.accountStr.get(),self.passwordStr.get())
     def showerror(self, _title,_msg):
