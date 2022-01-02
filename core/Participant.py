@@ -23,7 +23,7 @@ class Participant:
         else: #eventB.start_time == eventA.start_time
             return True
 
-    def available_event(self,event):
+    def available_event_modify(self,event):
         if len(self.events) == 0 or len(self.events) == 1:
             return True
         for i in range(len(self.events)-1):

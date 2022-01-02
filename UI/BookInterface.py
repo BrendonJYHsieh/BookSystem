@@ -549,19 +549,17 @@ class BookInterface(BaseInterface.BaseInterface):
                 return
 
             new_event = Event.Event(self.BookSystem,room,self.titleNameStr.get(), self.Describe.get(1.0, tk.END+"-1c"), self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,self.TargetStartHour,self.TargetStartMin),self.convert_to_RFC_datetime(self.targetYear,self.targetMonth,self.TargetDay,_hour,_minute))
-            
+            new_event.update_participants(self.final_participants)
             print("---------------------check participant----------------------")
-            print(_hour)
-            print(_minute)
             for i in range(len(self.final_participants)):
                 bs_participant = self.BookSystem.getParticipant(self.final_participants[i])
                 if bs_participant != None:
-                    if not bs_participant.available_event(new_event):
+                    if not bs_participant.add_event(new_event):
                         print("participant has two event at same time")
                         self.BookSystem.ui.MessageBoxError('Input Error','The participant not allow two event at same time')
                         return
                     print("participant available event")        
-            new_event.update_participants(self.final_participants)
+           
             room.addEvent(new_event)
             self.UpdateTimeLineEvent()
             self.BackToTimeLine()
@@ -594,7 +592,7 @@ class BookInterface(BaseInterface.BaseInterface):
             for i in range(len(self.final_participants)):
                 bs_participant = self.BookSystem.getParticipant(self.final_participants[i])
                 if bs_participant != None:
-                    if not bs_participant.available_event(new_event):
+                    if not bs_participant.available_event_modify(new_event):
                         print("participant has two event at same time")
                         self.BookSystem.ui.MessageBoxError('Input Error','The participant not allow two event at same time')
                         return
