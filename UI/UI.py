@@ -114,7 +114,7 @@ class BookSystemUI():
 
     def runUI(self):
         self.loginInterface = LogInInterface.LoginInterface(self.app,self.BookSystem)
-        self.loginInterface.SetActive(0)
+        self.loginInterface.SetActive(1)
         self.app.mainloop()
     def regular_update(self):
         self.BookSystem.check_db_update()

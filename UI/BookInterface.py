@@ -2,6 +2,7 @@ from os import stat, stat_result
 import tkinter.font as fnt
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter import messagebox
 from datetime import datetime 
 from tkinter.constants import ANCHOR, BOTH, CENTER, COMMAND, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
 from typing import Text
@@ -601,5 +602,6 @@ class BookInterface(BaseInterface.BaseInterface):
             return False 
         else:
             return True
-
+    def showerror(self, _title,_msg):
+        messagebox.showerror(_title,_msg)
 

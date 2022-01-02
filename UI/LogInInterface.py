@@ -2,6 +2,7 @@ from os import stat, stat_result
 import tkinter.font as fnt
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter import messagebox
 from datetime import datetime 
 from tkinter.constants import ANCHOR, BOTH, BOTTOM, CENTER, COMMAND, END, FALSE, FLAT, LEFT, N, NW, RIGHT, SUNKEN, TOP, VERTICAL, Y
 from typing import Text
@@ -35,7 +36,6 @@ class LoginInterface(BaseInterface.BaseInterface):
 
         self.remindText = tk.Label(self.mainCanvas,text="測試版登入介面，功能未實作，點<<Login>>直接進入。",font=('Helvetica', '15'),fg="red")
         #self.remindText.pack(side=BOTTOM)
-        self.SetActive(0)
     def Enable(self):
         self.mainCanvas.place(x=0,y=0)
         self.passwordStr.set('')
@@ -46,8 +46,11 @@ class LoginInterface(BaseInterface.BaseInterface):
 
     def LogInAccount(self):
         self.BookSystem.auth.login(self.accountStr.get(),self.passwordStr.get())
+        if self.BookSystem.auth.valid == False:
+            self.showerror("登入失敗","錯誤的帳號或密碼")
         self.SetActive(not self.BookSystem.auth.valid)
         pass
     def SignAccount(self):
         self.BookSystem.auth.register(self.accountStr.get(),self.passwordStr.get())
-        pass
+    def showerror(self, _title,_msg):
+        messagebox.showerror(_title,_msg)

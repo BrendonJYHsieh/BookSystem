@@ -20,7 +20,7 @@ class BookSystem:
     def start(self):
         self.ui.initialUI()
         self.update()
-        self.garbage_event_collection()
+        #self.garbage_event_collection()
         self.ui.runUI()
     def update(self):
         self.rooms.clear()
