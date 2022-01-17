@@ -33,7 +33,7 @@ Insert into Rooms (RoomID,RoomName) Values
 ("etrewtwe@dfasfas","IB"),
 ("etrewtwe@dfasfas","T4")
 
-INSERT INTO Synchronize(LastUpdate)
+INSERT into Synchronize(LastUpdate)
 VALUES(NOW());
 
 Insert into Events (EventID, EventName, EventDescription, StartTime, EndTime, RoomName) Values
@@ -85,11 +85,11 @@ Insert into Participants (EventID, Email) Values
 ("9","b10815054@gapps.ntust.edu.tw"),
 ("9","b10815058@gapps.ntust.edu.tw")
 
-Alter table rooms add primary key (RoomName);
+Alter table Rooms add primary key (RoomName);
 
 Alter table Events 
 add Constraint Fk_RoomName 
-foreign key (RoomName) References rooms(RoomName)
+foreign key (RoomName) References Rooms(RoomName)
 ON UPDATE CASCADE ON DELETE CASCADE;
 
 Alter table Events add primary key (EventID);
