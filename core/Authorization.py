@@ -25,8 +25,8 @@ class Authorization:
         data = self.db.vaild_user(username)
         if(data):
             if(self.db.vaild_user(username)[0]==h):
-                self.valid = True;
                 self.CurrentUser = username
+                self.valid = True
             else:
                 print("Password is error.")
         else:

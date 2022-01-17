@@ -218,6 +218,7 @@ class BookSystemUI():
             self.listBtn3.config(command=lambda : self.ClickListBtn(2))
             self.listBtn4.config(text="  Logout              ", bg="#20b2aa")
             self.listBtn4.config(command=lambda : self.ClickListBtn(3))
+            self.BookSystem.auth.valid = False
             self.bookInterface.SetActive(True)
             self.usersBookInterface.SetActive(False)
             self.ManagerGroup.place_forget()
