@@ -71,7 +71,7 @@ class BookSystemUI():
         self.delete_room = tk.Button(self.ManagerGroup,text='delete',command=lambda : self.BookSystem.deleteRoom(Room.Room(self.BookSystem,self.room_name_strv.get())))
         self.room_name_label = tk.Label(self.ManagerGroup,text='Room Name')
         
-        self.room_name_strv.set('mew mew')
+        self.room_name_strv.set('')
         self.room_name = tk.Entry(self.ManagerGroup,textvariable=self.room_name_strv)
 
         self.room_list = tk.Listbox(self.ManagerGroup,selectmode=tk.SINGLE)
@@ -156,6 +156,7 @@ class BookSystemUI():
             self.bookInterface.UpdateRoomList()
         else:
             #TODO 警告
+            self.MessageBoxError('Error','You haven\'t select any room')
             return        
         
     def roomListSelect(self,event):

@@ -97,17 +97,18 @@ class BookSystem:
         found=False
         for i in range(len(self.rooms)):
             if self.rooms[i].name == old_name:
+                print('found room')
                 found = True
                 self.rooms[i].name = new_name
                 roomID = self.rooms[i].id
                 break
         if not found:
             #TODO 彈出警告視窗
+            print("========================================Room is not found!")
             self.ui.MessageBoxError('BookSystem Error','Room is not found!')
             return
         print('Update Room!')
         self.db.update_room(old_name,new_name)
-        self.ui.roomListUpdate()
         self.gc.Update_Calendar(roomID,new_name)
         self.db.update_lastupdate()
         print('Update Room successful!')
