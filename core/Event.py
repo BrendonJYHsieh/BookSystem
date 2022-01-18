@@ -34,6 +34,9 @@ class Event:
                 self.BookSystem.gc.Add_Attendee(self.room.id,self.id,participant)
                 self.BookSystem.addParticipant(participant).add_event(self)
         self.BookSystem.db.update_event(new_event.id,new_event.name,new_event.description,new_event.start_time,new_event.end_time)
+        self.BookSystem.gc.Update_Summary(self.room.id,self.id,new_event.name)
+        self.BookSystem.gc.Update_Description(self.room.id,self.id,new_event.description)
+        self.BookSystem.gc.Update_Time(self.room.id,self.id,self.start_time,new_event.end_time)
         self = new_event
 
     def in_event(self,email):
