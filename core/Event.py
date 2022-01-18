@@ -1,7 +1,7 @@
 import time
 from core import BookSystem
 from database import DataBase
-from datetime import date, datetime
+from datetime import date, datetime,timedelta
 class Event:
     BookSystem = None
     room = None
@@ -36,7 +36,7 @@ class Event:
         self.BookSystem.db.update_event(new_event.id,new_event.name,new_event.description,new_event.start_time,new_event.end_time)
         self.BookSystem.gc.Update_Summary(self.room.id,self.id,new_event.name)
         self.BookSystem.gc.Update_Description(self.room.id,self.id,new_event.description)
-        self.BookSystem.gc.Update_Time(self.room.id,self.id,new_event.start_time,new_event.end_time)
+        self.BookSystem.gc.Update_Time(self.room.id,self.id,(new_event.start_time-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'),(new_event.end_time-timedelta(hours=8)).strftime('%Y-%m-%dT%H:%M:%SZ'))
         self = new_event
 
     def in_event(self,email):
