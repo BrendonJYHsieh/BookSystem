@@ -14,12 +14,15 @@ conda create -n BookSystem python==3.9.6
 ```console
 conda activate BookSystem
 ```
-cd至本目錄\
+cd至本目錄
+```console
+cd /d "路徑"
+```
 安裝所需模組
 ```console
 pip install -r requirements.txt
 ```
-測試成功與否
+測試建置成功與否
 ```console
 python main.py
 ```

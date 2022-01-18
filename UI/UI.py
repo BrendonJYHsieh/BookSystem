@@ -145,7 +145,6 @@ class BookSystemUI():
         self.bookInterface.UpdateRoomList()
         self.bookInterface.BackToRoomList()
     def roomListUpdate(self):
-        #print('<roomListUpdate>')
         print("room update")
         selection = self.room_list.curselection()
         old_name = ""
